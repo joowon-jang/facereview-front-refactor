@@ -1,0 +1,96 @@
+$bg: #15151D;
+$gray-50: #393946;
+$gray-100: #5D5D6D;
+$gray-200: #5D5D6D;
+$gray-300: #7C7E8C;
+$gray-400: #A0A1AC;
+$gray-500: #B8B9C3;
+$gray-600: #CECED6;
+$gray-700: #DEDEE4;
+$gray-800: #E9E9EF;
+$gray-900: #FFFFFF;
+$category-joyful-basic: #FF4D8D;
+$category-joyful-tinted: rgba(255, 77, 141, 0.6);
+$category-surprised-basic: #92C624;
+$category-surprised-tinted: rgba(146, 198, 36, 0.6);
+$category-sad-basic: #479CFF;
+$category-sad-tinted: rgba(71, 156, 255, 0.6);
+$category-scared-basic: #9F65FF;
+$category-scared-tinted: rgba(159, 101, 255, 0.6);
+
+$primary-basic: #76FFCE;
+$primary-02: rgba(118, 255, 206, 0.2);
+$state-02: rgba(21, 21, 29, 0.2);
+$state-04: rgba(21, 21, 29, 0.4);
+
+$brand-red: #FF4D8D;
+$brand-yellow: #BCF640;
+$brand-blue: #65ACFF;
+$brand-purple: #9F65FF;
+
+$system-error: #E74D4D;
+$system-dim-black: rgba(21, 21, 29, 0.7);
+$system-dim-black: rgba(255, 255, 255, 0.2);
+
+.font-title-large {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 48px;
+    letter-spacing: -2%;
+}
+
+.font-title-medium {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -2%;
+}
+
+.font-title-small {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -2%;
+}
+
+.font-title-mini {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -2%;
+}
+
+.font-body-large {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -2%;
+}
+
+.font-body-medium {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -2%;
+}
+
+.font-label-large {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -2%;
+}
+
+.font-label-medium {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: -2%;
+}
+
+.font-label-small {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+}
