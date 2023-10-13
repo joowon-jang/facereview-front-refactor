@@ -1,0 +1,36 @@
+@import "/src/assets/css/variables.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 128px;
+
+}
+
+.indicator-container {
+    display: flex;
+}
+
+.indicator-container .indicator {
+    width: 50px;
+    height: 4px;
+    background: $gray-100;
+    background-repeat: no-repeat;
+    background-image: linear-gradient($gray-600 0%, $gray-600 100%);
+    background-size: 0% 100%;
+
+    &+.indicator {
+        margin-left: 6px;
+    }
+
+    &.active {
+        background-size: 100% 100%;
+    }
+
+    transition: background-size .4s ease;
+}
+
+.logo {
+    margin-top: 56px;
+}
