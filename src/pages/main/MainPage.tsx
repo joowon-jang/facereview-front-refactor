@@ -1,5 +1,11 @@
+import ScreenContainer from "../../components/ScreenContainer/ScreenContainer";
+
 const MainPage = () => {
-  return <>mainPage</>;
+  return (
+    <ScreenContainer>
+      <p> mainPage</p>
+    </ScreenContainer>
+  );
 };
 
 export default MainPage;
