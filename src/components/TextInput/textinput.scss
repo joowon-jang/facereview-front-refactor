@@ -1,0 +1,13 @@
+@import '/src/assets/css/variables.scss';
+
+.text-input {
+    color: $gray-900;
+    background-color: $gray-100;
+    padding: 16px 14px 16px 14px;
+    border: none;
+    border-radius: 4px;
+
+    &::placeholder {
+        color: $gray-400;
+    }
+}
