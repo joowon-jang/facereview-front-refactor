@@ -1,0 +1,14 @@
+@import '/src/index.scss';
+
+.button {
+    width: 100%;
+    color: $gray-50;
+    background-color: $primary-basic;
+    padding: 16px 20px 16px 20px;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: #4c9a82;
+        cursor: pointer;
+    }
+}
