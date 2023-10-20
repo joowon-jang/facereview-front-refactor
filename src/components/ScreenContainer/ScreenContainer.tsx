@@ -1,12 +1,16 @@
 import { ReactElement } from "react";
+import { Outlet } from "react-router-dom";
+import Header from "../Header/Header";
+
 import "./screencontainer.scss";
 
-type ScreenContainerType = {
-  children: ReactElement;
-};
-
-const ScreenContainer = ({ children }: ScreenContainerType): ReactElement => {
-  return <div className="screen-container">{children}</div>;
+const ScreenContainer = (): ReactElement => {
+  return (
+    <div className="screen-container">
+      <Header />
+      <Outlet />
+    </div>
+  );
 };
 
 export default ScreenContainer;
