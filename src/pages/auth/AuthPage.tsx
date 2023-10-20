@@ -1,7 +1,6 @@
 import { useState } from "react";
-import logo from "../../assets/img/logo.svg";
+import AnimatedLogo from "../../components/AnimatedLogo/AnimatedLogo";
 import Button from "../../components/Button/Button";
-import ScreenContainer from "../../components/ScreenContainer/ScreenContainer";
 import StepIndicator from "../../components/StepIndicator/StepIndicator";
 import TextInput from "../../components/TextInput/TextInput";
 import "./authpage.scss";
@@ -11,10 +10,16 @@ const AuthPage = () => {
   const [indicatorStep, setIndicatorStep] = useState(1);
 
   return (
-    <ScreenContainer>
+    <>
       <div className="container">
         <StepIndicator step={indicatorStep} maxStep={3} />
-        <img src={logo} alt="FaceReview" className="logo" />
+
+        <AnimatedLogo
+          animationType="once"
+          animatedWrapperWidth={73}
+          gap={7}
+          style={{ height: "84px" }}
+        />
 
         <div className="input-container">
           <label htmlFor="authEmail" className="input-label font-title-mini">
@@ -33,7 +38,7 @@ const AuthPage = () => {
           <Button label="다음" style={{ marginTop: "48px" }} />
         </div>
       </div>
-    </ScreenContainer>
+    </>
   );
 };
 
