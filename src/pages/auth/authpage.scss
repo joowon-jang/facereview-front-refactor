@@ -1,4 +1,4 @@
-@import "/src/index.scss";
+@import "assets/css/index.scss";
 
 .container {
     display: flex;
@@ -7,9 +7,9 @@
     margin-top: 128px;
 }
 
-
-.logo {
-    margin-top: 56px;
+.logo-wrapper {
+    margin-top: 84px;
+    margin-bottom: 144px;
 }
 
 .input-container {
