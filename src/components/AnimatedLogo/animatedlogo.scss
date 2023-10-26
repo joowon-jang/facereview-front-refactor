@@ -1,10 +1,9 @@
-@import "/src/index.scss";
+@import "assets/css/index.scss";
 
 .animated-logo-container {
   display: flex;
   align-items: center;
-  padding-top: 24px;
-  padding-bottom: 16px;
+  cursor: pointer;
 
   .animated-bar-wrapper {
     display: flex;
@@ -56,6 +55,10 @@
     width: 5%;
   }
 
+  5% {
+    width: 5%;
+  }
+
   10% {
     width: 110%;
   }
@@ -84,17 +87,17 @@
     width: 100%;
   }
 
-  95% {
-    width: 100%;
-  }
-
   100% {
-    width: 5%;
+    width: 100%;
   }
 }
 
 @keyframes spring-2 {
   0% {
+    width: 5%;
+  }
+
+  5% {
     width: 5%;
   }
 
@@ -126,17 +129,17 @@
     width: 75%;
   }
 
-  95% {
-    width: 75%;
-  }
-
   100% {
-    width: 5%;
+    width: 75%;
   }
 }
 
 @keyframes spring-3 {
   0% {
+    width: 2%;
+  }
+
+  5% {
     width: 2%;
   }
 
@@ -168,11 +171,8 @@
     width: 37%;
   }
 
-  95% {
+  100% {
     width: 37%;
   }
 
-  100% {
-    width: 2%;
-  }
 }

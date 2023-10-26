@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
-import logoR from "../../assets/img/logoR.png";
+import { useNavigate } from "react-router-dom";
+import logoR from "assets/img/logoR.png";
 import "./animatedlogo.scss";
 
 type AnimatedLogoPropType = {
@@ -15,8 +16,18 @@ const AnimatedLogo = ({
   gap,
   style,
 }: AnimatedLogoPropType): ReactElement => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   return (
-    <div className="animated-logo-container" style={style}>
+    <div
+      className="animated-logo-container"
+      style={style}
+      onClick={handleLogoClick}
+    >
       <div
         className={`animated-bar-wrapper ${"animated-" + animationType}`}
         style={{ width: `${animatedWrapperWidth}px`, marginRight: `${gap}px` }}
