@@ -1,8 +1,9 @@
 import { useState } from "react";
-import AnimatedLogo from "../../components/AnimatedLogo/AnimatedLogo";
-import Button from "../../components/Button/Button";
-import StepIndicator from "../../components/StepIndicator/StepIndicator";
-import TextInput from "../../components/TextInput/TextInput";
+import AnimatedLogo from "components/AnimatedLogo/AnimatedLogo";
+import Button from "components/Button/Button";
+import StepIndicator from "components/StepIndicator/StepIndicator";
+import TextInput from "components/TextInput/TextInput";
+
 import "./authpage.scss";
 
 const AuthPage = () => {
@@ -14,12 +15,14 @@ const AuthPage = () => {
       <div className="container">
         <StepIndicator step={indicatorStep} maxStep={3} />
 
-        <AnimatedLogo
-          animationType="once"
-          animatedWrapperWidth={73}
-          gap={7}
-          style={{ height: "84px" }}
-        />
+        <div className="logo-wrapper">
+          <AnimatedLogo
+            animationType="once"
+            animatedWrapperWidth={73}
+            gap={7}
+            style={{ height: "84px" }}
+          />
+        </div>
 
         <div className="input-container">
           <label htmlFor="authEmail" className="input-label font-title-mini">
