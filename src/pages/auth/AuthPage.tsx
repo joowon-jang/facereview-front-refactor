@@ -37,8 +37,7 @@ const AuthPage = () => {
           <p className="input-alert-message font-body-large">
             올바르지 않은 이메일 형식이에요.
           </p>
-
-          <Button label="다음" style={{ marginTop: "48px" }} />
+          <Button label="다음" type="cta-full" style={{ marginTop: "48px" }} />
         </div>
       </div>
     </>
