@@ -19,7 +19,6 @@ const Header = (): ReactElement => {
       <Button
         label="로그인"
         type="small"
-        isDisabled={true}
         onClick={() => navigate("/auth")}
       ></Button>
     </div>
