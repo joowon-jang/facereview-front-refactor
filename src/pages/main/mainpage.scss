@@ -28,4 +28,16 @@
 
     }
   }
+
+  .hot-contents-container {
+    .title {
+      margin-bottom: 16px;
+    }
+
+    .video-wrapper {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap
+    }
+  }
 }

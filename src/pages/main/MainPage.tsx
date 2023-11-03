@@ -3,11 +3,29 @@ import { ReactElement } from "react";
 import "./mainpage.scss";
 
 const MainPage = (): ReactElement => {
-  const dummyVideoIds = [
-    "FtK_N-r05q4",
+  const recommendVideoIds = [
+    "cVz_ArGCo-A",
     "my7FSr-0EPM",
     "paKZL7IWcHM",
     "dTBsPShaBro",
+  ];
+  const dummyVideoIds = [
+    "cVz_ArGCo-A",
+    "my7FSr-0EPM",
+    "paKZL7IWcHM",
+    "dTBsPShaBro",
+    "MO2HeLHebMo",
+    "dTBsPShaBro",
+    "SeeiDfqtcTU",
+    "auR98D6X_eo",
+    "VgrXUxsIVtg",
+    "eMpzQVVY6zo",
+    "rOozR1lRwKM",
+    "ojUMHhHpmDc",
+    "pasRphQvEUE",
+    "B549suUxjQw",
+    "EjCs5ej41XI",
+    "W7cR4kcQq_E",
   ];
 
   return (
@@ -22,9 +40,9 @@ const MainPage = (): ReactElement => {
         <div className="video-container">
           <div className="button-wrapper"></div>
           <div className="video-wrapper">
-            {dummyVideoIds.map((v) => (
+            {recommendVideoIds.map((v) => (
               <VideoItem
-                key={`videoItem${v}`}
+                key={`recommendVideo${v}`}
                 src={`https://www.youtube.com/embed/${v}`}
                 videoId={v}
               />
@@ -38,7 +56,16 @@ const MainPage = (): ReactElement => {
         </h2>
         <div className="video-container">
           <div className="button-wrapper"></div>
-          <div className="video-wrapper"></div>
+          <div className="video-wrapper">
+            {dummyVideoIds.map((v) => (
+              <VideoItem
+                key={`videoItem${v}`}
+                src={`https://www.youtube.com/embed/${v}`}
+                videoId={v}
+                style={{ marginBottom: "56px" }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
