@@ -1,31 +1,45 @@
 import { ReactElement } from "react";
+import { useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import "./videoitem.scss";
 
 type VideoItemPropsType = {
   src: string;
   videoId: string;
+  width?: number;
   style?: React.CSSProperties;
 };
 
 const VideoItem = ({
   src,
   videoId,
+  width,
   style,
 }: VideoItemPropsType): ReactElement => {
+  const navigation = useNavigate();
+  const height = width ? width * (9 / 16) : null;
   const opts = {
-    width: 280,
-    height: 158,
+    width: width ? width : 280,
+    height: height ? height : 158,
     modestbranding: 0,
     color: "white",
     controls: false,
     disablekb: 0,
   };
 
+  const handleClick = () => {
+    navigation(`/watch/${videoId}`);
+  };
+
   return (
-    <div className="video-item-container" style={style}>
+    <div
+      className="video-item-container"
+      style={{ ...style, width: `${width ? width : 280}px` }}
+      onClick={handleClick}
+    >
       <img
         className="video-thumbnail"
+        style={{ width: width ? width : 280, height: height ? height : 158 }}
         src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
         alt=""
       />
