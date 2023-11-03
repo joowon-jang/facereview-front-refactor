@@ -1,0 +1,58 @@
+@import 'assets/css/index.scss';
+
+.watch-page-container {
+  display: flex;
+  padding-top: 48px;
+
+  .main-container {
+    width: 100%;
+    margin-right: 28px;
+
+    .title {
+      color: $gray-900;
+      margin-bottom: 60px;
+    }
+  }
+
+  .side-container {
+    width: 320px;
+
+    .my-emotion-container {
+      margin-bottom: 48px;
+
+      .my-emotion-title-wrapper {
+        display: flex;
+
+        .my-emotion-title {
+          color: $gray-900;
+          margin-right: 8px;
+        }
+      }
+
+
+    }
+
+    .others-emotion-container {
+      margin-bottom: 60px;
+
+      .others-emotion-title-wrapper {
+        display: flex;
+
+        .others-emotion-title {
+          color: $gray-900;
+          margin-right: 8px;
+        }
+      }
+
+    }
+
+    .recommend-container {
+      .recommend-title {
+        color: $gray-900;
+        margin-bottom: 32px;
+      }
+
+      .recommend-video-container {}
+    }
+  }
+}
