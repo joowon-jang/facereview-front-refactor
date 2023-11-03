@@ -1,0 +1,51 @@
+@import 'assets/css/index.scss';
+
+.emotion-badge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+
+
+  &.big {
+    width: 24px;
+    padding: 4px;
+  }
+
+  &.small {
+    width: 16px;
+    padding: 2px;
+  }
+
+  &.happy {
+    background: $category-joyful-tinted;
+  }
+
+  &.surprise {
+    background: $category-surprised-tinted;
+  }
+
+  &.sad {
+    background: $category-sad-tinted;
+  }
+
+  &.angry {
+    background: $category-angry-tinted;
+  }
+
+  &.neutral {
+    background: $system-dim-black;
+  }
+
+  .emotion-emoji {
+    &.big {
+      font-size: 16px;
+      line-height: 16px;
+    }
+
+    &.small {
+      font-size: 12px;
+      line-height: 12px;
+    }
+  }
+}
