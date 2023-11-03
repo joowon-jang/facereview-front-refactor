@@ -5,12 +5,17 @@ import "./videoitem.scss";
 type VideoItemPropsType = {
   src: string;
   videoId: string;
+  style?: React.CSSProperties;
 };
 
-const VideoItem = ({ src, videoId }: VideoItemPropsType): ReactElement => {
+const VideoItem = ({
+  src,
+  videoId,
+  style,
+}: VideoItemPropsType): ReactElement => {
   const opts = {
-    width: 320,
-    height: 180,
+    width: 280,
+    height: 158,
     modestbranding: 0,
     color: "white",
     controls: false,
@@ -18,7 +23,12 @@ const VideoItem = ({ src, videoId }: VideoItemPropsType): ReactElement => {
   };
 
   return (
-    <div className="video-item-container">
+    <div className="video-item-container" style={style}>
+      <img
+        className="video-thumbnail"
+        src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
+        alt=""
+      />
       <YouTube
         videoId={videoId}
         // id={string} // defaults -> ''
