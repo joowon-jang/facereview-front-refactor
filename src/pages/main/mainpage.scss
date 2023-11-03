@@ -16,5 +16,16 @@
   .personal-recommend-contents-container {
     width: 100%;
     margin-bottom: 120px;
+
+    .button-wrapper {
+      margin-bottom: 16px;
+    }
+
+    .video-wrapper {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+    }
   }
 }

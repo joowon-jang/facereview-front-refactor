@@ -3,6 +3,13 @@ import { ReactElement } from "react";
 import "./mainpage.scss";
 
 const MainPage = (): ReactElement => {
+  const dummyVideoIds = [
+    "FtK_N-r05q4",
+    "my7FSr-0EPM",
+    "paKZL7IWcHM",
+    "dTBsPShaBro",
+  ];
+
   return (
     <div className="page-container">
       <div className="personal-recommend-contents-container">
@@ -15,7 +22,13 @@ const MainPage = (): ReactElement => {
         <div className="video-container">
           <div className="button-wrapper"></div>
           <div className="video-wrapper">
-            <VideoItem src="https://www.youtube.com/embed/FtK_N-r05q4?si=rv5lJuAamIo5o7Mz" />
+            {dummyVideoIds.map((v) => (
+              <VideoItem
+                key={`videoItem${v}`}
+                src={`https://www.youtube.com/embed/${v}`}
+                videoId={v}
+              />
+            ))}
           </div>
         </div>
       </div>
