@@ -29,7 +29,7 @@ const MainPage = (): ReactElement => {
   ];
 
   return (
-    <div className="page-container">
+    <div className="main-page-container">
       <div className="personal-recommend-contents-container">
         <h2 className="title font-title-large">
           하하호호님이 좋아할 오늘의 영상들을 골라봤어요.
