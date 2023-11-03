@@ -4,10 +4,13 @@ import "./videoitem.scss";
 
 type VideoItemPropsType = {
   src: string;
+  videoId: string;
 };
 
-const VideoItem = ({ src }: VideoItemPropsType): ReactElement => {
+const VideoItem = ({ src, videoId }: VideoItemPropsType): ReactElement => {
   const opts = {
+    width: 320,
+    height: 180,
     modestbranding: 0,
     color: "white",
     controls: false,
@@ -17,7 +20,7 @@ const VideoItem = ({ src }: VideoItemPropsType): ReactElement => {
   return (
     <div className="video-item-container">
       <YouTube
-        videoId={"FtK_N-r05q4"}
+        videoId={videoId}
         // id={string} // defaults -> ''
         // className={string} // defaults -> ''
         // iframeClassName={string} // defaults -> ''
@@ -34,6 +37,13 @@ const VideoItem = ({ src }: VideoItemPropsType): ReactElement => {
         // onPlaybackRateChange={func} // defaults -> noop
         // onPlaybackQualityChange={func} // defaults -> noop
       />
+      <div className="video-info-container">
+        <h3 className="video-title font-label-large">
+          [#알쓸범잡] (3시간) 김상욱 교수가 알려주는 DNA의 비밀🧬 피 한 방울
+          만으로 범인을 검거한 과학수사의 모든 것👮
+        </h3>
+        <h3 className="video-emotion-data font-body-medium">😄 38.9%</h3>
+      </div>
     </div>
   );
 };
