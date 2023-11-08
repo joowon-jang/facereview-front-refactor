@@ -1,6 +1,7 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import YouTube from "react-youtube";
+import YouTube, { YouTubeEvent } from "react-youtube";
+import { Options, YouTubePlayer } from "youtube-player/dist/types";
 import "./videoitem.scss";
 
 type VideoItemPropsType = {
@@ -18,17 +19,34 @@ const VideoItem = ({
 }: VideoItemPropsType): ReactElement => {
   const navigation = useNavigate();
   const height = width ? width * (9 / 16) : null;
-  const opts = {
+  const opts: Options = {
     width: width ? width : 280,
     height: height ? height : 158,
-    modestbranding: 0,
-    color: "white",
-    controls: false,
-    disablekb: 0,
+    playerVars: {
+      autoplay: 1,
+      color: "white",
+      controls: 0,
+      disablekb: 0,
+      fs: 0,
+      rel: 0,
+    },
   };
+
+  const [video, setVideo] = useState<YouTubePlayer | null>(null);
 
   const handleClick = () => {
     navigation(`/watch/${videoId}`);
+  };
+
+  const handleStateChange = (e: YouTubeEvent<any>) => {
+    setVideo(e.target);
+  };
+
+  const handleMouseHover = () => {
+    setTimeout(() => {
+      video?.playVideo();
+    }, 100);
+    console.log(video);
   };
 
   return (
@@ -36,31 +54,36 @@ const VideoItem = ({
       className="video-item-container"
       style={{ ...style, width: `${width ? width : 280}px` }}
       onClick={handleClick}
+      onMouseOver={handleMouseHover}
     >
-      <img
-        className="video-thumbnail"
+      <div
+        className="thumbnail-wrapper"
         style={{ width: width ? width : 280, height: height ? height : 158 }}
-        src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
-        alt=""
-      />
-      <YouTube
-        videoId={videoId}
-        // id={string} // defaults -> ''
-        // className={string} // defaults -> ''
-        // iframeClassName={string} // defaults -> ''
-        // style={object} // defaults -> {}
-        // title={string} // defaults -> ''
-        // loading={string} // defaults -> undefined
-        opts={opts} // defaults -> {}
-        // onReady={func} // defaults -> noop
-        // onPlay={func} // defaults -> noop
-        // onPause={func} // defaults -> noop
-        // onEnd={func} // defaults -> noop
-        // onError={func} // defaults -> noop
-        // onStateChange={func} // defaults -> noop
-        // onPlaybackRateChange={func} // defaults -> noop
-        // onPlaybackQualityChange={func} // defaults -> noop
-      />
+      >
+        <img
+          className="video-thumbnail"
+          src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
+          alt=""
+        />
+        <YouTube
+          videoId={videoId}
+          // id={string} // defaults -> ''
+          // className={string} // defaults -> ''
+          iframeClassName={"youtube-item"} // defaults -> ''
+          // style={object} // defaults -> {}
+          // title={string} // defaults -> ''
+          // loading={string} // defaults -> undefined
+          opts={opts} // defaults -> {}
+          // onReady={handleVideoReady} // defaults -> noop
+          // onPlay={func} // defaults -> noop
+          // onPause={func} // defaults -> noop
+          // onEnd={func} // defaults -> noop
+          // onError={func} // defaults -> noop
+          onStateChange={handleStateChange} // defaults -> noop
+          // onPlaybackRateChange={func} // defaults -> noop
+          // onPlaybackQualityChange={func} // defaults -> noop
+        />
+      </div>
       <div className="video-info-container">
         <h3 className="video-title font-label-large">
           [#알쓸범잡] (3시간) 김상욱 교수가 알려주는 DNA의 비밀🧬 피 한 방울

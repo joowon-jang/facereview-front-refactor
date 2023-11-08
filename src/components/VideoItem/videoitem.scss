@@ -1,22 +1,41 @@
 @import "assets/css/index.scss";
 
 .video-item-container {
-  position: relative;
-  width: 280px;
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s;
   cursor: pointer;
 
+
   &:hover {
     transform: scale(1.1);
+
+    .thumbnail-wrapper .video-thumbnail {
+      display: none;
+    }
+
+    .thumbnail-wrapper .youtube-item {
+      display: block;
+    }
   }
 
-  .video-thumbnail {
-    width: auto;
-    height: 158px;
-    position: absolute;
+  .thumbnail-wrapper {
+    pointer-events: none;
+    position: relative;
+
+    .youtube-item {
+      position: absolute;
+      display: none;
+    }
+
+    .video-thumbnail {
+      width: auto;
+      height: 158px;
+      position: absolute;
+    }
+
   }
+
 
   .video-info-container {
     width: 100%;
