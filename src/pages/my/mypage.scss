@@ -1,0 +1,44 @@
+@import "assets/css/index.scss";
+
+.mypage-container {
+  padding-top: 48px;
+  padding-bottom: 78px;
+
+  .user-info-container {
+    margin-bottom: 56px;
+  }
+
+  .user-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .name-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0px 24px 0px;
+  }
+
+  .title {
+    color: $gray-900;
+  }
+  .watched-contents-container {
+    width: 100%;
+    margin-bottom: 120px;
+  }
+
+  .watced-contents-title {
+    margin-bottom: 32px;
+  }
+
+  .button-wrapper {
+    margin-bottom: 32px;
+  }
+
+  .video-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
