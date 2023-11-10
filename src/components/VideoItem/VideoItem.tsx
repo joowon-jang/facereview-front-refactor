@@ -61,6 +61,7 @@ const VideoItem = ({
       >
         <img
           className="video-thumbnail"
+          style={{ width: width ? width : 280, height: height ? height : 158 }}
           src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
           alt=""
         />

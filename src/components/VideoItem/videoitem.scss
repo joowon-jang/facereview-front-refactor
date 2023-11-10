@@ -3,18 +3,21 @@
 .video-item-container {
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: all 0.2s;
   cursor: pointer;
 
 
   &:hover {
     transform: scale(1.1);
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.80);
 
     .thumbnail-wrapper .video-thumbnail {
+      visibility: 0;
       display: none;
     }
 
     .thumbnail-wrapper .youtube-item {
+      visibility: 1;
       display: block;
     }
   }
@@ -25,6 +28,7 @@
 
     .youtube-item {
       position: absolute;
+      visibility: 0;
       display: none;
     }
 
@@ -32,6 +36,8 @@
       width: auto;
       height: 158px;
       position: absolute;
+      visibility: 1;
+      display: block;
     }
 
   }
