@@ -6,26 +6,32 @@
   align-items: center;
   padding-top: 61px;
 
-  .user-icon {
-    width: 80px;
-    height: 80px;
-    margin-top: 80px;
+  .editpage-user-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    width: 380px;
   }
 
-  .input-container {
+  .editpage-user-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .editpage-input-container {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
     width: 380px;
-    margin-top: 48px;
 
-    .input-label {
+    .editpage-input-label {
       color: $gray-900;
-      margin-bottom: 16px;
     }
+  }
 
-    .input-alert-message {
-      color: $system-error;
-      margin-top: 8px;
-    }
+  .editpage-input-alert-message {
+    color: $system-error;
   }
 }

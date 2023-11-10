@@ -24,23 +24,33 @@ const MyPage = (): ReactElement => {
   return (
     <>
       <div className="mypage-container">
-        <div className="user-info-container">
-          <img className="user-icon" src="" /> {/* 아이콘자리 */}
-          <div className="name-wrapper">
-            <h2 className="title font-title-large">하하호호님</h2>
-            <Button
-              label="로그아웃"
-              type="small-outline"
-              onClick={() => navigate("/main")}
-            />
+        <div className="mypage-user-container">
+          <div className="maypage-user-info-container">
+            <img className="mypage-user-icon" src="" /> {/* 아이콘자리 */}
+            <div className="mypage-name-wrapper">
+              <div className="mypage-user-name-container">
+                <h2 className="mypage-user-name font-title-large">
+                  하하호호님
+                </h2>
+                {/* 아이콘자리 */}
+              </div>
+              <Button
+                label="로그아웃"
+                type="small-outline"
+                onClick={() => navigate("/main")}
+              />
+            </div>
           </div>
-          <h3 className="title font-title-medium">오늘은 어떤 기분이신가요?</h3>
+          <h3 className="mypage-emotion-state font-title-medium">
+            오늘은 어떤 기분이신가요?
+          </h3>
         </div>
-        <div className="watched-contents-container">
-          <h3 className="watced-contents-title font-title-medium">
+        {/* devider */}
+        <div className="mypage-watched-contents-container">
+          <h3 className="mypage-watched-contents-title font-title-medium">
             최근 본 영상
           </h3>
-          <div className="button-wrapper">
+          <div className="mypage-button-wrapper">
             <Chip
               type={"category-big"}
               emotion={"all"}
@@ -78,7 +88,7 @@ const MyPage = (): ReactElement => {
               isSelected={selectedEmotion === "neutral"}
             />
           </div>
-          <div className="video-wrapper">
+          <div className="mypage-video-wrapper">
             {watchedVideoIds.map((v) => (
               <VideoItem
                 key={`recommendVideo${v}`}
@@ -88,10 +98,10 @@ const MyPage = (): ReactElement => {
             ))}
           </div>
         </div>
-        <div className="recently-emotion-container">
-          <h2 className="title font-title-medium">최근 나의 감정 그래프</h2>
-          <div></div>
-        </div>
+      </div>
+      <div className="mypage-recently-emotion-container">
+        <h2 className="font-title-medium">최근 나의 감정 그래프</h2>
+        <div></div>
       </div>
     </>
   );

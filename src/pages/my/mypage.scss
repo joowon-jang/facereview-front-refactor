@@ -1,44 +1,69 @@
 @import "assets/css/index.scss";
 
 .mypage-container {
-  padding-top: 48px;
-  padding-bottom: 78px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 56px;
 
-  .user-info-container {
-    margin-bottom: 56px;
+  .mypage-user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
-  .user-icon {
+  .mypage-user-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .mypage-user-icon {
     width: 80px;
     height: 80px;
   }
 
-  .name-wrapper {
+  .mypage-name-wrapper {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 0px 24px 0px;
+    width: 1200px;
+    align-items: flex-start;
+    gap: 40px;
   }
 
-  .title {
+  .mypage-user-name-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1 0 0;
+  }
+
+  .mypage-user-name {
     color: $gray-900;
   }
-  .watched-contents-container {
-    width: 100%;
-    margin-bottom: 120px;
-  }
 
-  .watced-contents-title {
-    margin-bottom: 32px;
+  .mypage-emotion-state {
   }
-
-  .button-wrapper {
-    margin-bottom: 32px;
-  }
-
-  .video-wrapper {
+  .mypage-watched-contents-container {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+  }
+
+  .mypage-watched-contents-title {
+  }
+
+  .mypage-button-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .mypage-video-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 60px;
   }
 }
