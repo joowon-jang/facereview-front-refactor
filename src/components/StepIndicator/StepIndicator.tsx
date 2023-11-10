@@ -4,11 +4,13 @@ import "./stepindicator.scss";
 type StepIndicatorPropType = {
   step: number;
   maxStep: number;
+  indicatorWidth?: number;
 };
 
 const StepIndicator = ({
   step,
   maxStep,
+  indicatorWidth,
 }: StepIndicatorPropType): ReactElement => {
   const [classArr, setClassArr] = useState<string[]>([]);
 
@@ -31,7 +33,11 @@ const StepIndicator = ({
   return (
     <div className="indicator-container">
       {classArr.map((c, idx) => (
-        <div key={`indicator-${idx}`} className={`indicator ${c}`}></div>
+        <div
+          key={`indicator-${idx}`}
+          className={`indicator ${c}`}
+          style={indicatorWidth ? { width: indicatorWidth } : undefined}
+        ></div>
       ))}
     </div>
   );
