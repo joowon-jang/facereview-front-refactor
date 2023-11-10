@@ -46,7 +46,6 @@ const VideoItem = ({
     setTimeout(() => {
       video?.playVideo();
     }, 100);
-    console.log(video);
   };
 
   return (
