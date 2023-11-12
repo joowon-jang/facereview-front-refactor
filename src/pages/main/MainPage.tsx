@@ -60,11 +60,7 @@ const MainPage = (): ReactElement => {
           </div>
           <div className="video-wrapper">
             {recommendVideoIds.map((v) => (
-              <VideoItem
-                key={`recommendVideo${v}`}
-                src={`https://www.youtube.com/embed/${v}`}
-                videoId={v}
-              />
+              <VideoItem key={`recommendVideo${v}`} videoId={v} />
             ))}
           </div>
         </div>
@@ -79,7 +75,6 @@ const MainPage = (): ReactElement => {
             {dummyVideoIds.map((v) => (
               <VideoItem
                 key={`videoItem${v}`}
-                src={`https://www.youtube.com/embed/${v}`}
                 videoId={v}
                 style={{ marginBottom: "56px" }}
               />
