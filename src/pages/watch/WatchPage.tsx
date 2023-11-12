@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import Webcam from "react-webcam";
 import YouTube, { YouTubeEvent } from "react-youtube";
 import { ResponsiveBullet } from "@nivo/bullet";
+import { io } from "socket.io-client";
 import VideoItem from "components/VideoItem/VideoItem";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
 import { Options } from "youtube-player/dist/types";
 import "./watchpage.scss";
+import { initSocketConnection, socket } from "socket";
 
 const WatchPage = (): ReactElement => {
   const { id } = useParams();
@@ -64,6 +66,30 @@ const WatchPage = (): ReactElement => {
       markers: [6.308684233669997, 6.128119615854916],
     },
   ];
+
+  useEffect(() => {
+    socket.connect();
+    console.log(socket);
+    socket.emit(
+      "client_message",
+      {
+        user_id: "civy",
+        running_time: "00:00:01.10",
+        frame_data: "ssibal null",
+      },
+      (response: any) => {
+        console.log(response);
+      }
+    );
+    socket.emit("test", { testmessage: "hello!!!" }, (response: any) => {
+      console.log("test -----------------");
+      console.log(response);
+    });
+    socket.on("response", (a) => {
+      console.log("response -----------------");
+      console.log(a);
+    });
+  }, []);
 
   return (
     <div className="watch-page-container">
