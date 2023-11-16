@@ -8,6 +8,9 @@ type TextInputPropsType = {
   onChange: (value: string) => void;
   placeholder: string;
   style?: React.CSSProperties;
+  minLength?: number;
+  maxLength?: number;
+  autoFocus?: boolean;
 };
 
 const TextInput = ({
@@ -17,6 +20,9 @@ const TextInput = ({
   onChange,
   placeholder,
   style,
+  minLength,
+  maxLength,
+  autoFocus,
 }: TextInputPropsType): ReactElement => {
   return (
     <input
@@ -27,6 +33,9 @@ const TextInput = ({
       onChange={(e) => onChange(e.currentTarget.value)}
       placeholder={placeholder}
       style={style}
+      minLength={minLength || undefined}
+      maxLength={maxLength || undefined}
+      autoFocus={autoFocus}
     />
   );
 };
