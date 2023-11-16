@@ -5,7 +5,7 @@ import { Options, YouTubePlayer } from "youtube-player/dist/types";
 import "./videoitem.scss";
 
 type VideoItemPropsType = {
-  src: string;
+  src?: string;
   videoId: string;
   width?: number;
   style?: React.CSSProperties;
@@ -45,7 +45,7 @@ const VideoItem = ({
   const handleMouseHover = () => {
     setTimeout(() => {
       video?.playVideo();
-    }, 100);
+    }, 10);
   };
 
   return (
