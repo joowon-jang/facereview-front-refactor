@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 128px;
+    padding-bottom: 98px;
 }
 
 .logo-wrapper {
@@ -17,13 +18,21 @@
     flex-direction: column;
     width: 380px;
 
-    .input-label {
-        color: $gray-900;
-        margin-bottom: 16px;
+    .input-item-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 124px;
+
+        .input-label {
+            color: $gray-900;
+            margin-bottom: 16px;
+        }
+
+        .input-alert-message {
+            color: $system-error;
+            margin-top: 8px;
+        }
     }
 
-    .input-alert-message {
-        color: $system-error;
-        margin-top: 8px;
-    }
 }
