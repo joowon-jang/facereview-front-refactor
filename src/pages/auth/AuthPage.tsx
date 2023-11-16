@@ -5,10 +5,120 @@ import StepIndicator from "components/StepIndicator/StepIndicator";
 import TextInput from "components/TextInput/TextInput";
 
 import "./authpage.scss";
+import { checkEmail, signIn } from "api/auth";
+
+const AlertMessages = {
+  emailInvalid: "올바르지 않은 이메일 형식이에요",
+  passwordInvalid: "최소 8자의 비밀번호를 입력해주세요",
+  confirmPasswordInvalid: "동일한 비밀번호를 입력해주세요",
+  nicknameInvalid: "최소 2자의 닉네임을 입력해주세요",
+};
 
 const AuthPage = () => {
-  const [email, setEmail] = useState("");
   const [indicatorStep, setIndicatorStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [emailAlertMessage, setEmailAlertMessage] = useState("");
+  const [passwordAlertMessage, setPasswordAlertMessage] = useState("");
+  const [confirmPasswordAlertMessage, setConfirmPasswordAlertMessage] =
+    useState("");
+  const [nicknameAlertMessage, setNicknameAlertMessage] = useState("");
+  const [isSignIn, setIsSignIn] = useState(true);
+
+  const validateEmail = (email: string) => {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
+
+  const handleEmailChange = (email: string) => {
+    setEmail(email);
+    if (validateEmail(email) === null) {
+      setEmailAlertMessage(AlertMessages.emailInvalid);
+      setIndicatorStep(1);
+      return;
+    }
+    setEmailAlertMessage(" ");
+  };
+
+  const handlePasswordChange = (password: string) => {
+    setPassword(password);
+    if (password.length < 8) {
+      setPasswordAlertMessage(AlertMessages.passwordInvalid);
+      return;
+    }
+    setPasswordAlertMessage(" ");
+  };
+
+  const handleConfirmPasswordChange = (confirmPassword: string) => {
+    setConfirmPassword(confirmPassword);
+    if (password !== confirmPassword) {
+      setConfirmPasswordAlertMessage(AlertMessages.confirmPasswordInvalid);
+      return;
+    }
+    setConfirmPasswordAlertMessage(" ");
+  };
+
+  const handleNicknameChange = (nickname: string) => {
+    setNickname(nickname);
+    if (nickname.length < 2) {
+      setNicknameAlertMessage(AlertMessages.nicknameInvalid);
+      return;
+    }
+    setNicknameAlertMessage(" ");
+  };
+
+  const handleSubmitButtonClick = () => {
+    if (indicatorStep === 1) {
+      if (email !== "" && emailAlertMessage === " ") {
+        checkEmail({ email_id: email, password: " " }).then((res) => {
+          console.log(res);
+        });
+        setIsSignIn(email === "inf0craw1@naver.com");
+        setIndicatorStep(2);
+      }
+      return;
+    }
+    if (indicatorStep === 2) {
+      if (isSignIn) {
+        if (password.length >= 8) {
+          signIn({ email_id: email, password: password }).then((res) => {
+            setIndicatorStep(3);
+            console.log(res);
+          });
+        }
+        return;
+      }
+      if (password.length >= 8 && password === confirmPassword) {
+        setIndicatorStep(3);
+      }
+    }
+    if (indicatorStep === 3 && !isSignIn) {
+      // signUp({ email_id: email, password: " " }).then((res) => {});
+    }
+  };
+
+  const isConfirmButtonVisible = () => {
+    if (indicatorStep === 1 && emailAlertMessage === " ") {
+      return true;
+    }
+    if (indicatorStep === 2 && isSignIn && passwordAlertMessage === " ") {
+      return true;
+    }
+    if (
+      indicatorStep === 2 &&
+      !isSignIn &&
+      passwordAlertMessage === " " &&
+      confirmPasswordAlertMessage === " "
+    ) {
+      return true;
+    }
+    if (indicatorStep === 3 && !isSignIn && nicknameAlertMessage === " ") {
+      return true;
+    }
+  };
 
   return (
     <>
@@ -25,19 +135,98 @@ const AuthPage = () => {
         </div>
 
         <div className="input-container">
-          <label htmlFor="authEmail" className="input-label font-title-mini">
-            이메일 주소
-          </label>
-          <TextInput
-            id="authEmail"
-            value={email}
-            onChange={setEmail}
-            placeholder="ex) haha@facereview.com"
-          />
-          <p className="input-alert-message font-body-large">
-            올바르지 않은 이메일 형식이에요.
-          </p>
-          <Button label="다음" type="cta-full" style={{ marginTop: "48px" }} />
+          {indicatorStep !== 3 ? (
+            <div className="input-item-container">
+              <label
+                htmlFor="authEmail"
+                className="input-label font-title-mini"
+              >
+                이메일 주소
+              </label>
+              <TextInput
+                id="authEmail"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="ex) haha@facereview.com"
+                autoFocus={true}
+              />
+              <p className="input-alert-message font-body-large">
+                {emailAlertMessage}
+              </p>
+            </div>
+          ) : null}
+
+          {indicatorStep === 2 ? (
+            <div className="input-item-container">
+              <label
+                htmlFor="authPassword"
+                className="input-label font-title-mini"
+              >
+                비밀번호
+              </label>
+              <TextInput
+                id="authPassword"
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                placeholder="최소 8자의 비밀번호를 입력해주세요"
+                maxLength={60}
+              />
+              <p className="input-alert-message font-body-large">
+                {passwordAlertMessage}
+              </p>
+            </div>
+          ) : null}
+          {indicatorStep === 2 && !isSignIn ? (
+            <div className="input-item-container">
+              <label
+                htmlFor="authPasswordConfirm"
+                className="input-label font-title-mini"
+              >
+                비밀번호 확인
+              </label>
+              <TextInput
+                id="authPasswordConfirm"
+                type="password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                placeholder="비밀번호를 다시 한 번 입력해주세요"
+                maxLength={60}
+              />
+              <p className="input-alert-message font-body-large">
+                {confirmPasswordAlertMessage}
+              </p>
+            </div>
+          ) : null}
+          {indicatorStep === 3 && !isSignIn ? (
+            <div className="input-item-container">
+              <label
+                htmlFor="authNickname"
+                className="input-label font-title-mini"
+              >
+                닉네임
+              </label>
+              <TextInput
+                id="authNickname"
+                value={nickname}
+                onChange={handleNicknameChange}
+                placeholder="최소 2자의 닉네임을 입력해주세요"
+                maxLength={60}
+              />
+              <p className="input-alert-message font-body-large">
+                {nicknameAlertMessage}
+              </p>
+            </div>
+          ) : null}
+          {isConfirmButtonVisible() ? (
+            <Button
+              label="다음"
+              type="cta-full"
+              style={{ marginTop: "48px" }}
+              onClick={handleSubmitButtonClick}
+              isDisabled={!isConfirmButtonVisible()}
+            />
+          ) : null}
         </div>
       </div>
     </>
