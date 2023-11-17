@@ -1,6 +1,5 @@
 import api from "api";
 import { getTestVideo } from "api/youtube";
-import axios from "axios";
 import StepIndicator from "components/StepIndicator/StepIndicator";
 import VideoItem from "components/VideoItem/VideoItem";
 import { ReactElement, useEffect, useState } from "react";
@@ -34,12 +33,7 @@ const MainPage = (): ReactElement => {
   const [personalVideoIndicator, setPersonalVideoIndicator] =
     useState<number>(1);
 
-  useEffect(() => {
-    getTestVideo().then((res) => {
-      console.log("---------------------");
-      console.log(res);
-    });
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="main-page-container">
