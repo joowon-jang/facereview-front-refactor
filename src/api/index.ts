@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    console.log("🔮 [Req]", config.headers, config.url, "\n");
+    console.log("🔮 [Req config]", config, "\n");
     return config;
   },
   (error) => {
