@@ -1,16 +1,13 @@
 import api from "./index";
 
-export const checkEmail = async (props: {
-  email_id: string;
-  password: string;
-}) => {
+export const checkEmail = async (props: { email_id: string }) => {
   try {
-    const url = "/gate/login";
-    const { data } = await api.get(url, {
-      params: { user_id: props.email_id, password: props.password },
+    const url = "/gate/email-verify";
+    const res = await api.post(url, {
+      email_id: props.email_id,
     });
 
-    return data;
+    return res;
   } catch (error) {
     console.log(error);
     throw error;
@@ -20,21 +17,28 @@ export const checkEmail = async (props: {
 export const signIn = async (props: { email_id: string; password: string }) => {
   try {
     const url = "/gate/login";
-    const { data } = await api.post(url, props);
+    const res = await api.post(url, props);
 
-    return data;
+    return res;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
 
-export const signUp = async (props: { email_id: string; password: string }) => {
+export const signUp = async (props: {
+  email_id: string;
+  password: string;
+  user_name: string;
+  user_favorite_genre_1: string;
+  user_favorite_genre_2: string;
+  user_favorite_genre_3: string;
+}) => {
   try {
-    const url = "/gate/login";
-    const { data } = await api.post(url, props);
+    const url = "/gate/signup";
+    const res = await api.post(url, props);
 
-    return data;
+    return res;
   } catch (error) {
     console.log(error);
     throw error;
