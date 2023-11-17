@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import YouTube, { YouTubeEvent } from "react-youtube";
 import { Options, YouTubePlayer } from "youtube-player/dist/types";
@@ -38,14 +38,24 @@ const VideoItem = ({
     navigation(`/watch/${videoId}`);
   };
 
-  const handleStateChange = (e: YouTubeEvent<any>) => {
+  const handleVideoReady = (e: YouTubeEvent<any>) => {
+    e.target.mute();
     setVideo(e.target);
   };
 
   const handleMouseHover = () => {
-    setTimeout(() => {
+    console.log(video);
+    if (video?.isMuted()) {
+      video?.unMute();
       video?.playVideo();
-    }, 10);
+    }
+  };
+  const handleMouseOut = () => {
+    console.log("handleMouseOut");
+    if (video?.isMuted && !video?.isMuted()) {
+      video?.mute();
+      video?.stopVideo();
+    }
   };
 
   return (
@@ -54,6 +64,7 @@ const VideoItem = ({
       style={{ ...style, width: `${width ? width : 280}px` }}
       onClick={handleClick}
       onMouseOver={handleMouseHover}
+      onMouseOut={handleMouseOut}
     >
       <div
         className="thumbnail-wrapper"
@@ -74,12 +85,12 @@ const VideoItem = ({
           // title={string} // defaults -> ''
           // loading={string} // defaults -> undefined
           opts={opts} // defaults -> {}
-          // onReady={handleVideoReady} // defaults -> noop
+          onReady={handleVideoReady} // defaults -> noop
           // onPlay={func} // defaults -> noop
           // onPause={func} // defaults -> noop
           // onEnd={func} // defaults -> noop
           // onError={func} // defaults -> noop
-          onStateChange={handleStateChange} // defaults -> noop
+          // onStateChange={handleStateChange} // defaults -> noop
           // onPlaybackRateChange={func} // defaults -> noop
           // onPlaybackQualityChange={func} // defaults -> noop
         />
