@@ -4,10 +4,14 @@ import Header from "../Header/Header";
 
 import "./screencontainer.scss";
 
-const ScreenContainer = (): ReactElement => {
+const ScreenContainer = ({
+  headerShown,
+}: {
+  headerShown: boolean;
+}): ReactElement => {
   return (
     <div className="screen-container">
-      <Header />
+      {headerShown ? <Header /> : null}
       <Outlet />
     </div>
   );
