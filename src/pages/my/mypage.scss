@@ -1,44 +1,74 @@
 @import "assets/css/index.scss";
 
 .mypage-container {
+  display: inline-flex;
+  flex-direction: column;
   padding-top: 48px;
-  padding-bottom: 78px;
+  width: calc(50vw + 600px);
 
-  .user-info-container {
+  .mypage-user-container {
+    display: flex;
+    width: 1200px;
+    flex-direction: column;
     margin-bottom: 56px;
+
+    .mypage-name-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 20px;
+
+      .mypage-name-wrapper {
+        display: flex;
+        align-items: center;
+      }
+    }
   }
 
-  .user-icon {
-    width: 80px;
-    height: 80px;
-  }
-
-  .name-wrapper {
+  .mypage-watched-contents-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 0px 24px 0px;
-  }
+    flex-direction: column;
+    overflow: hidden;
 
-  .title {
-    color: $gray-900;
-  }
-  .watched-contents-container {
-    width: 100%;
-    margin-bottom: 120px;
-  }
+    .mypage-chip-wrapper {
+      margin-top: 32px;
+    }
 
-  .watced-contents-title {
-    margin-bottom: 32px;
-  }
+    .mypage-video-container {
+      display: flex;
+      margin-top: 32px;
+      overflow: auto;
+    }
 
-  .button-wrapper {
-    margin-bottom: 32px;
-  }
+    .mypage-video-wrapper {
+      display: flex;
 
-  .video-wrapper {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+      .mypage-video-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 1200px;
+
+        .mypage-video-empty-img {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 12px;
+        }
+      }
+    }
+  }
+}
+
+.mypage-emotion-container {
+  margin-top: 88px;
+  display: inline-flex;
+  flex-direction: column;
+
+  .mypage-emotion-graph-container {
+    margin-top: 28px;
+    background: #fff;
+    width: 1200px;
+    height: 291px;
   }
 }

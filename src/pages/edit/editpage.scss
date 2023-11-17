@@ -4,28 +4,35 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 61px;
+  padding-top: 70px;
 
-  .user-icon {
-    width: 80px;
-    height: 80px;
+  .editpage-user-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 380px;
     margin-top: 80px;
+  }
+
+  .editpage-edit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 48px;
   }
 
   .input-container {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     width: 380px;
-    margin-top: 48px;
 
-    .input-label {
+    .editpage-input-label {
       color: $gray-900;
-      margin-bottom: 16px;
     }
+  }
 
-    .input-alert-message {
-      color: $system-error;
-      margin-top: 8px;
-    }
+  .editpage-input-alert-message {
+    color: $system-error;
   }
 }

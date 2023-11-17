@@ -5,13 +5,22 @@
   width: fit-content;
   color: $gray-900;
   background: $gray-50;
-  padding: 8px 16px 8px 16px;
   border-radius: 8px;
-  margin-right: 12px;
   cursor: pointer;
   overflow: hidden;
+  transition: transform 0.2s;
 
-  &.selected {
+  &.category-big {
+    padding: 8px 16px 8px 16px;
+  }
+
+  &.category-small {
+    padding: 8px 12px 8px 12px;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+
     &.all {
       color: $gray-50;
       background: $gray-900;
@@ -36,9 +45,31 @@
       background: $category-angry-tinted;
       color: $gray-900;
     }
+  }
 
-    &.neutral {
-      background: $system-dim-black;
+  &.selected {
+    &.all {
+      color: $gray-50;
+      background: $gray-900;
+    }
+
+    &.happy {
+      background: $category-joyful-basic;
+      color: $gray-900;
+    }
+
+    &.surprise {
+      background: $category-surprised-basic;
+      color: $gray-900;
+    }
+
+    &.sad {
+      background: $category-sad-basic;
+      color: $gray-900;
+    }
+
+    &.angry {
+      background: $category-angry-basic;
       color: $gray-900;
     }
   }
