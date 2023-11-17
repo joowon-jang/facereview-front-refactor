@@ -71,7 +71,6 @@ const WatchPage = (): ReactElement => {
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
-      console.log("imageSrc", imageSrc);
       setCamImgURL(imageSrc);
     }
     return imageSrc;
@@ -80,10 +79,8 @@ const WatchPage = (): ReactElement => {
   useEffect(() => {
     setInterval(() => {
       capture();
-      console.log(camImgURL);
     }, 5000);
     socket.connect();
-    console.log(socket);
     socket.emit(
       "client_message",
       {
