@@ -44,3 +44,15 @@ export const signUp = async (props: {
     throw error;
   }
 };
+
+export const checkTutorial = async (props: { cur_access_token: string }) => {
+  try {
+    const url = "/gate/before-tutorial";
+    const res = await api.post(url, props);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
