@@ -119,10 +119,10 @@ const MyPage = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="mypage-emotion-container">
-        <h2 className="font-title-medium">최근 나의 감정 그래프</h2>
-        <div className="mypage-emotion-graph-container"></div>
+        <div className="mypage-emotion-container">
+          <h2 className="font-title-medium">최근 나의 감정 그래프</h2>
+          <div className="mypage-emotion-graph-container"></div>
+        </div>
       </div>
     </>
   );

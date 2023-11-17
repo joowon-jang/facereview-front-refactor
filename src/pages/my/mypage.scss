@@ -4,6 +4,7 @@
   display: inline-flex;
   flex-direction: column;
   padding-top: 48px;
+  padding-bottom: 98px;
   width: calc(50vw + 600px);
 
   .mypage-user-container {
@@ -42,6 +43,7 @@
 
     .mypage-video-wrapper {
       display: flex;
+      padding-right: calc(50vw - 660px);
 
       .mypage-video-empty {
         display: flex;
