@@ -1,6 +1,5 @@
 import api from "api";
 import { getTestVideo } from "api/youtube";
-import axios from "axios";
 import StepIndicator from "components/StepIndicator/StepIndicator";
 import VideoItem from "components/VideoItem/VideoItem";
 import { ReactElement, useEffect, useState } from "react";
@@ -39,6 +38,20 @@ const MainPage = (): ReactElement => {
       console.log("---------------------");
       console.log(res);
     });
+
+    const test = async () => {
+      try {
+        const url = "/gate/send200";
+        const res = await api.post(url, { message: "hi this is client" });
+        console.log(res);
+        return res;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    };
+
+    test();
   }, []);
 
   return (
