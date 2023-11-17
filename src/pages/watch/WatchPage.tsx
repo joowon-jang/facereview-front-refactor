@@ -1,14 +1,14 @@
-import { ReactElement, useEffect, useRef } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Webcam from "react-webcam";
-import YouTube, { YouTubeEvent } from "react-youtube";
+import YouTube from "react-youtube";
 import { ResponsiveBullet } from "@nivo/bullet";
-import { io } from "socket.io-client";
 import VideoItem from "components/VideoItem/VideoItem";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
 import { Options } from "youtube-player/dist/types";
 import "./watchpage.scss";
-import { initSocketConnection, socket } from "socket";
+import { socket } from "socket";
+import React from "react";
 
 const WatchPage = (): ReactElement => {
   const { id } = useParams();
@@ -21,7 +21,7 @@ const WatchPage = (): ReactElement => {
       rel: 0,
     },
   };
-  const webcamRef = useRef(null);
+  const webcamRef = useRef<Webcam>(null);
   const webcamOptions = {
     width: 320,
     height: 180,
@@ -66,8 +66,22 @@ const WatchPage = (): ReactElement => {
       markers: [6.308684233669997, 6.128119615854916],
     },
   ];
+  const [camImgURL, setCamImgURL] = useState("");
+
+  const capture = React.useCallback(() => {
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (imageSrc) {
+      console.log("imageSrc", imageSrc);
+      setCamImgURL(imageSrc);
+    }
+    return imageSrc;
+  }, [webcamRef]);
 
   useEffect(() => {
+    setInterval(() => {
+      capture();
+      console.log(camImgURL);
+    }, 5000);
     socket.connect();
     console.log(socket);
     socket.emit(
