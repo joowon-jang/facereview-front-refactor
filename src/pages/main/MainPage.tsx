@@ -1,11 +1,14 @@
 import api from "api";
+import { checkTutorial } from "api/auth";
 import { getTestVideo } from "api/youtube";
 import StepIndicator from "components/StepIndicator/StepIndicator";
 import VideoItem from "components/VideoItem/VideoItem";
 import { ReactElement, useEffect, useState } from "react";
+import { useAuthStorage } from "store/authStore";
 import "./mainpage.scss";
 
 const MainPage = (): ReactElement => {
+  const { access_token, refresh_token } = useAuthStorage();
   const recommendVideoIds = [
     "cVz_ArGCo-A",
     "my7FSr-0EPM",
@@ -33,7 +36,15 @@ const MainPage = (): ReactElement => {
   const [personalVideoIndicator, setPersonalVideoIndicator] =
     useState<number>(1);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (access_token) {
+      console.log("already sign in", access_token);
+      checkTutorial({ cur_access_token: access_token }).then((res) => {
+        console.log("check tutorial----------------");
+        console.log(res);
+      });
+    }
+  }, []);
 
   return (
     <div className="main-page-container">
