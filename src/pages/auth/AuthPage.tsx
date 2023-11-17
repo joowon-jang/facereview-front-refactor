@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import AnimatedLogo from "components/AnimatedLogo/AnimatedLogo";
 import Button from "components/Button/Button";
 import StepIndicator from "components/StepIndicator/StepIndicator";
 import TextInput from "components/TextInput/TextInput";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./authpage.scss";
-import { checkEmail, signIn } from "api/auth";
+import { checkEmail, signIn, signUp } from "api/auth";
+import { useNavigate } from "react-router-dom";
 
 const AlertMessages = {
   emailInvalid: "올바르지 않은 이메일 형식이에요",
@@ -15,6 +18,8 @@ const AlertMessages = {
 };
 
 const AuthPage = () => {
+  const navigate = useNavigate();
+
   const [indicatorStep, setIndicatorStep] = useState(1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -73,21 +78,33 @@ const AuthPage = () => {
   const handleSubmitButtonClick = () => {
     if (indicatorStep === 1) {
       if (email !== "" && emailAlertMessage === " ") {
-        checkEmail({ email_id: email, password: " " }).then((res) => {
-          console.log(res);
+        checkEmail({ email_id: email }).then((res) => {
+          console.log(res.status);
+          if (res.status !== 200) {
+            toast.info("등록되지 않았어요. 회원가입을 해주세요!", {
+              toastId: "need signUp",
+            });
+          }
+          setIsSignIn(res.status === 200);
+          setIndicatorStep(2);
         });
-        setIsSignIn(email === "inf0craw1@naver.com");
-        setIndicatorStep(2);
       }
       return;
     }
     if (indicatorStep === 2) {
       if (isSignIn) {
         if (password.length >= 8) {
-          signIn({ email_id: email, password: password }).then((res) => {
-            setIndicatorStep(3);
-            console.log(res);
-          });
+          signIn({ email_id: email, password: password })
+            .then((res) => {
+              setIndicatorStep(3);
+              if (res.status === 200) {
+                toast.success("로그인 완료!", { toastId: "signIn success" });
+                navigate("/");
+              }
+            })
+            .catch((err) => {
+              toast.error("로그인 실패!", { toastId: "signIn fail" });
+            });
         }
         return;
       }
@@ -96,7 +113,20 @@ const AuthPage = () => {
       }
     }
     if (indicatorStep === 3 && !isSignIn) {
-      // signUp({ email_id: email, password: " " }).then((res) => {});
+      signUp({
+        email_id: email,
+        password: password,
+        user_name: nickname,
+        user_favorite_genre_1: "sports",
+        user_favorite_genre_2: "drama",
+        user_favorite_genre_3: "fear",
+      }).then((res: any) => {
+        if (res.status === 200) {
+          toast.success("가입이 완료되었어요", { toastId: "signUp complete" });
+
+          navigate("/auth");
+        }
+      });
     }
   };
 
