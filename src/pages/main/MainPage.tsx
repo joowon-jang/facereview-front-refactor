@@ -33,26 +33,7 @@ const MainPage = (): ReactElement => {
   const [personalVideoIndicator, setPersonalVideoIndicator] =
     useState<number>(1);
 
-  useEffect(() => {
-    getTestVideo().then((res) => {
-      console.log("---------------------");
-      console.log(res);
-    });
-
-    const test = async () => {
-      try {
-        const url = "/gate/send200";
-        const res = await api.post(url, { message: "hi this is client" });
-        console.log(res);
-        return res;
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    };
-
-    test();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="main-page-container">
