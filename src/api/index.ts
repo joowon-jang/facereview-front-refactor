@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://34.64.238.124",
+  baseURL: "http://3.139.8.146",
   timeout: 30000,
 });
 
 api.interceptors.request.use(
   (config) => {
-    console.log("🔮 [Req]", config.headers, config.url, "\n");
+    console.log("🔮 [Req config]", config, "\n");
     return config;
   },
   (error) => {
