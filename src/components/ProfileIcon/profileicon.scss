@@ -1,0 +1,66 @@
+@import "assets/css/index.scss";
+
+.profile-icon {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border-radius: 100%;
+  position: relative;
+
+  &.icon-large {
+    width: 80px;
+    height: 80px;
+  }
+  &.icon-medium {
+    width: 44px;
+    height: 44px;
+  }
+  &.icon-small {
+    width: 28px;
+    height: 28px;
+  }
+
+  &.default {
+    background: $gray-100;
+  }
+  &.happy {
+    background: $category-joyful-tinted;
+  }
+  &.surprise {
+    background: $category-surprised-tinted;
+  }
+  &.sad {
+    background: $category-sad-tinted;
+  }
+  &.angry {
+    background: $category-angry-tinted;
+  }
+}
+
+.profile-image {
+  &.icon-large {
+    width: 44px;
+    height: 64px;
+  }
+  &.icon-medium {
+    width: 24px;
+    height: 35px;
+  }
+  &.icon-small {
+    width: 16px;
+    height: 23px;
+  }
+}
+
+.editable-image {
+  display: none;
+  &.editable {
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+  }
+}
