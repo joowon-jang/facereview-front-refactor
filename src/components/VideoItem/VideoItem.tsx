@@ -5,7 +5,7 @@ import { Options, YouTubePlayer } from "youtube-player/dist/types";
 import "./videoitem.scss";
 
 type VideoItemPropsType = {
-  src: string;
+  src?: string;
   videoId: string;
   width?: number;
   style?: React.CSSProperties;
@@ -45,8 +45,7 @@ const VideoItem = ({
   const handleMouseHover = () => {
     setTimeout(() => {
       video?.playVideo();
-    }, 100);
-    console.log(video);
+    }, 10);
   };
 
   return (
@@ -62,6 +61,7 @@ const VideoItem = ({
       >
         <img
           className="video-thumbnail"
+          style={{ width: width ? width : 280, height: height ? height : 158 }}
           src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
           alt=""
         />

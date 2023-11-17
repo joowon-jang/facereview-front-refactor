@@ -1,14 +1,26 @@
 import { ReactElement, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import VideoItem from "components/VideoItem/VideoItem";
 import Webcam from "react-webcam";
-import YouTube from "react-youtube";
-import "./watchpage.scss";
-import EmotionBadge from "components/EmotionBadge/EmotionBadge";
+import YouTube, { YouTubeEvent } from "react-youtube";
 import { ResponsiveBullet } from "@nivo/bullet";
+import { io } from "socket.io-client";
+import VideoItem from "components/VideoItem/VideoItem";
+import EmotionBadge from "components/EmotionBadge/EmotionBadge";
+import { Options } from "youtube-player/dist/types";
+import "./watchpage.scss";
+import { initSocketConnection, socket } from "socket";
+
 const WatchPage = (): ReactElement => {
   const { id } = useParams();
-  const opts = { width: 852, height: 480 };
+  const opts: Options = {
+    width: 852,
+    height: 480,
+    playerVars: {
+      autoplay: 1,
+      color: "white",
+      rel: 0,
+    },
+  };
   const webcamRef = useRef(null);
   const webcamOptions = {
     width: 320,
@@ -55,6 +67,30 @@ const WatchPage = (): ReactElement => {
     },
   ];
 
+  useEffect(() => {
+    socket.connect();
+    console.log(socket);
+    socket.emit(
+      "client_message",
+      {
+        user_id: "civy",
+        running_time: "00:00:01.10",
+        frame_data: "ssibal null",
+      },
+      (response: any) => {
+        console.log(response);
+      }
+    );
+    socket.emit("test", { testmessage: "hello!!!" }, (response: any) => {
+      console.log("test -----------------");
+      console.log(response);
+    });
+    socket.on("response", (a) => {
+      console.log("response -----------------");
+      console.log(a);
+    });
+  }, []);
+
   return (
     <div className="watch-page-container">
       <div className="main-container">
@@ -67,7 +103,7 @@ const WatchPage = (): ReactElement => {
           // title={string} // defaults -> ''
           // loading={string} // defaults -> undefined
           opts={opts} // defaults -> {}
-          // onReady={func} // defaults -> noop
+          // onReady={handleOnReady} // defaults -> noop
           // onPlay={func} // defaults -> noop
           // onPause={func} // defaults -> noop
           // onEnd={func} // defaults -> noop

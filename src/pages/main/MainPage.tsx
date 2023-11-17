@@ -1,5 +1,9 @@
+import api from "api";
+import { getTestVideo } from "api/youtube";
+import axios from "axios";
+import StepIndicator from "components/StepIndicator/StepIndicator";
 import VideoItem from "components/VideoItem/VideoItem";
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import "./mainpage.scss";
 
 const MainPage = (): ReactElement => {
@@ -27,6 +31,15 @@ const MainPage = (): ReactElement => {
     "EjCs5ej41XI",
     "W7cR4kcQq_E",
   ];
+  const [personalVideoIndicator, setPersonalVideoIndicator] =
+    useState<number>(1);
+
+  useEffect(() => {
+    getTestVideo().then((res) => {
+      console.log("---------------------");
+      console.log(res);
+    });
+  }, []);
 
   return (
     <div className="main-page-container">
@@ -38,14 +51,16 @@ const MainPage = (): ReactElement => {
           시청 기록과 감정을 분석해서 가장 좋아할 영상을 준비했어요.
         </h4>
         <div className="video-container">
-          <div className="button-wrapper"></div>
+          <div className="indicator-wrapper">
+            <StepIndicator
+              step={personalVideoIndicator}
+              maxStep={2}
+              indicatorWidth={37}
+            />
+          </div>
           <div className="video-wrapper">
             {recommendVideoIds.map((v) => (
-              <VideoItem
-                key={`recommendVideo${v}`}
-                src={`https://www.youtube.com/embed/${v}`}
-                videoId={v}
-              />
+              <VideoItem key={`recommendVideo${v}`} videoId={v} />
             ))}
           </div>
         </div>
@@ -60,7 +75,6 @@ const MainPage = (): ReactElement => {
             {dummyVideoIds.map((v) => (
               <VideoItem
                 key={`videoItem${v}`}
-                src={`https://www.youtube.com/embed/${v}`}
                 videoId={v}
                 style={{ marginBottom: "56px" }}
               />
