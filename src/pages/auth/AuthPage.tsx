@@ -4,11 +4,11 @@ import AnimatedLogo from "components/AnimatedLogo/AnimatedLogo";
 import Button from "components/Button/Button";
 import StepIndicator from "components/StepIndicator/StepIndicator";
 import TextInput from "components/TextInput/TextInput";
-import "react-toastify/dist/ReactToastify.css";
 
 import "./authpage.scss";
 import { checkEmail, signIn, signUp } from "api/auth";
 import { useNavigate } from "react-router-dom";
+import { useAuthStorage } from "store/authStore";
 
 const AlertMessages = {
   emailInvalid: "올바르지 않은 이메일 형식이에요",
@@ -19,6 +19,7 @@ const AlertMessages = {
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const { setToken } = useAuthStorage();
 
   const [indicatorStep, setIndicatorStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -99,6 +100,10 @@ const AuthPage = () => {
               setIndicatorStep(3);
               if (res.status === 200) {
                 toast.success("로그인 완료!", { toastId: "signIn success" });
+                setToken({
+                  access_token: res.data.access_token,
+                  refresh_token: res.data.refresh_token,
+                });
                 navigate("/");
               }
             })
@@ -162,7 +167,7 @@ const AuthPage = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="auth-container">
         <StepIndicator step={indicatorStep} maxStep={3} />
 
         <div className="logo-wrapper">
