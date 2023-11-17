@@ -3,7 +3,7 @@ import "./chip.scss";
 
 type ChipPropsType = {
   type: "category-big" | "category-small";
-  emotion: "all" | "happy" | "surprise" | "angry" | "sad" | "neutral";
+  emotion: "all" | "happy" | "surprise" | "angry" | "sad";
   style?: React.CSSProperties;
   isSelected: boolean; // 추가된 isSelected prop
   onClick?: () => void;
@@ -26,7 +26,6 @@ const Chip = ({
     surprise: "🫢 놀라운",
     angry: "😠 화나는",
     sad: "😥 슬픈",
-    neutral: "😐 평온한",
   };
 
   // Create a class string based on the type and emotion
