@@ -100,6 +100,16 @@ const AuthPage = () => {
     }
   };
 
+  const getConfirmButtonLabel = () => {
+    if (indicatorStep === 2 && isSignIn) {
+      return "로그인";
+    }
+    if (indicatorStep === 3 && !isSignIn) {
+      return "회원가입";
+    }
+    return "다음";
+  };
+
   const isConfirmButtonVisible = () => {
     if (indicatorStep === 1 && emailAlertMessage === " ") {
       return true;
@@ -149,6 +159,7 @@ const AuthPage = () => {
                 onChange={handleEmailChange}
                 placeholder="ex) haha@facereview.com"
                 autoFocus={true}
+                isDisabled={indicatorStep > 1}
               />
               <p className="input-alert-message font-body-large">
                 {emailAlertMessage}
@@ -220,7 +231,7 @@ const AuthPage = () => {
           ) : null}
           {isConfirmButtonVisible() ? (
             <Button
-              label="다음"
+              label={getConfirmButtonLabel()}
               type="cta-full"
               style={{ marginTop: "48px" }}
               onClick={handleSubmitButtonClick}
