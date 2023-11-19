@@ -12,6 +12,55 @@
       color: $gray-900;
       margin-bottom: 60px;
     }
+
+    .comment-container {
+      .comment-input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 44px;
+
+        .comment-input {
+          margin-left: 12px;
+        }
+      }
+
+      .comment-info-text {
+        color: $gray-900;
+        margin-bottom: 32px;
+      }
+
+      .comment-list-container {
+
+        .comment-item-container {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 24px;
+
+          .comment-text-wrapper {
+            .comment-info-wrapper {
+              display: flex;
+              margin-bottom: 4px;
+
+              .comment-nickname {
+                color: $gray-500;
+                margin-right: 4px;
+
+              }
+
+              .comment-time-text {
+                color: $gray-300;
+              }
+            }
+
+            .comment-text {
+              color: $gray-900;
+              word-break: keep-all;
+            }
+          }
+        }
+      }
+
+    }
   }
 
   .side-container {
