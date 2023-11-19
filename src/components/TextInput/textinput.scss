@@ -1,20 +1,37 @@
 @import 'assets/css/variables.scss';
 
 .text-input {
-    color: $gray-900;
-    background-color: $gray-100;
-    padding: 16px 14px 16px 14px;
-    border: 1px solid $gray-100;
-    border-radius: 4px;
-    outline: none;
-
+    width: 100%;
     transition: border .2s;
 
-    &::placeholder {
-        color: $gray-400;
+
+    &.default {
+        color: $gray-900;
+        background-color: $gray-100;
+        padding: 16px 14px 16px 14px;
+        border: 1px solid $gray-100;
+        border-radius: 4px;
+        outline: none;
+
+
+
+        &:focus {
+            border: 1px solid $gray-700;
+        }
     }
 
-    &:focus {
-        border: 1px solid $gray-700;
+    &.underline {
+        color: $gray-900;
+        background: transparent;
+        border-bottom: 1px solid $gray-300;
+        outline: none;
+
+        &::placeholder {
+            color: $gray-300;
+        }
+
+        &:focus {
+            border-bottom: 1px solid $gray-900;
+        }
     }
 }
