@@ -19,9 +19,9 @@ const Router = () => {
           <Route path="*" element={<MainPage />} />
         </Route>
         <Route element={<ScreenContainer headerShown={false} />}>
-          <Route path="/tutorial/:step" element={<TutorialPage />} />
           <Route path="/auth" element={<AuthPage />} />
         </Route>
+        <Route path="/tutorial/:step" element={<TutorialPage />} />
       </Routes>
     </BrowserRouter>
   );
