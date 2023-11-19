@@ -39,10 +39,12 @@ const MainPage = (): ReactElement => {
   useEffect(() => {
     if (access_token) {
       console.log("already sign in", access_token);
-      checkTutorial({ cur_access_token: access_token }).then((res) => {
-        console.log("check tutorial----------------");
-        console.log(res);
-      });
+      checkTutorial({ cur_access_token: access_token })
+        .then((res) => {
+          console.log("check tutorial----------------");
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
