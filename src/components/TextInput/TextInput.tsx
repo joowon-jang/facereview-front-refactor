@@ -3,6 +3,7 @@ import "./textinput.scss";
 
 type TextInputPropsType = {
   id?: string;
+  inputType?: "default" | "underline";
   type?: string;
   value: string;
   onChange: (value: string) => void;
@@ -16,6 +17,7 @@ type TextInputPropsType = {
 
 const TextInput = ({
   id,
+  inputType = "default",
   type = "text",
   value,
   onChange,
@@ -30,7 +32,7 @@ const TextInput = ({
     <input
       id={id}
       type={type}
-      className="text-input font-body-large"
+      className={`text-input font-body-large ${inputType}`}
       value={value}
       onChange={(e) => onChange(e.currentTarget.value)}
       placeholder={placeholder}
