@@ -10,8 +10,18 @@ import ModalDialog from "components/Modal/ModalDialog";
 const EditPage = () => {
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
+  const [profileColor, setProfileColor] = useState<
+    "default" | "happy" | "surprise" | "sad" | "angry"
+  >("default");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleColorChange = (
+    color: "default" | "happy" | "surprise" | "sad" | "angry"
+  ) => {
+    setProfileColor(color);
+  };
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -32,15 +42,16 @@ const EditPage = () => {
         <div className="editpage-user-container">
           <ProfileIcon
             type={"icon-large"}
-            color={"default"}
+            color={profileColor}
             isEditable={true}
-            onClick={openModal}
+            onEditClick={openModal}
           />
           <ModalDialog
             type={"two-button"}
             titleLabel="아이콘을 선택하세요"
             isOpen={isModalOpen}
             onClose={closeModal}
+            onSelectColor={handleColorChange}
           />
           <div className="editpage-edit-container">
             <div className="editpage-input-container">

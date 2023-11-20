@@ -9,7 +9,8 @@ type ProfileIconPropsType = {
   color: "default" | "happy" | "surprise" | "sad" | "angry";
   style?: React.CSSProperties;
   isEditable?: boolean;
-  onClick?: () => void;
+  onEditClick?: () => void;
+  onSelectClick?: () => void;
 };
 
 const ProfileIcon = ({
@@ -17,11 +18,12 @@ const ProfileIcon = ({
   color,
   style,
   isEditable,
-  onClick,
+  onEditClick,
+  onSelectClick,
 }: ProfileIconPropsType): ReactElement => {
   const handleEditableClick = () => {
-    if (isEditable && onClick) {
-      onClick();
+    if (isEditable && onEditClick) {
+      onEditClick();
     }
   };
 
@@ -35,6 +37,7 @@ const ProfileIcon = ({
         className={`profile-image ${type}`}
         src={ProfileImage}
         alt="Person"
+        onClick={onSelectClick}
       />
       <img
         className={`editable-image ${type} ${isEditable ? "editable" : null}`}
