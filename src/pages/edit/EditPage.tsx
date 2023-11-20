@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import Button from "components/Button/Button";
 import TextInput from "components/TextInput/TextInput";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +9,12 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 const EditPage = () => {
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
+
+  const handleEditButtonClick = () => {
+    toast.success("회원정보가 수정되었습니다.", { toastId: "edit success" });
+
+    navigate("/my");
+  };
 
   return (
     <>
@@ -45,7 +52,7 @@ const EditPage = () => {
           type="cta-full"
           style={{ width: "380px", marginTop: "48px" }}
           isDisabled={nickName === ""}
-          onClick={() => navigate("/my")}
+          onClick={handleEditButtonClick}
         />
       </div>
     </>
