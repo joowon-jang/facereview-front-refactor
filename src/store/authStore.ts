@@ -3,6 +3,7 @@ import { devtools, persist } from "zustand/middleware";
 
 interface AuthState {
   id: string;
+  nickname: string;
   access_token: string;
   refresh_token: string;
   setId: (id: string) => void;
@@ -13,6 +14,7 @@ interface AuthState {
     access_token: string;
     refresh_token: string;
   }) => void;
+  setNickname: (nickname: string) => void;
 }
 
 export const useAuthStorage = create<AuthState>()(
@@ -20,6 +22,7 @@ export const useAuthStorage = create<AuthState>()(
     persist(
       (set) => ({
         id: "testid",
+        nickname: "",
         access_token: "",
         refresh_token: "",
         setId: (id) => set((state) => ({ id: id })),
@@ -28,6 +31,7 @@ export const useAuthStorage = create<AuthState>()(
             access_token: access_token,
             refresh_token: refresh_token,
           })),
+        setNickname: (nickname) => set((state) => ({ nickname: nickname })),
       }),
       {
         name: "auth-storage",

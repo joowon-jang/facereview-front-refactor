@@ -8,7 +8,7 @@ import { useAuthStorage } from "store/authStore";
 import "./mainpage.scss";
 
 const MainPage = (): ReactElement => {
-  const { access_token, refresh_token } = useAuthStorage();
+  const { id, nickname, access_token, refresh_token } = useAuthStorage();
   const recommendVideoIds = [
     "cVz_ArGCo-A",
     "my7FSr-0EPM",
