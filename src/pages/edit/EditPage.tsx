@@ -5,7 +5,7 @@ import TextInput from "components/TextInput/TextInput";
 import { useNavigate } from "react-router-dom";
 import "./editpage.scss";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
-import ModalDialog from "components/Modal/ModalDialog";
+import ModalDialog from "components/ModalDialog/ModalDialog";
 
 const EditPage = () => {
   const navigate = useNavigate();
