@@ -1,13 +1,39 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import Button from "components/Button/Button";
 import TextInput from "components/TextInput/TextInput";
 import { useNavigate } from "react-router-dom";
 import "./editpage.scss";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
+import ModalDialog from "components/Modal/ModalDialog";
 
 const EditPage = () => {
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
+  const [profileColor, setProfileColor] = useState<
+    "default" | "happy" | "surprise" | "sad" | "angry"
+  >("default");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleColorChange = (
+    color: "default" | "happy" | "surprise" | "sad" | "angry"
+  ) => {
+    setProfileColor(color);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEditButtonClick = () => {
+    toast.success("회원정보가 수정되었습니다.", { toastId: "edit success" });
+
+    navigate("/my");
+  };
 
   return (
     <>
@@ -16,8 +42,16 @@ const EditPage = () => {
         <div className="editpage-user-container">
           <ProfileIcon
             type={"icon-large"}
-            color={"default"}
+            color={profileColor}
             isEditable={true}
+            onEditClick={openModal}
+          />
+          <ModalDialog
+            type={"one-button"}
+            titleLabel="아이콘을 선택하세요"
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            onSelectColor={handleColorChange}
           />
           <div className="editpage-edit-container">
             <div className="editpage-input-container">
@@ -45,7 +79,7 @@ const EditPage = () => {
           type="cta-full"
           style={{ width: "380px", marginTop: "48px" }}
           isDisabled={nickName === ""}
-          onClick={() => navigate("/my")}
+          onClick={handleEditButtonClick}
         />
       </div>
     </>
