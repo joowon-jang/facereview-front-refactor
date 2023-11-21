@@ -1,38 +1,23 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import Modal from "react-modal";
 import "./modaldialog.scss";
 import Button from "components/Button/Button";
-import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 
 type ModalDialogPropTypes = {
-  titleLabel: string;
-  bodyLabel?: string;
+  children: React.ReactNode;
   type: "one-button" | "two-button";
   style?: React.CSSProperties;
   isOpen: boolean;
   onClose: () => void;
-  onSelectColor?: (
-    color: "default" | "happy" | "surprise" | "sad" | "angry"
-  ) => void;
 };
 
 const ModalDialog = ({
   isOpen,
-  titleLabel,
-  bodyLabel,
+  children,
   type,
   style,
   onClose,
-  onSelectColor,
 }: ModalDialogPropTypes): ReactElement => {
-  const handleColorSelect = (
-    color: "default" | "happy" | "surprise" | "sad" | "angry"
-  ) => {
-    if (onSelectColor) {
-      onSelectColor(color);
-    }
-  };
-
   const renderButtons = () => {
     if (type === "one-button") {
       return (
@@ -63,42 +48,7 @@ const ModalDialog = ({
       overlayClassName="modal-overlay"
     >
       <div className="modal-container">
-        <div className={`modal-label-container ${type}`}>
-          <h3 className="modal-title-label font-title-mini">{titleLabel}</h3>
-          <div className="modal-icon-wrapper">
-            <ProfileIcon
-              type="icon-medium"
-              color="default"
-              onSelectClick={() => handleColorSelect("default")}
-              style={{ cursor: "pointer" }}
-            />
-            <ProfileIcon
-              type="icon-medium"
-              color="happy"
-              onSelectClick={() => handleColorSelect("happy")}
-              style={{ cursor: "pointer" }}
-            />
-            <ProfileIcon
-              type="icon-medium"
-              color="surprise"
-              onSelectClick={() => handleColorSelect("surprise")}
-              style={{ cursor: "pointer" }}
-            />
-            <ProfileIcon
-              type="icon-medium"
-              color="sad"
-              onSelectClick={() => handleColorSelect("sad")}
-              style={{ cursor: "pointer" }}
-            />
-            <ProfileIcon
-              type="icon-medium"
-              color="angry"
-              onSelectClick={() => handleColorSelect("angry")}
-              style={{ cursor: "pointer" }}
-            />
-          </div>
-          <p className="modal-body-label font-body-large">{bodyLabel}</p>
-        </div>
+        <div className={`modal-contents-container ${type}`}>{children}</div>
         {renderButtons()}
       </div>
     </Modal>

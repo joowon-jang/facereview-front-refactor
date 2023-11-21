@@ -25,20 +25,11 @@
   border-radius: 8px;
   overflow: auto;
 
-  .modal-label-container {
+  .modal-contents-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 24px;
-
-    .modal-icon-wrapper {
-      display: flex;
-      gap: 10px;
-    }
-
-    .modal-title-label {
-      margin-bottom: 12px;
-    }
   }
 
   .modal-button-wrapper {

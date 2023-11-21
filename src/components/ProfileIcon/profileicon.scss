@@ -6,6 +6,7 @@
   align-items: flex-end;
   border-radius: 100%;
   position: relative;
+  border: 1px solid $gray-50;
 
   &.icon-large {
     min-width: 80px;
