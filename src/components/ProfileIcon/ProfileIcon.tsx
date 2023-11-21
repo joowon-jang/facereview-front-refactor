@@ -27,6 +27,7 @@ const ProfileIcon = ({
       style={style}
       onClick={onSelectClick}
     >
+      {onSelectClick && <div className="profile-icon-dim"></div>}
       <img
         className={`profile-image ${type}`}
         src={ProfileImage}

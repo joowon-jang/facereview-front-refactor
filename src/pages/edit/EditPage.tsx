@@ -65,31 +65,46 @@ const EditPage = () => {
                 <ProfileIcon
                   type="icon-medium"
                   color="default"
-                  onSelectClick={() => handleColorChange("default")}
+                  onSelectClick={() => {
+                    handleColorChange("default");
+                    closeModal();
+                  }}
                   style={{ cursor: "pointer" }}
                 />
                 <ProfileIcon
                   type="icon-medium"
                   color="happy"
-                  onSelectClick={() => handleColorChange("happy")}
+                  onSelectClick={() => {
+                    handleColorChange("happy");
+                    closeModal();
+                  }}
                   style={{ cursor: "pointer" }}
                 />
                 <ProfileIcon
                   type="icon-medium"
                   color="surprise"
-                  onSelectClick={() => handleColorChange("surprise")}
+                  onSelectClick={() => {
+                    handleColorChange("surprise");
+                    closeModal();
+                  }}
                   style={{ cursor: "pointer" }}
                 />
                 <ProfileIcon
                   type="icon-medium"
                   color="sad"
-                  onSelectClick={() => handleColorChange("sad")}
+                  onSelectClick={() => {
+                    handleColorChange("sad");
+                    closeModal();
+                  }}
                   style={{ cursor: "pointer" }}
                 />
                 <ProfileIcon
                   type="icon-medium"
                   color="angry"
-                  onSelectClick={() => handleColorChange("angry")}
+                  onSelectClick={() => {
+                    handleColorChange("angry");
+                    closeModal();
+                  }}
                   style={{ cursor: "pointer" }}
                 />
               </div>
