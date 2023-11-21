@@ -8,7 +8,7 @@ import Button from "components/Button/Button";
 import Chip from "components/Chip/Chip";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import Devider from "components/Devider/Devider";
-import NextIcon from "components/NextIcon/NextIcon";
+import SomeIcon from "components/SomeIcon/SomeIcon";
 
 import Etc from "assets/img/etc.png";
 
@@ -43,11 +43,7 @@ const MyPage = () => {
               <div className="mypage-name">
                 <h2 className="mypage-title font-title-large">하하호호님</h2>
               </div>
-              <NextIcon
-                type="large"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigate("/edit")}
-              />
+              <SomeIcon type="large-next" onClick={() => navigate("/edit")} />
             </div>
             <Button
               label="로그아웃"
@@ -65,35 +61,35 @@ const MyPage = () => {
           <div className="mypage-chip-wrapper">
             <Chip
               type={"category-big"}
-              emotion={"all"}
+              choose={"all"}
               onClick={() => handleChipClick("all")}
               isSelected={selectedEmotion === "all"}
               style={{ marginRight: "24px" }}
             />
             <Chip
               type={"category-big"}
-              emotion={"happy"}
+              choose={"happy"}
               onClick={() => handleChipClick("happy")}
               isSelected={selectedEmotion === "happy"}
               style={{ marginRight: "24px" }}
             />
             <Chip
               type={"category-big"}
-              emotion={"surprise"}
+              choose={"surprise"}
               onClick={() => handleChipClick("surprise")}
               isSelected={selectedEmotion === "surprise"}
               style={{ marginRight: "24px" }}
             />
             <Chip
               type={"category-big"}
-              emotion={"sad"}
+              choose={"sad"}
               onClick={() => handleChipClick("sad")}
               isSelected={selectedEmotion === "sad"}
               style={{ marginRight: "24px" }}
             />
             <Chip
               type={"category-big"}
-              emotion={"angry"}
+              choose={"angry"}
               onClick={() => handleChipClick("angry")}
               isSelected={selectedEmotion === "angry"}
             />
@@ -103,7 +99,7 @@ const MyPage = () => {
               {filteredVideos.length > 0 ? (
                 filteredVideos.map((v) => (
                   <VideoItem
-                    key={`recommendVideo${v.srcProp}`}
+                    key={`watchedVideo${v.srcProp}`}
                     width={360}
                     src={`https://www.youtube.com/embed/${v.srcProp}`}
                     style={{ marginRight: "60px" }}
