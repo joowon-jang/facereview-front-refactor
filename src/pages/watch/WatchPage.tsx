@@ -12,6 +12,7 @@ import React from "react";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
+import { Bar, ResponsiveBar } from "@nivo/bar";
 
 type CommentItemType = {
   color: "default" | "happy" | "surprise" | "sad" | "angry";
@@ -44,36 +45,16 @@ const WatchPage = (): ReactElement => {
   ];
   const myGraphData = [
     {
-      id: "temp.",
-      ranges: [55, 31, 53, 0, 120],
-      measures: [27],
-      markers: [80],
-    },
-    {
-      id: "power",
-      ranges: [
-        1.0936759376302752, 0.37145682819019316, 1.5463633441210725, 0, 2,
-      ],
-      measures: [0.13969369267394954, 0.7913675599256789],
-      markers: [1.2101494115840372],
-    },
-    {
-      id: "volume",
-      ranges: [2, 57, 2, 42, 11, 25, 0, 60],
-      measures: [47],
-      markers: [52],
-    },
-    {
-      id: "cost",
-      ranges: [193793, 164293, 174995, 0, 500000],
-      measures: [97749, 302766],
-      markers: [306365],
-    },
-    {
-      id: "revenue",
-      ranges: [1, 3, 5, 0, 9],
-      measures: [8],
-      markers: [6.308684233669997, 6.128119615854916],
+      happy: 48,
+      happyColor: "#FF4D8D",
+      sad: 12,
+      sadColor: "#479CFF",
+      surprise: 5,
+      surpriseColor: "#92C624",
+      angry: 17,
+      angryColor: "#9F65FF",
+      neutral: 18,
+      neutralColor: "#7C7E8C",
     },
   ];
   const commentData: CommentItemType[] = [
@@ -202,8 +183,9 @@ const WatchPage = (): ReactElement => {
           </div>
           <div className="comment-info-text font-title-small">댓글 231개</div>
           <div className="comment-list-container">
-            {commentData.map((comment) => (
+            {commentData.map((comment, idx) => (
               <CommentItem
+                key={`comment-${comment.commentText}-${idx}`}
                 nickname={comment.nickname}
                 commentTime={comment.commentTime}
                 commentText={comment.commentText}
@@ -228,14 +210,38 @@ const WatchPage = (): ReactElement => {
             </h4>
             <EmotionBadge type="big" emotion="happy" />
           </div>
-          <div className="graph-conatiner">
-            <ResponsiveBullet
+          <div className="graph-container">
+            <ResponsiveBar
               data={myGraphData}
-              margin={{ top: 50, right: 90, bottom: 50, left: 90 }}
-              spacing={46}
-              titleAlign="start"
-              titleOffsetX={-70}
-              measureSize={0.2}
+              keys={["happy", "sad", "surprise", "angry", "neutral"]}
+              indexBy="country"
+              padding={0.3}
+              layout="horizontal"
+              valueScale={{ type: "linear" }}
+              indexScale={{ type: "band", round: true }}
+              colors={["#FF4D8D", "#92C624", "#479CFF", "#9F65FF", "#7C7E8C"]}
+              borderColor={{
+                from: "color",
+                modifiers: [["darker", 1.6]],
+              }}
+              axisTop={null}
+              axisRight={null}
+              axisBottom={null}
+              axisLeft={null}
+              enableGridY={false}
+              enableLabel={false}
+              labelSkipWidth={12}
+              labelSkipHeight={12}
+              labelTextColor={{
+                from: "color",
+                modifiers: [["darker", 2.3]],
+              }}
+              legends={[]}
+              role="application"
+              ariaLabel="Nivo bar chart demo"
+              barAriaLabel={(e) =>
+                e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+              }
             />
           </div>
         </div>
