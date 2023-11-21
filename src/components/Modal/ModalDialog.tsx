@@ -46,7 +46,7 @@ const ModalDialog = ({
           <Button
             label={"취소"}
             type={"cta-fixed-secondary"}
-            style={{ marginRight: "12px" }}
+            style={{ marginRight: "12px", background: "#5D5D6D" }}
             onClick={onClose}
           />
           <Button label={"확인"} type={"cta-fixed"} onClick={onClose} />

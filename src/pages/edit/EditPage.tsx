@@ -47,7 +47,7 @@ const EditPage = () => {
             onEditClick={openModal}
           />
           <ModalDialog
-            type={"two-button"}
+            type={"one-button"}
             titleLabel="아이콘을 선택하세요"
             isOpen={isModalOpen}
             onClose={closeModal}
