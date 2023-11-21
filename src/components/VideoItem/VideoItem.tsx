@@ -44,14 +44,12 @@ const VideoItem = ({
   };
 
   const handleMouseHover = () => {
-    console.log(video);
     if (video?.isMuted()) {
       video?.unMute();
       video?.playVideo();
     }
   };
   const handleMouseOut = () => {
-    console.log("handleMouseOut");
     if (video?.isMuted && !video?.isMuted()) {
       video?.mute();
       video?.stopVideo();
