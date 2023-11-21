@@ -51,64 +51,62 @@ const EditPage = () => {
             isOpen={isModalOpen}
             onClose={closeModal}
           >
-            <>
-              <h3
-                className="font-title-mini editpage-modal-title"
-                style={{ marginBottom: "24px" }}
-              >
-                아이콘을 선택해주세요
-              </h3>
-              <div
-                className="editpage-modal-icon-wrapper"
-                style={{ display: "flex", gap: "10px", marginBottom: "12px" }}
-              >
-                <ProfileIcon
-                  type="icon-medium"
-                  color="default"
-                  onSelectClick={() => {
-                    handleColorChange("default");
-                    closeModal();
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-                <ProfileIcon
-                  type="icon-medium"
-                  color="happy"
-                  onSelectClick={() => {
-                    handleColorChange("happy");
-                    closeModal();
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-                <ProfileIcon
-                  type="icon-medium"
-                  color="surprise"
-                  onSelectClick={() => {
-                    handleColorChange("surprise");
-                    closeModal();
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-                <ProfileIcon
-                  type="icon-medium"
-                  color="sad"
-                  onSelectClick={() => {
-                    handleColorChange("sad");
-                    closeModal();
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-                <ProfileIcon
-                  type="icon-medium"
-                  color="angry"
-                  onSelectClick={() => {
-                    handleColorChange("angry");
-                    closeModal();
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-            </>
+            <h3
+              className="font-title-mini editpage-modal-title"
+              style={{ marginBottom: "24px" }}
+            >
+              아이콘을 선택해주세요
+            </h3>
+            <div
+              className="editpage-modal-icon-wrapper"
+              style={{ display: "flex", gap: "10px", marginBottom: "12px" }}
+            >
+              <ProfileIcon
+                type="icon-medium"
+                color="default"
+                onSelectClick={() => {
+                  handleColorChange("default");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="happy"
+                onSelectClick={() => {
+                  handleColorChange("happy");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="surprise"
+                onSelectClick={() => {
+                  handleColorChange("surprise");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="sad"
+                onSelectClick={() => {
+                  handleColorChange("sad");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="angry"
+                onSelectClick={() => {
+                  handleColorChange("angry");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
           </ModalDialog>
           <div className="editpage-edit-container">
             <div className="editpage-input-container">

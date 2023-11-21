@@ -28,7 +28,6 @@
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-
     }
   }
 
@@ -37,10 +36,15 @@
       margin-bottom: 16px;
     }
 
+    .chip-wrapper {
+      display: flex;
+      margin-bottom: 56px;
+    }
+
     .video-wrapper {
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap
+      flex-wrap: wrap;
     }
   }
 }

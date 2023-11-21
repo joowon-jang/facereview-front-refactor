@@ -1,28 +1,36 @@
 import React, { ReactElement, ReactNode } from "react";
 import Modal from "react-modal";
 import "./modaldialog.scss";
+import "./modaldialogchildren.scss";
 import Button from "components/Button/Button";
 
 type ModalDialogPropTypes = {
   children: React.ReactNode;
-  type: "one-button" | "two-button";
-  style?: React.CSSProperties;
+  type: "one-button" | "two-button" | "video-register";
   isOpen: boolean;
   onClose: () => void;
+  onCheck?: () => void;
 };
 
 const ModalDialog = ({
   isOpen,
   children,
   type,
-  style,
   onClose,
+  onCheck,
 }: ModalDialogPropTypes): ReactElement => {
   const renderButtons = () => {
-    if (type === "one-button") {
+    if (type === "one-button" || type === "video-register") {
       return (
         <div className={`modal-button-wrapper ${type}`}>
-          <Button label={"확인"} type={"cta-fixed"} onClick={onClose} />
+          <Button
+            label={"확인"}
+            type={"cta-full"}
+            onClick={() => {
+              onClose();
+              onCheck && onCheck();
+            }}
+          />
         </div>
       );
     } else if (type === "two-button") {
@@ -44,13 +52,11 @@ const ModalDialog = ({
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      className="modal-content"
+      className={`modal-content ${type}`}
       overlayClassName="modal-overlay"
     >
-      <div className="modal-container">
-        <div className={`modal-contents-container ${type}`}>{children}</div>
-        {renderButtons()}
-      </div>
+      <div className={`modal-contents-container ${type}`}>{children}</div>
+      {renderButtons()}
     </Modal>
   );
 };
