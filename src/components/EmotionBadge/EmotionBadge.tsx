@@ -22,7 +22,7 @@ const EmotionBadge = ({
 
   return (
     <div className={`emotion-badge-container ${type} ${emotion}`} style={style}>
-      <p className="emotion-emoji">{emojiOfEmotion[emotion]}</p>
+      <p className={`emotion-emoji ${type}`}>{emojiOfEmotion[emotion]}</p>
     </div>
   );
 };
