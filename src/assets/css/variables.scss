@@ -33,6 +33,21 @@ $system-error: #E74D4D;
 $system-dim-black: rgba(21, 21, 29, 0.7);
 $system-dim-black: rgba(255, 255, 255, 0.2);
 
+$breakpoint: 1200px;
+
+@mixin mobile {
+    @media (max-width: #{$breakpoint - 1px}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$breakpoint}) {
+        @content;
+    }
+}
+
+
 .font-title-large {
     font-weight: 700;
     font-size: 32px;
