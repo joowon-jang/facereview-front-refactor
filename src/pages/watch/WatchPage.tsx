@@ -2,7 +2,6 @@ import { ReactElement, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Webcam from "react-webcam";
 import YouTube, { YouTubeEvent } from "react-youtube";
-import { ResponsiveBullet } from "@nivo/bullet";
 import VideoItem from "components/VideoItem/VideoItem";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
 import { Options, YouTubePlayer } from "youtube-player/dist/types";
@@ -12,10 +11,11 @@ import React from "react";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
-import { Bar, ResponsiveBar } from "@nivo/bar";
+import { ResponsiveBar } from "@nivo/bar";
+import { EmotionType } from "types";
 
 type CommentItemType = {
-  color: "default" | "happy" | "surprise" | "sad" | "angry";
+  color: EmotionType;
   nickname: string;
   commentTime: string;
   commentText: string;
@@ -43,7 +43,8 @@ const WatchPage = (): ReactElement => {
     "paKZL7IWcHM",
     "dTBsPShaBro",
   ];
-  const myGraphData = [
+
+  const [graphData, setGraphData] = useState([
     {
       happy: 48,
       happyColor: "#FF4D8D",
@@ -56,10 +57,10 @@ const WatchPage = (): ReactElement => {
       neutral: 18,
       neutralColor: "#7C7E8C",
     },
-  ];
+  ]);
   const commentData: CommentItemType[] = [
     {
-      color: "default",
+      color: "neutral",
       nickname: "닉네임뭐로하지",
       commentTime: "12분 전",
       commentText:
@@ -74,6 +75,8 @@ const WatchPage = (): ReactElement => {
     },
   ];
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
+  const [currentMyEmotion, setCurrentMyEmotion] =
+    useState<EmotionType>("neutral");
   const [comment, setComment] = useState("");
 
   const capture = React.useCallback(async () => {
@@ -149,9 +152,25 @@ const WatchPage = (): ReactElement => {
           watching_data_index: "watching_data_index",
           youtube_index: "youtube_index",
         },
-        (response: any) => {
-          console.log(++cnt, "client-message socket response *** ");
-          console.log(response);
+        (response: {
+          happy: number;
+          sad: number;
+          surprise: number;
+          angry: number;
+          neutral: number;
+          most_emotion: EmotionType;
+        }) => {
+          setCurrentMyEmotion(response.most_emotion);
+          setGraphData([
+            {
+              ...graphData[0],
+              happy: response.happy,
+              sad: response.sad,
+              surprise: response.surprise,
+              angry: response.angry,
+              neutral: response.neutral,
+            },
+          ]);
         }
       );
     }, 1000);
@@ -172,7 +191,7 @@ const WatchPage = (): ReactElement => {
     nickname,
     commentTime,
     commentText,
-    color = "default",
+    color = "neutral",
   }: CommentItemType): ReactElement => {
     return (
       <div className="comment-item-container">
@@ -222,7 +241,7 @@ const WatchPage = (): ReactElement => {
           <div className="comment-input-container">
             <ProfileIcon
               type={"icon-medium"}
-              color={"default"}
+              color={"neutral"}
               style={{ marginRight: "12px" }}
             />
             <TextInput
@@ -268,18 +287,18 @@ const WatchPage = (): ReactElement => {
             <h4 className="my-emotion-title font-title-small">
               실시간 나의 감정
             </h4>
-            <EmotionBadge type="big" emotion="happy" />
+            <EmotionBadge type="big" emotion={currentMyEmotion} />
           </div>
           <div className="graph-container">
             <ResponsiveBar
-              data={myGraphData}
+              data={graphData}
               keys={["happy", "sad", "surprise", "angry", "neutral"]}
               indexBy="country"
               padding={0.3}
               layout="horizontal"
               valueScale={{ type: "linear" }}
               indexScale={{ type: "band", round: true }}
-              colors={["#FF4D8D", "#92C624", "#479CFF", "#9F65FF", "#7C7E8C"]}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#9F65FF", "#7C7E8C"]}
               borderColor={{
                 from: "color",
                 modifiers: [["darker", 1.6]],

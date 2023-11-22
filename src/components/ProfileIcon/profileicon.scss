@@ -13,12 +13,14 @@
     width: 80px;
     height: 80px;
   }
+
   &.icon-medium {
     min-width: 44px;
     min-height: 44px;
     width: 44px;
     height: 44px;
   }
+
   &.icon-small {
     min-width: 28px;
     min-height: 28px;
@@ -26,18 +28,22 @@
     height: 28px;
   }
 
-  &.default {
-    background: $gray-100;
+  &.neutral {
+    background: $category-joyful-tinted;
   }
+
   &.happy {
     background: $category-joyful-tinted;
   }
+
   &.surprise {
     background: $category-surprised-tinted;
   }
+
   &.sad {
     background: $category-sad-tinted;
   }
+
   &.angry {
     background: $category-angry-tinted;
   }
@@ -48,10 +54,12 @@
     width: 44px;
     height: 64px;
   }
+
   &.icon-medium {
     width: 24px;
     height: 35px;
   }
+
   &.icon-small {
     width: 16px;
     height: 23px;
@@ -60,6 +68,7 @@
 
 .editable-image {
   display: none;
+
   &.editable {
     display: block;
     cursor: pointer;

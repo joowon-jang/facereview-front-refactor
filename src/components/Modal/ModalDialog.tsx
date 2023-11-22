@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import "./modaldialog.scss";
 import Button from "components/Button/Button";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
+import { EmotionType } from "types";
 
 type ModalDialogPropTypes = {
   titleLabel: string;
@@ -11,9 +12,7 @@ type ModalDialogPropTypes = {
   style?: React.CSSProperties;
   isOpen: boolean;
   onClose: () => void;
-  onSelectColor?: (
-    color: "default" | "happy" | "surprise" | "sad" | "angry"
-  ) => void;
+  onSelectColor?: (color: EmotionType) => void;
 };
 
 const ModalDialog = ({
@@ -25,9 +24,7 @@ const ModalDialog = ({
   onClose,
   onSelectColor,
 }: ModalDialogPropTypes): ReactElement => {
-  const handleColorSelect = (
-    color: "default" | "happy" | "surprise" | "sad" | "angry"
-  ) => {
+  const handleColorSelect = (color: EmotionType) => {
     if (onSelectColor) {
       onSelectColor(color);
     }
@@ -68,8 +65,8 @@ const ModalDialog = ({
           <div className="modal-icon-wrapper">
             <ProfileIcon
               type="icon-medium"
-              color="default"
-              onSelectClick={() => handleColorSelect("default")}
+              color="neutral"
+              onSelectClick={() => handleColorSelect("neutral")}
               style={{ cursor: "pointer" }}
             />
             <ProfileIcon

@@ -37,7 +37,7 @@ const MyPage = () => {
     <>
       <div className="mypage-container">
         <div className="mypage-user-container">
-          <ProfileIcon type={"icon-large"} color={"default"} />
+          <ProfileIcon type={"icon-large"} color={"neutral"} />
           <div className="mypage-name-container">
             <div className="mypage-name-wrapper">
               <div className="mypage-name">

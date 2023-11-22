@@ -6,7 +6,7 @@ import React, { ReactElement } from "react";
 
 type ProfileIconPropsType = {
   type: "icon-large" | "icon-medium" | "icon-small";
-  color: "default" | "happy" | "surprise" | "sad" | "angry";
+  color: "neutral" | "happy" | "surprise" | "sad" | "angry";
   style?: React.CSSProperties;
   isEditable?: boolean;
   onEditClick?: () => void;
