@@ -74,20 +74,14 @@ const WatchPage = (): ReactElement => {
     },
   ];
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
-  const [camImgURL, setCamImgURL] = useState("");
   const [comment, setComment] = useState("");
 
-  const capture = React.useCallback(() => {
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (imageSrc) {
-      console.log(imageSrc);
-      setCamImgURL(imageSrc);
-    }
-    return imageSrc;
+  const capture = React.useCallback(async () => {
+    const imageSrc = (await webcamRef.current?.getScreenshot()) || "";
+    return imageSrc?.split(",")[1];
   }, [webcamRef]);
 
   const handleVideoReady = (e: YouTubeEvent<any>) => {
-    console.log("onReady", e);
     setVideo(e.target);
   };
 
@@ -116,32 +110,6 @@ const WatchPage = (): ReactElement => {
 
   useEffect(() => {
     socket.connect();
-    socket.emit(
-      "client_message",
-      {
-        youtube_running_time: "runningTime",
-        string_frame_data:
-          "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",
-
-        watching_data_index: "watching_data_index",
-        youtube_index: "youtube_index",
-      },
-      (response: any) => {
-        console.log("client-message socket response *** ");
-        console.log(response);
-      }
-    );
-
-    // socket.emit(
-    //   "socketcheck",
-    //   {
-    //     client_message: "socketcheck hi this is client",
-    //   },
-    //   (response: any) => {
-    //     console.log("socketcheck socket response");
-    //     console.log(response);
-    //   }
-    // );
 
     socket.emit(
       "test",
@@ -156,11 +124,37 @@ const WatchPage = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const currentTime = await video?.getCurrentTime();
+    const captureInterval = setInterval(() => {
       capture();
-      console.log(camImgURL);
-    }, 5000);
+    }, 200);
+
+    return () => {
+      clearInterval(captureInterval);
+    };
+  });
+
+  useEffect(() => {
+    let cnt = 0;
+    const interval = setInterval(async () => {
+      const capturedImage = await capture();
+      const currentTime = await video?.getCurrentTime();
+      const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
+
+      socket.emit(
+        "client_message",
+        {
+          youtube_running_time: { formattedCurrentTime },
+          string_frame_data: capturedImage,
+
+          watching_data_index: "watching_data_index",
+          youtube_index: "youtube_index",
+        },
+        (response: any) => {
+          console.log(++cnt, "client-message socket response *** ");
+          console.log(response);
+        }
+      );
+    }, 1000);
     return () => {
       clearInterval(interval);
     };
