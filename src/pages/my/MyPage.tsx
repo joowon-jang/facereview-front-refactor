@@ -141,7 +141,7 @@ const MyPage = () => {
                     src={`https://www.youtube.com/embed/${v.srcProp}`}
                     style={
                       isMobile
-                        ? { marginBottom: "28px" }
+                        ? { paddingTop: "14px", paddingBottom: "14px" }
                         : { marginRight: "60px" }
                     }
                     videoId={v.srcProp}
