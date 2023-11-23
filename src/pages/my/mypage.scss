@@ -3,21 +3,52 @@
 .mypage-container {
   display: inline-flex;
   flex-direction: column;
-  padding-top: 48px;
   padding-bottom: 98px;
-  width: calc(50vw + 600px);
+
+  @include mobile {
+    width: 100vw;
+    padding-top: 17px;
+    padding-left: 16px;
+  }
+  @include desktop {
+    padding-top: 48px;
+    width: calc(50vw + 600px);
+  }
 
   .mypage-user-container {
     display: flex;
-    width: 1200px;
     flex-direction: column;
-    margin-bottom: 56px;
 
-    .mypage-name-container {
+    @include mobile {
+      width: calc(100vw - 32px);
+    }
+    @include desktop {
+      width: 1200px;
+      flex-direction: column;
+    }
+
+    .mypage-user-info-container {
+      display: flex;
+
+      @include mobile {
+        margin-bottom: 44px;
+      }
+      @include desktop {
+        flex-direction: column;
+        margin-bottom: 56px;
+      }
+    }
+
+    .mypage-user-edit-container {
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      margin-top: 20px;
+
+      @include mobile {
+        padding-left: 12px;
+      }
+      @include desktop {
+        margin-top: 20px;
+      }
 
       .mypage-name-wrapper {
         display: flex;
@@ -31,25 +62,54 @@
     flex-direction: column;
     overflow: hidden;
 
-    .mypage-chip-wrapper {
-      margin-top: 32px;
+    @include mobile {
+      margin-top: 40px;
+    }
+    @include desktop {
+      margin-top: 56px;
+    }
+
+    .mypage-watched-title-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      .mypage-chip-wrapper {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-top: 32px;
+        padding-bottom: 16px;
+        -ms-overflow-style: none; /* 인터넷 익스플로러 */
+        scrollbar-width: none; /* 파이어폭스 */
+      }
+      .mypage-chip-wrapper::-webkit-scrollbar {
+        display: none; /* 크롬, 사파리, 오페라, 엣지 */
+      }
     }
 
     .mypage-video-container {
       display: flex;
-      margin-top: 32px;
-      overflow: auto;
+      overflow-x: auto;
+      padding-top: 16px;
+      padding-bottom: 88px;
     }
 
     .mypage-video-wrapper {
       display: flex;
       padding-right: calc(50vw - 660px);
+      @include mobile {
+        flex-direction: column;
+      }
 
       .mypage-video-empty {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
+        @include mobile {
+          width: calc(100vw - 16px);
+        }
         width: 1200px;
 
         .mypage-video-empty-img {
@@ -63,14 +123,17 @@
 }
 
 .mypage-emotion-container {
-  margin-top: 88px;
   display: inline-flex;
   flex-direction: column;
 
   .mypage-emotion-graph-container {
     margin-top: 28px;
     background: #fff;
-    width: 1200px;
-    height: 291px;
+    @include mobile {
+    }
+    @include desktop {
+      width: 1200px;
+      height: 291px;
+    }
   }
 }
