@@ -96,9 +96,12 @@
 
     .mypage-video-wrapper {
       display: flex;
-      padding-right: calc(50vw - 660px);
+
       @include mobile {
         flex-direction: column;
+      }
+      @include desktop {
+        padding-right: calc(50vw - 660px);
       }
 
       .mypage-video-empty {
@@ -110,7 +113,9 @@
         @include mobile {
           width: calc(100vw - 16px);
         }
-        width: 1200px;
+        @include desktop {
+          width: 1200px;
+        }
 
         .mypage-video-empty-img {
           width: 100px;
