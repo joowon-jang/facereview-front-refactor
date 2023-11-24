@@ -1,20 +1,21 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Webcam from "react-webcam";
-import YouTube from "react-youtube";
-import { ResponsiveBullet } from "@nivo/bullet";
+import YouTube, { YouTubeEvent } from "react-youtube";
 import VideoItem from "components/VideoItem/VideoItem";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
-import { Options } from "youtube-player/dist/types";
+import { Options, YouTubePlayer } from "youtube-player/dist/types";
 import "./watchpage.scss";
 import { socket } from "socket";
 import React from "react";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
+import { ResponsiveBar } from "@nivo/bar";
+import { EmotionType } from "types";
 
 type CommentItemType = {
-  color: "default" | "happy" | "surprise" | "sad" | "angry";
+  color: EmotionType;
   nickname: string;
   commentTime: string;
   commentText: string;
@@ -42,43 +43,24 @@ const WatchPage = (): ReactElement => {
     "paKZL7IWcHM",
     "dTBsPShaBro",
   ];
-  const myGraphData = [
+
+  const [graphData, setGraphData] = useState([
     {
-      id: "temp.",
-      ranges: [55, 31, 53, 0, 120],
-      measures: [27],
-      markers: [80],
+      happy: 48,
+      happyColor: "#FF4D8D",
+      sad: 12,
+      sadColor: "#479CFF",
+      surprise: 5,
+      surpriseColor: "#92C624",
+      angry: 17,
+      angryColor: "#9F65FF",
+      neutral: 18,
+      neutralColor: "#7C7E8C",
     },
-    {
-      id: "power",
-      ranges: [
-        1.0936759376302752, 0.37145682819019316, 1.5463633441210725, 0, 2,
-      ],
-      measures: [0.13969369267394954, 0.7913675599256789],
-      markers: [1.2101494115840372],
-    },
-    {
-      id: "volume",
-      ranges: [2, 57, 2, 42, 11, 25, 0, 60],
-      measures: [47],
-      markers: [52],
-    },
-    {
-      id: "cost",
-      ranges: [193793, 164293, 174995, 0, 500000],
-      measures: [97749, 302766],
-      markers: [306365],
-    },
-    {
-      id: "revenue",
-      ranges: [1, 3, 5, 0, 9],
-      measures: [8],
-      markers: [6.308684233669997, 6.128119615854916],
-    },
-  ];
+  ]);
   const commentData: CommentItemType[] = [
     {
-      color: "default",
+      color: "neutral",
       nickname: "닉네임뭐로하지",
       commentTime: "12분 전",
       commentText:
@@ -92,48 +74,124 @@ const WatchPage = (): ReactElement => {
         "나영석피디를 서진씨가잘만난것이큰행운이라고본다 나영석피디화이팅이다 할머니팬",
     },
   ];
-  const [camImgURL, setCamImgURL] = useState("");
+  const [video, setVideo] = useState<YouTubePlayer | null>(null);
+  const [currentMyEmotion, setCurrentMyEmotion] =
+    useState<EmotionType>("neutral");
   const [comment, setComment] = useState("");
 
-  const capture = React.useCallback(() => {
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (imageSrc) {
-      setCamImgURL(imageSrc);
-    }
-    return imageSrc;
+  const capture = React.useCallback(async () => {
+    const imageSrc = (await webcamRef.current?.getScreenshot()) || "";
+    return imageSrc?.split(",")[1];
   }, [webcamRef]);
 
+  const handleVideoReady = (e: YouTubeEvent<any>) => {
+    setVideo(e.target);
+  };
+
+  const getCurrentTimeString = (seconds: number): string => {
+    let remainSeconds = seconds;
+
+    const resHours = Math.floor(remainSeconds / (60 * 60))
+      .toString()
+      .padStart(2, "0");
+    remainSeconds = remainSeconds % (60 * 60);
+
+    const resMinutes = Math.floor(remainSeconds / 60)
+      .toString()
+      .padStart(2, "0");
+    remainSeconds = remainSeconds % 60;
+
+    const resSeconds = Math.floor(remainSeconds).toString().padStart(2, "0");
+
+    const resMiliseconds = Math.floor((remainSeconds % 1) * 100)
+      .toString()
+      .slice(0, 2)
+      .padStart(2, "0");
+
+    return `${resHours}:${resMinutes}:${resSeconds}.${resMiliseconds}`;
+  };
+
   useEffect(() => {
-    setInterval(() => {
-      capture();
-    }, 5000);
     socket.connect();
+
     socket.emit(
-      "client_message",
+      "test",
       {
-        user_id: "civy",
-        running_time: "00:00:01.10",
-        frame_data: "ssibal null",
+        client_message: "test hi this is client",
       },
       (response: any) => {
+        console.log("test socekt response");
         console.log(response);
       }
     );
-    socket.emit("test", { testmessage: "hello!!!" }, (response: any) => {
-      console.log("test -----------------");
-      console.log(response);
-    });
-    socket.on("response", (a) => {
-      console.log("response -----------------");
-      console.log(a);
-    });
   }, []);
+
+  useEffect(() => {
+    const captureInterval = setInterval(() => {
+      capture();
+    }, 200);
+
+    return () => {
+      clearInterval(captureInterval);
+    };
+  });
+
+  useEffect(() => {
+    let cnt = 0;
+    const interval = setInterval(async () => {
+      const capturedImage = await capture();
+      const currentTime = await video?.getCurrentTime();
+      const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
+
+      socket.emit(
+        "client_message",
+        {
+          youtube_running_time: { formattedCurrentTime },
+          string_frame_data: capturedImage,
+
+          watching_data_index: "watching_data_index",
+          youtube_index: "youtube_index",
+        },
+        (response: {
+          happy: number;
+          sad: number;
+          surprise: number;
+          angry: number;
+          neutral: number;
+          most_emotion: EmotionType;
+        }) => {
+          setCurrentMyEmotion(response.most_emotion);
+          setGraphData([
+            {
+              ...graphData[0],
+              happy: response.happy,
+              sad: response.sad,
+              surprise: response.surprise,
+              angry: response.angry,
+              neutral: response.neutral,
+            },
+          ]);
+        }
+      );
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [video]);
+
+  const CustomTooltip = ({ formattedValue, id }: any): ReactElement => {
+    return (
+      <div className="graph-tooltip-container">
+        <EmotionBadge type={"small"} emotion={id} />
+      </div>
+    );
+  };
 
   const CommentItem = ({
     nickname,
     commentTime,
     commentText,
-    color = "default",
+    color = "neutral",
   }: CommentItemType): ReactElement => {
     return (
       <div className="comment-item-container">
@@ -167,7 +225,7 @@ const WatchPage = (): ReactElement => {
           // title={string} // defaults -> ''
           // loading={string} // defaults -> undefined
           opts={opts} // defaults -> {}
-          // onReady={handleOnReady} // defaults -> noop
+          onReady={handleVideoReady} // defaults -> noop
           // onPlay={func} // defaults -> noop
           // onPause={func} // defaults -> noop
           // onEnd={func} // defaults -> noop
@@ -183,7 +241,7 @@ const WatchPage = (): ReactElement => {
           <div className="comment-input-container">
             <ProfileIcon
               type={"icon-medium"}
-              color={"default"}
+              color={"neutral"}
               style={{ marginRight: "12px" }}
             />
             <TextInput
@@ -202,8 +260,9 @@ const WatchPage = (): ReactElement => {
           </div>
           <div className="comment-info-text font-title-small">댓글 231개</div>
           <div className="comment-list-container">
-            {commentData.map((comment) => (
+            {commentData.map((comment, idx) => (
               <CommentItem
+                key={`comment-${comment.commentText}-${idx}`}
                 nickname={comment.nickname}
                 commentTime={comment.commentTime}
                 commentText={comment.commentText}
@@ -215,27 +274,54 @@ const WatchPage = (): ReactElement => {
       </div>
       <div className="side-container">
         <Webcam
+          style={{ borderRadius: "8px", marginBottom: "24px" }}
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
           videoConstraints={webcamOptions}
-          style={{ borderRadius: "8px", marginBottom: "24px" }}
+          mirrored={true}
+          screenshotQuality={0.5}
         />
         <div className="my-emotion-container">
           <div className="my-emotion-title-wrapper">
             <h4 className="my-emotion-title font-title-small">
               실시간 나의 감정
             </h4>
-            <EmotionBadge type="big" emotion="happy" />
+            <EmotionBadge type="big" emotion={currentMyEmotion} />
           </div>
-          <div className="graph-conatiner">
-            <ResponsiveBullet
-              data={myGraphData}
-              margin={{ top: 50, right: 90, bottom: 50, left: 90 }}
-              spacing={46}
-              titleAlign="start"
-              titleOffsetX={-70}
-              measureSize={0.2}
+          <div className="graph-container">
+            <ResponsiveBar
+              data={graphData}
+              keys={["happy", "sad", "surprise", "angry", "neutral"]}
+              indexBy="country"
+              padding={0.3}
+              layout="horizontal"
+              valueScale={{ type: "linear" }}
+              indexScale={{ type: "band", round: true }}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#9F65FF", "#7C7E8C"]}
+              borderColor={{
+                from: "color",
+                modifiers: [["darker", 1.6]],
+              }}
+              axisTop={null}
+              axisRight={null}
+              axisBottom={null}
+              axisLeft={null}
+              enableGridY={false}
+              enableLabel={false}
+              labelSkipWidth={12}
+              labelSkipHeight={12}
+              labelTextColor={{
+                from: "color",
+                modifiers: [["darker", 2.3]],
+              }}
+              margin={{ top: -10, bottom: -10 }}
+              legends={[]}
+              role="application"
+              ariaLabel="Nivo bar chart demo"
+              barAriaLabel={(e) =>
+                e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+              }
             />
           </div>
         </div>

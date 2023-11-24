@@ -42,7 +42,7 @@ const MyPage = () => {
           <div className="mypage-user-info-container">
             <ProfileIcon
               type={isMobile ? "icon-medium" : "icon-large"}
-              color={"default"}
+              color={"neutral"}
             />
             <div className="mypage-user-edit-container">
               <div className="mypage-name-container">

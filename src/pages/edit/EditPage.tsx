@@ -6,19 +6,16 @@ import { useNavigate } from "react-router-dom";
 import "./editpage.scss";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import ModalDialog from "components/ModalDialog/ModalDialog";
+import { EmotionType } from "types";
 
 const EditPage = () => {
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
-  const [profileColor, setProfileColor] = useState<
-    "default" | "happy" | "surprise" | "sad" | "angry"
-  >("default");
+  const [profileColor, setProfileColor] = useState<EmotionType>("neutral");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleColorChange = (
-    color: "default" | "happy" | "surprise" | "sad" | "angry"
-  ) => {
+  const handleColorChange = (color: EmotionType) => {
     setProfileColor(color);
   };
 
@@ -63,9 +60,9 @@ const EditPage = () => {
             >
               <ProfileIcon
                 type="icon-medium"
-                color="default"
+                color="neutral"
                 onSelectClick={() => {
-                  handleColorChange("default");
+                  handleColorChange("neutral");
                   closeModal();
                 }}
                 style={{ cursor: "pointer" }}
