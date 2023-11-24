@@ -12,6 +12,7 @@ import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
 import { EmotionType } from "types";
+import { getVideoDetail } from "api/youtube";
 
 type CommentItemType = {
   color: EmotionType;
@@ -94,17 +95,17 @@ const WatchPage = (): ReactElement => {
       .padStart(2, "0");
     remainSeconds = remainSeconds % 60;
 
-    const resSeconds = Math.floor(remainSeconds).toString().padStart(2, "0");
+    const resSeconds = Math.round(remainSeconds).toString().padStart(2, "0");
 
-    const resMiliseconds = Math.floor((remainSeconds % 1) * 100)
-      .toString()
-      .slice(0, 2)
-      .padStart(2, "0");
-
-    return `${resHours}:${resMinutes}:${resSeconds}.${resMiliseconds}`;
+    return `${resHours}:${resMinutes}:${resSeconds}`;
   };
 
   useEffect(() => {
+    getVideoDetail({ videoId: id || "" })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {});
     socket.connect();
 
     socket.emit(
