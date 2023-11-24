@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { emojiOfEmotion } from "utils";
 import "./emotionbadge.scss";
 
 type EmotionBadgePropsType = {
@@ -12,17 +13,9 @@ const EmotionBadge = ({
   emotion,
   style,
 }: EmotionBadgePropsType): ReactElement => {
-  const emojiOfEmotion = {
-    happy: "😄",
-    surprise: "🫢",
-    angry: "😠",
-    sad: "😥",
-    neutral: "😐",
-  };
-
   return (
     <div className={`emotion-badge-container ${type} ${emotion}`} style={style}>
-      <p className="emotion-emoji">{emojiOfEmotion[emotion]}</p>
+      <p className={`emotion-emoji ${type}`}>{emojiOfEmotion[emotion]}</p>
     </div>
   );
 };

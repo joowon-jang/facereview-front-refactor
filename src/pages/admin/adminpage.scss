@@ -1,0 +1,17 @@
+@import "assets/css/index.scss";
+
+.admin-page-container {
+  padding-top: 80px;
+  padding-bottom: 98px;
+
+  .title {
+    color: $gray-900;
+  }
+
+  .subtitle {
+    color: $gray-400;
+    margin-top: 12px;
+    margin-bottom: 25px;
+  }
+
+}

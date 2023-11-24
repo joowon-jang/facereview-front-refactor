@@ -1,8 +1,15 @@
 @import "assets/css/index.scss";
 
 .main-page-container {
-  padding-top: 80px;
   padding-bottom: 98px;
+
+  @include mobile {
+    padding-top: 32px;
+    padding-left: 16px;
+  }
+  @include desktop {
+    padding-top: 80px;
+  }
 
   .title {
     color: $gray-900;
@@ -36,15 +43,36 @@
       margin-bottom: 16px;
     }
 
-    .chip-wrapper {
-      display: flex;
-      margin-bottom: 56px;
-    }
+    .video-container {
+      margin-left: -20px;
 
-    .video-wrapper {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      .chip-wrapper {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-left: 20px;
+
+        @include mobile {
+          padding-top: 24px;
+          padding-bottom: 32px;
+        }
+        @include desktop {
+          padding-top: 16px;
+          padding-bottom: 56px;
+        }
+
+        -ms-overflow-style: none; /* 인터넷 익스플로러 */
+        scrollbar-width: none; /* 파이어폭스 */
+      }
+      .chip-wrapper::-webkit-scrollbar {
+        display: none; /* 크롬, 사파리, 오페라, 엣지 */
+      }
+
+      .video-wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding-left: 20px;
+      }
     }
   }
 }

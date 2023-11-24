@@ -1,16 +1,34 @@
+import { VideoDataType, VideoDetailType } from "types";
 import api from "./index";
 
-type sendYoutubeURLs = {
-  youtube_channel: string;
-  youtube_comment_num: number;
-  youtube_title: string;
-  youtube_url: string;
+export const getAllVideo = async () => {
+  try {
+    const url = "/home/all-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
-export const getTestVideo = async () => {
+export const getPersonalRecommendedVideo = async () => {
   try {
-    const url = "/send-youtube-urls";
-    const { data } = await api.get<sendYoutubeURLs[]>(url);
+    const url = "/home/user-customized-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getVideoDetail = async (props: { videoId: string }) => {
+  try {
+    const url = "/watch/main-youtube";
+    const { data } = await api.post<VideoDetailType>(url, props);
 
     return data;
   } catch (error) {

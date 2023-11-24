@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import AnimatedLogo from "components/AnimatedLogo/AnimatedLogo";
 import Button from "components/Button/Button";
@@ -7,8 +7,11 @@ import TextInput from "components/TextInput/TextInput";
 
 import "./authpage.scss";
 import { checkEmail, signIn, signUp } from "api/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStorage } from "store/authStore";
+import { UserInfoType } from "types";
+import { AxiosResponse } from "axios";
+import HeaderToken from "api/HeaderToken";
 
 const AlertMessages = {
   emailInvalid: "올바르지 않은 이메일 형식이에요",
@@ -18,10 +21,13 @@ const AlertMessages = {
 };
 
 const AuthPage = () => {
-  const navigate = useNavigate();
-  const { setToken } = useAuthStorage();
+  const isMobile = window.innerWidth < 1200;
 
-  const [indicatorStep, setIndicatorStep] = useState(1);
+  const navigate = useNavigate();
+  const { step } = useParams();
+  const currentStep = +(step || 1);
+  const { setUserInfo } = useAuthStorage();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,10 +38,11 @@ const AuthPage = () => {
     useState("");
   const [nicknameAlertMessage, setNicknameAlertMessage] = useState("");
   const [isSignIn, setIsSignIn] = useState(true);
+  const [isSingInSuccess, setIsSingInSuccess] = useState(false);
 
   const validateEmail = (email: string) => {
     return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
   };
 
@@ -43,7 +50,7 @@ const AuthPage = () => {
     setEmail(email);
     if (validateEmail(email) === null) {
       setEmailAlertMessage(AlertMessages.emailInvalid);
-      setIndicatorStep(1);
+      navigate("/auth/1");
       return;
     }
     setEmailAlertMessage(" ");
@@ -77,34 +84,48 @@ const AuthPage = () => {
   };
 
   const handleSubmitButtonClick = () => {
-    if (indicatorStep === 1) {
+    if (currentStep === 1) {
       if (email !== "" && emailAlertMessage === " ") {
         checkEmail({ email_id: email }).then((res) => {
-          console.log(res.status);
           if (res.status !== 200) {
             toast.info("등록되지 않았어요. 회원가입을 해주세요!", {
               toastId: "need signUp",
             });
           }
           setIsSignIn(res.status === 200);
-          setIndicatorStep(2);
+          navigate("/auth/2");
         });
       }
       return;
     }
-    if (indicatorStep === 2) {
+    if (currentStep === 2) {
       if (isSignIn) {
         if (password.length >= 8) {
           signIn({ email_id: email, password: password })
-            .then((res) => {
-              setIndicatorStep(3);
+            .then(async (res: AxiosResponse<UserInfoType, any>) => {
+              console.log(res);
               if (res.status === 200) {
-                toast.success("로그인 완료!", { toastId: "signIn success" });
-                setToken({
+                setIsSingInSuccess(true);
+                console.log(res);
+                HeaderToken.set(res.data.access_token);
+                setUserInfo({
+                  is_admin: +res.data.user_role === 2,
+                  is_sign_in: true,
+                  user_name: res.data.user_name,
+                  user_profile: res.data.user_profile,
+                  user_tutorial: res.data.user_tutorial,
                   access_token: res.data.access_token,
                   refresh_token: res.data.refresh_token,
                 });
-                navigate("/");
+
+                setTimeout(() => {
+                  console.log(res.data.user_tutorial);
+                  if (res.data.user_tutorial) {
+                    navigate("/");
+                    return;
+                  }
+                  navigate("/tutorial/1");
+                }, 400);
               }
             })
             .catch((err) => {
@@ -114,10 +135,10 @@ const AuthPage = () => {
         return;
       }
       if (password.length >= 8 && password === confirmPassword) {
-        setIndicatorStep(3);
+        navigate("auth/3");
       }
     }
-    if (indicatorStep === 3 && !isSignIn) {
+    if (currentStep === 3 && !isSignIn) {
       signUp({
         email_id: email,
         password: password,
@@ -136,31 +157,31 @@ const AuthPage = () => {
   };
 
   const getConfirmButtonLabel = () => {
-    if (indicatorStep === 2 && isSignIn) {
+    if (currentStep === 2 && isSignIn) {
       return "로그인";
     }
-    if (indicatorStep === 3 && !isSignIn) {
+    if (currentStep === 3 && !isSignIn) {
       return "회원가입";
     }
     return "다음";
   };
 
   const isConfirmButtonVisible = () => {
-    if (indicatorStep === 1 && emailAlertMessage === " ") {
+    if (currentStep === 1 && emailAlertMessage === " ") {
       return true;
     }
-    if (indicatorStep === 2 && isSignIn && passwordAlertMessage === " ") {
+    if (currentStep === 2 && isSignIn && passwordAlertMessage === " ") {
       return true;
     }
     if (
-      indicatorStep === 2 &&
+      currentStep === 2 &&
       !isSignIn &&
       passwordAlertMessage === " " &&
       confirmPasswordAlertMessage === " "
     ) {
       return true;
     }
-    if (indicatorStep === 3 && !isSignIn && nicknameAlertMessage === " ") {
+    if (currentStep === 3 && !isSignIn && nicknameAlertMessage === " ") {
       return true;
     }
   };
@@ -168,7 +189,7 @@ const AuthPage = () => {
   return (
     <>
       <div className="auth-container">
-        <StepIndicator step={indicatorStep} maxStep={3} />
+        <StepIndicator step={isSingInSuccess ? 3 : currentStep} maxStep={3} />
 
         <div className="logo-wrapper">
           <AnimatedLogo
@@ -180,7 +201,7 @@ const AuthPage = () => {
         </div>
 
         <div className="input-container">
-          {indicatorStep !== 3 ? (
+          {currentStep !== 3 ? (
             <div className="input-item-container">
               <label
                 htmlFor="authEmail"
@@ -194,7 +215,7 @@ const AuthPage = () => {
                 onChange={handleEmailChange}
                 placeholder="ex) haha@facereview.com"
                 autoFocus={true}
-                isDisabled={indicatorStep > 1}
+                isDisabled={currentStep > 1}
               />
               <p className="input-alert-message font-body-large">
                 {emailAlertMessage}
@@ -202,7 +223,7 @@ const AuthPage = () => {
             </div>
           ) : null}
 
-          {indicatorStep === 2 ? (
+          {currentStep === 2 ? (
             <div className="input-item-container">
               <label
                 htmlFor="authPassword"
@@ -223,7 +244,7 @@ const AuthPage = () => {
               </p>
             </div>
           ) : null}
-          {indicatorStep === 2 && !isSignIn ? (
+          {currentStep === 2 && !isSignIn ? (
             <div className="input-item-container">
               <label
                 htmlFor="authPasswordConfirm"
@@ -244,7 +265,7 @@ const AuthPage = () => {
               </p>
             </div>
           ) : null}
-          {indicatorStep === 3 && !isSignIn ? (
+          {currentStep === 3 && !isSignIn ? (
             <div className="input-item-container">
               <label
                 htmlFor="authNickname"
@@ -268,7 +289,15 @@ const AuthPage = () => {
             <Button
               label={getConfirmButtonLabel()}
               type="cta-full"
-              style={{ marginTop: "48px" }}
+              style={
+                isMobile
+                  ? {
+                      position: "fixed",
+                      left: "0",
+                      bottom: "0",
+                    }
+                  : { marginTop: "48px" }
+              }
               onClick={handleSubmitButtonClick}
               isDisabled={!isConfirmButtonVisible()}
             />

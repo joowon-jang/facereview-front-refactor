@@ -1,38 +1,50 @@
 @import "assets/css/index.scss";
 
 .auth-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 128px;
-    padding-bottom: 98px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 128px;
+  padding-bottom: 98px;
+
+  @include mobile {
+    margin-top: 64px;
+  }
 }
 
 .logo-wrapper {
-    margin-top: 84px;
-    margin-bottom: 144px;
+  margin-top: 84px;
+  margin-bottom: 144px;
+
+  @include mobile {
+    margin-top: 30px;
+    margin-bottom: 96px;
+  }
 }
 
 .input-container {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+
+  @include mobile {
+    width: 358px;
+  }
+
+  .input-item-container {
     display: flex;
     flex-direction: column;
-    width: 380px;
+    width: 100%;
+    height: 124px;
 
-    .input-item-container {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 124px;
-
-        .input-label {
-            color: $gray-900;
-            margin-bottom: 16px;
-        }
-
-        .input-alert-message {
-            color: $system-error;
-            margin-top: 8px;
-        }
+    .input-label {
+      color: $gray-900;
+      margin-bottom: 16px;
     }
 
+    .input-alert-message {
+      color: $system-error;
+      margin-top: 8px;
+    }
+  }
 }

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import "./mypage.scss";
 
-import VideoItem from "components/VideoItem/VideoItem";
 import Button from "components/Button/Button";
 import Chip from "components/Chip/Chip";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
@@ -11,11 +10,15 @@ import Devider from "components/Devider/Devider";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 
 import Etc from "assets/img/etc.png";
+import HeaderToken from "api/HeaderToken";
+import { useAuthStorage } from "store/authStore";
+import VideoItem from "components/VideoItem/VideoItem";
 
 const MyPage = () => {
   const isMobile = window.innerWidth < 1200;
 
   const navigate = useNavigate();
+  const { setTempToken } = useAuthStorage();
   const watchedVideoIds: Array<{ srcProp: string; emotionProp: string }> = [
     { srcProp: "cVz_ArGCo-A", emotionProp: "happy" },
     { srcProp: "my7FSr-0EPM", emotionProp: "surprise" },
@@ -35,6 +38,12 @@ const MyPage = () => {
     setSelectedEmotion(emotion);
   };
 
+  const handleLogoutClick = () => {
+    HeaderToken.set("");
+    setTempToken({ access_token: "" });
+    navigate("/main");
+  };
+
   return (
     <>
       <div className="mypage-container">
@@ -42,7 +51,7 @@ const MyPage = () => {
           <div className="mypage-user-info-container">
             <ProfileIcon
               type={isMobile ? "icon-medium" : "icon-large"}
-              color={"default"}
+              color={"neutral"}
             />
             <div className="mypage-user-edit-container">
               <div className="mypage-name-container">
@@ -68,7 +77,7 @@ const MyPage = () => {
               <Button
                 label="로그아웃"
                 type="small-outline"
-                onClick={() => navigate("/main")}
+                onClick={handleLogoutClick}
                 style={
                   isMobile ? { display: "none" } : { marginBottom: "40px" }
                 }
@@ -80,7 +89,13 @@ const MyPage = () => {
 
         <div className="mypage-watched-contents-container">
           <div className="mypage-watched-title-container">
-            <h3 className={isMobile ? "font-title-small" : "font-title-medium"}>
+            <h3
+              className={
+                isMobile
+                  ? "mypage-title font-title-small"
+                  : "mypage-title font-title-medium"
+              }
+            >
               최근 본 영상
             </h3>
             <div className="mypage-chip-wrapper">
@@ -136,15 +151,17 @@ const MyPage = () => {
               {filteredVideos.length > 0 ? (
                 filteredVideos.map((v) => (
                   <VideoItem
-                    key={`watchedVideo${v.srcProp}`}
-                    width={isMobile ? window.innerWidth - 32 : 360}
                     src={`https://www.youtube.com/embed/${v.srcProp}`}
+                    width={isMobile ? window.innerWidth - 32 : 280}
+                    videoId={v.srcProp}
+                    videoTitle={""}
+                    videoMostEmotion={"happy"}
+                    videoMostEmotionPercentage={0}
                     style={
                       isMobile
-                        ? { marginBottom: "28px" }
+                        ? { paddingTop: "14px", paddingBottom: "14px" }
                         : { marginRight: "60px" }
                     }
-                    videoId={v.srcProp}
                   />
                 ))
               ) : (

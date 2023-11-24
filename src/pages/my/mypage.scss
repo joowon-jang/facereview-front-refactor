@@ -1,7 +1,7 @@
 @import "assets/css/index.scss";
 
 .mypage-container {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   padding-bottom: 98px;
 
@@ -44,7 +44,7 @@
       justify-content: space-between;
 
       @include mobile {
-        padding-left: 12px;
+        margin-left: 12px;
       }
       @include desktop {
         margin-top: 20px;
@@ -61,6 +61,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin-left: -20px;
 
     @include mobile {
       margin-top: 40px;
@@ -74,14 +75,28 @@
       flex-direction: column;
       width: 100%;
 
+      .mypage-title {
+        padding-left: 20px;
+      }
+
       .mypage-chip-wrapper {
         overflow-x: auto;
         white-space: nowrap;
-        padding-top: 32px;
-        padding-bottom: 16px;
+        padding-left: 20px;
+
+        @include mobile {
+          padding-top: 24px;
+          padding-bottom: 18px;
+        }
+        @include desktop {
+          padding-top: 32px;
+          padding-bottom: 16px;
+        }
+
         -ms-overflow-style: none; /* 인터넷 익스플로러 */
         scrollbar-width: none; /* 파이어폭스 */
       }
+
       .mypage-chip-wrapper::-webkit-scrollbar {
         display: none; /* 크롬, 사파리, 오페라, 엣지 */
       }
@@ -90,8 +105,8 @@
     .mypage-video-container {
       display: flex;
       overflow-x: auto;
-      padding-top: 16px;
       padding-bottom: 88px;
+      padding-left: 20px;
     }
 
     .mypage-video-wrapper {
@@ -102,6 +117,7 @@
       }
       @include desktop {
         padding-right: calc(50vw - 660px);
+        padding-top: 16px;
       }
 
       .mypage-video-empty {

@@ -45,10 +45,21 @@ export const signUp = async (props: {
   }
 };
 
-export const checkTutorial = async (props: { cur_access_token: string }) => {
+export const getTempToken = async () => {
+  try {
+    const url = "/gate/temp-token";
+    const res = await api.get(url);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+export const checkTutorial = async () => {
   try {
     const url = "/gate/before-tutorial";
-    const res = await api.post(url, props);
+    const res = await api.post(url);
 
     return res;
   } catch (error) {
@@ -57,10 +68,10 @@ export const checkTutorial = async (props: { cur_access_token: string }) => {
   }
 };
 
-export const tutorialComplete = async (props: { cur_access_token: string }) => {
+export const tutorialComplete = async () => {
   try {
     const url = "/gate/after-tutorial";
-    const res = await api.post(url, props);
+    const res = await api.post(url);
 
     return res;
   } catch (error) {
