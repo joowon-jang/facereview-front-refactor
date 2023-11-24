@@ -123,9 +123,7 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
-  useEffect(() => {
-    socket.connect();
-
+  useLayoutEffect(() => {
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
         setVideoData(res);
@@ -135,6 +133,7 @@ const WatchPage = (): ReactElement => {
           .then((res) => {
             setWatchingIndex(res.watching_data_index);
             console.log("OK /watch/start-analysis ----------------------", res);
+            console.log(res.watching_data_index);
           })
           .catch((err) => {
             console.log(
@@ -156,6 +155,11 @@ const WatchPage = (): ReactElement => {
       .catch((err) => {
         console.log("ERROR /watch/main-youtube ----------------------", err);
       });
+  }, []);
+
+  useEffect(() => {
+    socket.connect();
+
     setTimeout(() => {
       console.log("setTimeout _-----------------------------------------");
       socket.emit("user-disconnect", {
@@ -187,6 +191,17 @@ const WatchPage = (): ReactElement => {
       await socket.emit("user-disconnect", {
         watching_data_index: watchingIndex,
       });
+
+      socket.emit(
+        "user-d",
+        {
+          watching_data_index: watchingIndex,
+        },
+        (response: any) => {
+          console.log("user-d", response);
+        }
+      );
+
       await socket.emit(
         "user-d",
         {
