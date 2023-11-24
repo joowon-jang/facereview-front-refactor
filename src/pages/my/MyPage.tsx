@@ -12,6 +12,7 @@ import SomeIcon from "components/SomeIcon/SomeIcon";
 import Etc from "assets/img/etc.png";
 import HeaderToken from "api/HeaderToken";
 import { useAuthStorage } from "store/authStore";
+import VideoItem from "components/VideoItem/VideoItem";
 
 const MyPage = () => {
   const isMobile = window.innerWidth < 1200;
@@ -76,17 +77,12 @@ const MyPage = () => {
               <Button
                 label="로그아웃"
                 type="small-outline"
-                onClick={() => navigate("/main")}
+                onClick={handleLogoutClick}
                 style={
                   isMobile ? { display: "none" } : { marginBottom: "40px" }
                 }
               />
             </div>
-            <Button
-              label="로그아웃"
-              type="small-outline"
-              onClick={handleLogoutClick}
-            />
           </div>
           <Devider />
         </div>
@@ -154,29 +150,21 @@ const MyPage = () => {
             <div className="mypage-video-wrapper">
               {filteredVideos.length > 0 ? (
                 filteredVideos.map((v) => (
-                  <></>
-                  // <VideoItem
-                  //   key={`watchedVideo${v.srcProp}`}
-                  //   width={isMobile ? window.innerWidth - 32 : 360}
-                  //   src={`https://www.youtube.com/embed/${v.srcProp}`}
-                  //   style={
-                  //     isMobile
-                  //       ? { paddingTop: "14px", paddingBottom: "14px" }
-                  //       : { marginRight: "60px" }
-                  //   }
-                  //   videoId={v.srcProp}
-                  // />
+                  <VideoItem
+                    src={`https://www.youtube.com/embed/${v.srcProp}`}
+                    width={isMobile ? window.innerWidth - 32 : 280}
+                    videoId={v.srcProp}
+                    videoTitle={""}
+                    videoMostEmotion={"happy"}
+                    videoMostEmotionPercentage={0}
+                    style={
+                      isMobile
+                        ? { paddingTop: "14px", paddingBottom: "14px" }
+                        : { marginRight: "60px" }
+                    }
+                  />
                 ))
               ) : (
-                // filteredVideos.map((v) => (
-                //   <VideoItem
-                //     key={`recommendVideo${v.srcProp}`}
-                //     width={360}
-                //     src={`https://www.youtube.com/embed/${v.srcProp}`}
-                //     style={{ marginRight: "60px" }}
-                //     videoId={v.srcProp}
-                //   />
-                // ))
                 <div className="mypage-video-empty">
                   <img className="mypage-video-empty-img" src={Etc} alt="etc" />
                   <p className="font-label-large">아직 본 영상이 없어요</p>

@@ -30,31 +30,15 @@ const MainPage = (): ReactElement => {
     "paKZL7IWcHM",
     "dTBsPShaBro",
   ];
-  const dummyVideoIds: Array<{ srcProp: string; emotionProp: string }> = [
-    { srcProp: "MQteS5ZUEwg", emotionProp: "sad" },
-    { srcProp: "4Ddy_GClC68", emotionProp: "happy" },
-    { srcProp: "dTBsPShaBro", emotionProp: "surprise" },
-    { srcProp: "SeeiDfqtcTU", emotionProp: "angry" },
-    { srcProp: "auR98D6X_eo", emotionProp: "angry" },
-    { srcProp: "VgrXUxsIVtg", emotionProp: "happy" },
-    { srcProp: "eMpzQVVY6zo", emotionProp: "surprise" },
-    { srcProp: "ojUMHhHpmDc", emotionProp: "angry" },
-    { srcProp: "pasRphQvEUE", emotionProp: "sad" },
-    { srcProp: "B549suUxjQw", emotionProp: "surprise" },
-    { srcProp: "EjCs5ej41XI", emotionProp: "angry" },
-    { srcProp: "W7cR4kcQq_E", emotionProp: "happy" },
-    { srcProp: "DINfn8QXbFo", emotionProp: "sad" },
-    { srcProp: "rDVTie6zQyY", emotionProp: "happy" },
-    { srcProp: "Y2FjO0P0H6Q", emotionProp: "surprise" },
-    { srcProp: "A9IgZu-nvzA", emotionProp: "sad" },
-  ];
-  const filteredDummyVideos = dummyVideoIds.filter(
-    (v) => selectedEmotion === "all" || v.emotionProp === selectedEmotion
-  );
 
   const [personalVideoIndicator, setPersonalVideoIndicator] =
     useState<number>(1);
   const [allVideo, setAllVideo] = useState<VideoDataType[]>([]);
+
+  const filteredVideos = allVideo.filter(
+    (v) =>
+      selectedEmotion === "all" || v.youtube_most_emotion === selectedEmotion
+  );
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
@@ -140,14 +124,17 @@ const MainPage = (): ReactElement => {
               />
             </div>
             <div className="video-wrapper">
-              {/* {recommendVideoIds.map((v) => (
-              <VideoItem
-                key={`recommendVideo${v}`}
-                width={isMobile ? window.innerWidth - 32 : 280}
-                videoId={v}
-                style={isMobile ? { marginBottom: "28px" } : {}}
-              />
-            ))} */}
+              {recommendVideoIds.map((v) => (
+                <VideoItem
+                  key={`recommendVideo${v}`}
+                  width={isMobile ? window.innerWidth - 32 : 280}
+                  videoId={v}
+                  style={isMobile ? { marginBottom: "28px" } : {}}
+                  videoTitle={""}
+                  videoMostEmotion={"happy"}
+                  videoMostEmotionPercentage={0}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -302,9 +289,11 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
-            {allVideo.map((v) => (
+            {filteredVideos.map((v) => (
               <VideoItem
                 key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
+                src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
                 style={
                   isMobile ? { marginBottom: "28px" } : { marginBottom: "56px" }
