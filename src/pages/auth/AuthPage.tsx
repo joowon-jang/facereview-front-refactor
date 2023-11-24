@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import AnimatedLogo from "components/AnimatedLogo/AnimatedLogo";
 import Button from "components/Button/Button";
@@ -18,6 +18,8 @@ const AlertMessages = {
 };
 
 const AuthPage = () => {
+  const isMobile = window.innerWidth < 1200;
+
   const navigate = useNavigate();
   const { setToken } = useAuthStorage();
 
@@ -268,7 +270,15 @@ const AuthPage = () => {
             <Button
               label={getConfirmButtonLabel()}
               type="cta-full"
-              style={{ marginTop: "48px" }}
+              style={
+                isMobile
+                  ? {
+                      position: "fixed",
+                      left: "0",
+                      bottom: "0",
+                    }
+                  : { marginTop: "48px" }
+              }
               onClick={handleSubmitButtonClick}
               isDisabled={!isConfirmButtonVisible()}
             />
