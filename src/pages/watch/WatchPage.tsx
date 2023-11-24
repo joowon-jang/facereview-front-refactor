@@ -156,22 +156,31 @@ const WatchPage = (): ReactElement => {
       .catch((err) => {
         console.log("ERROR /watch/main-youtube ----------------------", err);
       });
-
-    socket.emit(
-      "test",
-      {
-        client_message: "test hi this is client",
-      },
-      (response: any) => {
-        console.log("test socekt response");
-        console.log(response);
-      }
-    );
-    return () => {
+    setTimeout(() => {
+      console.log("setTimeout _-----------------------------------------");
       socket.emit("user-disconnect", {
         watching_data_index: watchingIndex,
       });
+
+      socket.emit("abc", {
+        watching_data_index: watchingIndex,
+      });
+    }, 3000);
+
+    const handleUnmount = async () => {
+      await socket.emit("user-disconnect", {
+        watching_data_index: watchingIndex,
+      });
+
+      await socket.emit("abc", {
+        watching_data_index: watchingIndex,
+      });
+      await socket.disconnect();
       console.log("watch end");
+    };
+
+    return () => {
+      handleUnmount();
     };
   }, []);
 
