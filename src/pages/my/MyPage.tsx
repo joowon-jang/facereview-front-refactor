@@ -152,7 +152,7 @@ const MyPage = () => {
                 filteredVideos.map((v) => (
                   <VideoItem
                     src={`https://www.youtube.com/embed/${v.srcProp}`}
-                    width={isMobile ? window.innerWidth - 32 : 280}
+                    width={isMobile ? window.innerWidth - 32 : 360}
                     videoId={v.srcProp}
                     videoTitle={""}
                     videoMostEmotion={"happy"}
