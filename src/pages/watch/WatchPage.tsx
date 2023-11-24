@@ -21,7 +21,11 @@ import { EmotionType, VideoDetailType } from "types";
 import { getVideoDetail } from "api/youtube";
 import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
-import { getVideoComments, sendStartAnalysis } from "api/watch";
+import {
+  getVideoComments,
+  sendFinishVideo,
+  sendStartAnalysis,
+} from "api/watch";
 
 type CommentItemType = {
   color: EmotionType;
@@ -185,6 +189,12 @@ const WatchPage = (): ReactElement => {
           console.log(response);
         }
       );
+
+      sendFinishVideo({ watching_data_index: watchingIndex || -1 }).then(
+        (res) => {
+          console.log("sendFinishVideo");
+        }
+      );
     }, 3000);
 
     const handleUnmount = async () => {
@@ -211,17 +221,11 @@ const WatchPage = (): ReactElement => {
           console.log(response);
         }
       );
-
-      await socket.emit(
-        "abc",
-        {
-          watching_data_index: watchingIndex,
-        },
-        (response: any) => {
-          console.log(response);
+      sendFinishVideo({ watching_data_index: watchingIndex || -1 }).then(
+        (res) => {
+          console.log("sendFinishVideo");
         }
       );
-      await socket.disconnect();
       console.log("watch end");
     };
 

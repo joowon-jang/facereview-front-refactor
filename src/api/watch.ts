@@ -39,3 +39,17 @@ export const sendNewComment = async (props: {
     throw error;
   }
 };
+
+export const sendFinishVideo = async (props: {
+  watching_data_index: number;
+}) => {
+  try {
+    const url = "/finish-watch";
+    const { data } = await api.post(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
