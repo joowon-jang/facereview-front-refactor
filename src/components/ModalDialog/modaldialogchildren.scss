@@ -30,10 +30,17 @@
     background: $gray-200;
     border-radius: 12px;
 
-    .main-page-modal-thumbnail-image {
+    .main-page-modal-thumbnail-empty-image {
       width: 80px;
       height: 80px;
     }
+  }
+
+  .main-page-modal-thumbnail-registering {
+    width: 380px;
+    height: 214px;
+    margin-top: 36px;
+    border-radius: 12px;
   }
 
   .main-page-modal-thumbnail-registered {
