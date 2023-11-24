@@ -18,6 +18,7 @@
     "jsx": "react-jsx",
     "paths": {
       "assets/*": ["assets/*"],
+      "api/*": ["api/*"],
       "components/*": ["components/*"],
       "pages/*": ["pages/*"],
       "socket/*": ["socket/*"],
