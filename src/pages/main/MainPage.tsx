@@ -165,7 +165,7 @@ const MainPage = (): ReactElement => {
             isMobile ? "title font-title-medium" : "title font-title-large"
           }
         >
-          ${user_name}님을 위해 준비한
+          {user_name}님을 위해 준비한
           {isMobile && <br />}
           인기있는 영상이에요.
         </h2>
