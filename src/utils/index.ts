@@ -1,6 +1,6 @@
 export const emojiOfEmotion = {
   happy: "😄",
-  surprise: "🫢",
+  surprise: "😲",
   angry: "😠",
   sad: "😥",
   neutral: "😐",
