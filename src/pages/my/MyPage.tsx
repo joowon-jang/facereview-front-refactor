@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import "./mypage.scss";
 
-import VideoItem from "components/VideoItem/VideoItem";
 import Button from "components/Button/Button";
 import Chip from "components/Chip/Chip";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
@@ -11,11 +10,14 @@ import Devider from "components/Devider/Devider";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 
 import Etc from "assets/img/etc.png";
+import HeaderToken from "api/HeaderToken";
+import { useAuthStorage } from "store/authStore";
 
 const MyPage = () => {
   const isMobile = window.innerWidth < 1200;
 
   const navigate = useNavigate();
+  const { setTempToken } = useAuthStorage();
   const watchedVideoIds: Array<{ srcProp: string; emotionProp: string }> = [
     { srcProp: "cVz_ArGCo-A", emotionProp: "happy" },
     { srcProp: "my7FSr-0EPM", emotionProp: "surprise" },
@@ -33,6 +35,12 @@ const MyPage = () => {
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
+  };
+
+  const handleLogoutClick = () => {
+    HeaderToken.set("");
+    setTempToken({ access_token: "" });
+    navigate("/main");
   };
 
   return (
@@ -74,6 +82,11 @@ const MyPage = () => {
                 }
               />
             </div>
+            <Button
+              label="로그아웃"
+              type="small-outline"
+              onClick={handleLogoutClick}
+            />
           </div>
           <Devider />
         </div>
@@ -154,6 +167,15 @@ const MyPage = () => {
                   />
                 ))
               ) : (
+                // filteredVideos.map((v) => (
+                //   <VideoItem
+                //     key={`recommendVideo${v.srcProp}`}
+                //     width={360}
+                //     src={`https://www.youtube.com/embed/${v.srcProp}`}
+                //     style={{ marginRight: "60px" }}
+                //     videoId={v.srcProp}
+                //   />
+                // ))
                 <div className="mypage-video-empty">
                   <img className="mypage-video-empty-img" src={Etc} alt="etc" />
                   <p className="font-label-large">아직 본 영상이 없어요</p>

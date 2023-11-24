@@ -1,3 +1,4 @@
+import { ErrorResponseImpl } from "@remix-run/router/dist/utils";
 import axios from "axios";
 
 const api = axios.create({
@@ -23,6 +24,8 @@ api.interceptors.response.use(
   },
   (error) => {
     console.log("🧨 [Res ERROR]", error, "\n");
+    if (error.status === 408) {
+    }
     return Promise.reject(error);
   }
 );

@@ -1,11 +1,13 @@
-import api from "api";
-import { checkTutorial } from "api/auth";
-import { getTestVideo } from "api/youtube";
-import StepIndicator from "components/StepIndicator/StepIndicator";
-import VideoItem from "components/VideoItem/VideoItem";
 import { ReactElement, useEffect, useState } from "react";
 import { useAuthStorage } from "store/authStore";
+import StepIndicator from "components/StepIndicator/StepIndicator";
+import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
+import { getAllVideo, getPersonalRecommendedVideo } from "api/youtube";
+import { VideoDataType } from "types";
+
+const MainPage = (): ReactElement => {
+  const { is_sign_in, user_name } = useAuthStorage();
 import Chip from "components/Chip/Chip";
 import ModalDialog from "components/ModalDialog/ModalDialog";
 import TextInput from "components/TextInput/TextInput";
@@ -54,6 +56,7 @@ const MainPage = (): ReactElement => {
 
   const [personalVideoIndicator, setPersonalVideoIndicator] =
     useState<number>(1);
+  const [allVideo, setAllVideo] = useState<VideoDataType[]>([]);
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
@@ -84,14 +87,21 @@ const MainPage = (): ReactElement => {
   };
 
   useEffect(() => {
-    if (access_token) {
-      console.log("already sign in", access_token);
-      checkTutorial({ cur_access_token: access_token })
+    getAllVideo()
+      .then((data) => {
+        console.log(data);
+        setAllVideo(data);
+      })
+      .catch((err) => console.log(err));
+
+    if (is_sign_in) {
+      getPersonalRecommendedVideo()
         .then((res) => {
-          console.log("check tutorial----------------");
           console.log(res);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
 
@@ -101,13 +111,13 @@ const MainPage = (): ReactElement => {
 
   return (
     <div className="main-page-container">
-      <div className="personal-recommend-contents-container">
+      {is_sign_in ? (<div className="personal-recommend-contents-container">
         <h2
           className={
             isMobile ? "title font-title-medium" : "title font-title-large"
           }
         >
-          하하호호님이 좋아할
+          {user_name}님이 좋아할
           {isMobile && <br />}
           오늘의 영상들을 골라봤어요.
         </h2>
@@ -139,14 +149,22 @@ const MainPage = (): ReactElement => {
             ))}
           </div>
         </div>
-      </div>
+      
+      ) : null}
+
       <div className="hot-contents-container">
+        <h2 className="title font-title-large">
+          {is_sign_in
+            ? `${user_name}님을 위해 준비한 인기있는 영상이에요.`
+            : "감정별로 볼 수 있는 영상을 추천해드릴게요."}
+        </h2>
+          
         <h2
           className={
             isMobile ? "title font-title-medium" : "title font-title-large"
           }
         >
-          하하호호님이 위해 준비한
+          ${user_name}님을 위해 준비한
           {isMobile && <br />}
           인기있는 영상이에요.
         </h2>
@@ -283,6 +301,15 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
+
+            {allVideo.map((v) => (
+              <VideoItem
+                key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
+                videoId={v.youtube_url}
+                style={{ marginBottom: "56px" }}
+                videoTitle={v.youtube_title}
+                videoMostEmotion={v.youtube_most_emotion}
+                videoMostEmotionPercentage={v.youtube_most_emotion_per}
             {filteredDummyVideos.map((v) => (
               <VideoItem
                 key={`videoItem${v.srcProp}`}

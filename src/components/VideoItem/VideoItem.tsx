@@ -1,12 +1,17 @@
 import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import YouTube, { YouTubeEvent } from "react-youtube";
+import { EmotionType } from "types";
+import { emojiOfEmotion } from "utils";
 import { Options, YouTubePlayer } from "youtube-player/dist/types";
 import "./videoitem.scss";
 
 type VideoItemPropsType = {
   src?: string;
   videoId: string;
+  videoTitle: string;
+  videoMostEmotion: EmotionType;
+  videoMostEmotionPercentage: number;
   width?: number;
   style?: React.CSSProperties;
 };
@@ -14,6 +19,9 @@ type VideoItemPropsType = {
 const VideoItem = ({
   src,
   videoId,
+  videoTitle,
+  videoMostEmotion,
+  videoMostEmotionPercentage,
   width,
   style,
 }: VideoItemPropsType): ReactElement => {
@@ -31,7 +39,6 @@ const VideoItem = ({
       rel: 0,
     },
   };
-
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
 
   const handleClick = () => {
@@ -94,11 +101,10 @@ const VideoItem = ({
         />
       </div>
       <div className="video-info-container">
-        <h3 className="video-title font-label-large">
-          [#알쓸범잡] (3시간) 김상욱 교수가 알려주는 DNA의 비밀🧬 피 한 방울
-          만으로 범인을 검거한 과학수사의 모든 것👮
+        <h3 className="video-title font-label-large">{videoTitle}</h3>
+        <h3 className="video-emotion-data font-body-medium">
+          {emojiOfEmotion[videoMostEmotion]} {videoMostEmotionPercentage}%
         </h3>
-        <h3 className="video-emotion-data font-body-medium">😄 38.9%</h3>
       </div>
     </div>
   );

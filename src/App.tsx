@@ -1,8 +1,29 @@
 import Router from "./components/Router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLayoutEffect } from "react";
+import { useAuthStorage } from "store/authStore";
+import HeaderToken from "api/HeaderToken";
+import { getTempToken } from "api/auth";
 
 function App() {
+  const { access_token, setTempToken } = useAuthStorage();
+  useLayoutEffect(() => {
+    if (access_token) {
+      HeaderToken.set(access_token);
+      return;
+    }
+    getTempToken()
+      .then((res) => {
+        console.log("temp token");
+        console.log(res);
+        setTempToken({ access_token: res.data.new_temp_token });
+      })
+      .catch((err) => {
+        console.log("temp token");
+        console.log(err);
+      });
+  }, [access_token, setTempToken]);
   return (
     <div className="App">
       <Router />

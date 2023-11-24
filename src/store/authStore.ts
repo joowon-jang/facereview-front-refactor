@@ -2,11 +2,13 @@ import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 interface AuthState {
-  id: string;
-  nickname: string;
+  is_sign_in: boolean;
+  is_admin: boolean;
+  user_name: string;
+  user_profile: number;
+  user_tutorial: number;
   access_token: string;
   refresh_token: string;
-  setId: (id: string) => void;
   setToken: ({
     access_token,
     refresh_token,
@@ -14,24 +16,69 @@ interface AuthState {
     access_token: string;
     refresh_token: string;
   }) => void;
-  setNickname: (nickname: string) => void;
+  setUserInfo: ({
+    is_admin,
+    is_sign_in,
+    access_token,
+    refresh_token,
+    user_name,
+    user_profile,
+    user_tutorial,
+  }: {
+    is_admin: boolean;
+    is_sign_in: boolean;
+    access_token: string;
+    refresh_token: string;
+    user_name: string;
+    user_profile: number;
+    user_tutorial: number;
+  }) => void;
+  setTempToken: ({ access_token }: { access_token: string }) => void;
 }
 
 export const useAuthStorage = create<AuthState>()(
   devtools(
     persist(
       (set) => ({
-        id: "testid",
-        nickname: "",
+        is_admin: false,
+        is_sign_in: false,
+        user_name: "",
+        user_profile: 0,
+        user_tutorial: 0,
         access_token: "",
         refresh_token: "",
-        setId: (id) => set((state) => ({ id: id })),
         setToken: ({ access_token, refresh_token }) =>
           set((state) => ({
             access_token: access_token,
             refresh_token: refresh_token,
           })),
-        setNickname: (nickname) => set((state) => ({ nickname: nickname })),
+        setUserInfo: ({
+          is_admin,
+          is_sign_in,
+          access_token,
+          refresh_token,
+          user_name,
+          user_profile,
+          user_tutorial,
+        }) =>
+          set((state) => ({
+            is_admin: is_admin,
+            is_sign_in: true,
+            access_token,
+            refresh_token,
+            user_name,
+            user_profile,
+            user_tutorial,
+          })),
+        setTempToken: ({ access_token }) =>
+          set((state) => ({
+            is_admin: false,
+            is_sign_in: false,
+            user_name: "",
+            user_profile: 0,
+            user_tutorial: 0,
+            access_token: access_token,
+          })),
       }),
       {
         name: "auth-storage",
