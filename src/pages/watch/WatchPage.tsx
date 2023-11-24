@@ -237,8 +237,8 @@ const WatchPage = (): ReactElement => {
           youtube_running_time: { formattedCurrentTime },
           string_frame_data: capturedImage,
 
-          watching_data_index: "watching_data_index",
-          youtube_index: "youtube_index",
+          watching_data_index: watchingIndex,
+          youtube_index: videoData?.youtube_index,
         },
         (response: {
           happy: number;
