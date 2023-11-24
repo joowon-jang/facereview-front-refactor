@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./tutorialpage.scss";
 import StepIndicator from "components/StepIndicator/StepIndicator";
 import Button from "components/Button/Button";
-import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
 import { tutorialComplete } from "api/auth";
 
@@ -17,20 +16,15 @@ const TUTORIAL_TEXT = [
 const AuthPage = (): ReactElement => {
   const { step } = useParams();
   const navigate = useNavigate();
-  const { access_token } = useAuthStorage();
 
   const currentStep = +(step || 1);
 
   const handleSkipClick = async () => {
-    tutorialComplete({ cur_access_token: access_token })
+    tutorialComplete()
       .then((res) => {
-        console.log(res);
         toast.success("튜토리얼 완료");
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error("튜토리얼 비정상 종료");
-      })
+      .catch((err) => {})
       .finally(() => {
         navigate("/");
       });
