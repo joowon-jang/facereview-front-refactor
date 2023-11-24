@@ -25,7 +25,7 @@ export const getPersonalRecommendedVideo = async () => {
   }
 };
 
-export const getVideoDetail = async (props: { videoId: string }) => {
+export const getVideoDetail = async (props: { youtube_url: string }) => {
   try {
     const url = "/watch/main-youtube";
     const { data } = await api.post<VideoDetailType>(url, props);
