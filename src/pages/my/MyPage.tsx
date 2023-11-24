@@ -154,17 +154,18 @@ const MyPage = () => {
             <div className="mypage-video-wrapper">
               {filteredVideos.length > 0 ? (
                 filteredVideos.map((v) => (
-                  <VideoItem
-                    key={`watchedVideo${v.srcProp}`}
-                    width={isMobile ? window.innerWidth - 32 : 360}
-                    src={`https://www.youtube.com/embed/${v.srcProp}`}
-                    style={
-                      isMobile
-                        ? { paddingTop: "14px", paddingBottom: "14px" }
-                        : { marginRight: "60px" }
-                    }
-                    videoId={v.srcProp}
-                  />
+                  <></>
+                  // <VideoItem
+                  //   key={`watchedVideo${v.srcProp}`}
+                  //   width={isMobile ? window.innerWidth - 32 : 360}
+                  //   src={`https://www.youtube.com/embed/${v.srcProp}`}
+                  //   style={
+                  //     isMobile
+                  //       ? { paddingTop: "14px", paddingBottom: "14px" }
+                  //       : { marginRight: "60px" }
+                  //   }
+                  //   videoId={v.srcProp}
+                  // />
                 ))
               ) : (
                 // filteredVideos.map((v) => (
