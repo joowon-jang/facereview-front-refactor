@@ -124,13 +124,13 @@ const MainPage = (): ReactElement => {
               />
             </div>
             <div className="video-wrapper">
-              {recommendVideoIds.map((v) => (
+              {allVideo.map((v) => (
                 <VideoItem
                   key={`recommendVideo${v}`}
                   width={isMobile ? window.innerWidth - 32 : 280}
-                  videoId={v}
+                  videoId={v.youtube_url}
                   style={isMobile ? { marginBottom: "28px" } : {}}
-                  videoTitle={""}
+                  videoTitle={v.youtube_title}
                   videoMostEmotion={"happy"}
                   videoMostEmotionPercentage={0}
                 />
@@ -141,20 +141,23 @@ const MainPage = (): ReactElement => {
       ) : null}
 
       <div className="hot-contents-container">
-        <h2 className="title font-title-large">
-          {is_sign_in
-            ? `${user_name}님을 위해 준비한 인기있는 영상이에요.`
-            : "감정별로 볼 수 있는 영상을 추천해드릴게요."}
-        </h2>
-
         <h2
           className={
             isMobile ? "title font-title-medium" : "title font-title-large"
           }
         >
-          {user_name}님을 위해 준비한
-          {isMobile && <br />}
-          인기있는 영상이에요.
+          {is_sign_in ? (
+            <div>
+              {`${user_name}님을 위해 준비한`} {isMobile && <br />}
+              인기있는 영상이에요.
+            </div>
+          ) : (
+            <div>
+              감정별로 볼 수 있는
+              {isMobile && <br />}
+              영상을 추천해드릴게요.
+            </div>
+          )}
         </h2>
         <div className="video-container">
           <div className="chip-wrapper">
