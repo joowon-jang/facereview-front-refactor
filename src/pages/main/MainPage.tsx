@@ -6,8 +6,6 @@ import "./mainpage.scss";
 import { getAllVideo, getPersonalRecommendedVideo } from "api/youtube";
 import { VideoDataType } from "types";
 
-const MainPage = (): ReactElement => {
-  const { is_sign_in, user_name } = useAuthStorage();
 import Chip from "components/Chip/Chip";
 import ModalDialog from "components/ModalDialog/ModalDialog";
 import TextInput from "components/TextInput/TextInput";
@@ -17,9 +15,9 @@ import Button from "components/Button/Button";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 
 const MainPage = (): ReactElement => {
-  const isMobile = window.innerWidth < 1200;
+  const { is_sign_in, user_name } = useAuthStorage();
 
-  const { id, nickname, access_token, refresh_token } = useAuthStorage();
+  const isMobile = window.innerWidth < 1200;
   const [selectedEmotion, setSelectedEmotion] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerInput, setRegisterInput] = useState("");
@@ -111,45 +109,48 @@ const MainPage = (): ReactElement => {
 
   return (
     <div className="main-page-container">
-      {is_sign_in ? (<div className="personal-recommend-contents-container">
-        <h2
-          className={
-            isMobile ? "title font-title-medium" : "title font-title-large"
-          }
-        >
-          {user_name}님이 좋아할
-          {isMobile && <br />}
-          오늘의 영상들을 골라봤어요.
-        </h2>
-        <h4
-          className={
-            isMobile ? "subtitle font-title-mini" : "subtitle font-title-small"
-          }
-        >
-          시청 기록과 감정을 분석해서
-          {isMobile && <br />}
-          가장 좋아할 영상을 준비했어요.
-        </h4>
-        <div className="video-container">
-          <div className="indicator-wrapper">
-            <StepIndicator
-              step={personalVideoIndicator}
-              maxStep={2}
-              indicatorWidth={37}
-            />
-          </div>
-          <div className="video-wrapper">
-            {recommendVideoIds.map((v) => (
+      {is_sign_in ? (
+        <div className="personal-recommend-contents-container">
+          <h2
+            className={
+              isMobile ? "title font-title-medium" : "title font-title-large"
+            }
+          >
+            {user_name}님이 좋아할
+            {isMobile && <br />}
+            오늘의 영상들을 골라봤어요.
+          </h2>
+          <h4
+            className={
+              isMobile
+                ? "subtitle font-title-mini"
+                : "subtitle font-title-small"
+            }
+          >
+            시청 기록과 감정을 분석해서
+            {isMobile && <br />}
+            가장 좋아할 영상을 준비했어요.
+          </h4>
+          <div className="video-container">
+            <div className="indicator-wrapper">
+              <StepIndicator
+                step={personalVideoIndicator}
+                maxStep={2}
+                indicatorWidth={37}
+              />
+            </div>
+            <div className="video-wrapper">
+              {/* {recommendVideoIds.map((v) => (
               <VideoItem
                 key={`recommendVideo${v}`}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v}
                 style={isMobile ? { marginBottom: "28px" } : {}}
               />
-            ))}
+            ))} */}
+            </div>
           </div>
         </div>
-      
       ) : null}
 
       <div className="hot-contents-container">
@@ -158,7 +159,7 @@ const MainPage = (): ReactElement => {
             ? `${user_name}님을 위해 준비한 인기있는 영상이에요.`
             : "감정별로 볼 수 있는 영상을 추천해드릴게요."}
         </h2>
-          
+
         <h2
           className={
             isMobile ? "title font-title-medium" : "title font-title-large"
@@ -301,24 +302,16 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
-
             {allVideo.map((v) => (
               <VideoItem
                 key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
                 videoId={v.youtube_url}
-                style={{ marginBottom: "56px" }}
-                videoTitle={v.youtube_title}
-                videoMostEmotion={v.youtube_most_emotion}
-                videoMostEmotionPercentage={v.youtube_most_emotion_per}
-            {filteredDummyVideos.map((v) => (
-              <VideoItem
-                key={`videoItem${v.srcProp}`}
-                width={isMobile ? window.innerWidth - 32 : 280}
-                src={`https://www.youtube.com/embed/${v.srcProp}`}
                 style={
                   isMobile ? { marginBottom: "28px" } : { marginBottom: "56px" }
                 }
-                videoId={v.srcProp}
+                videoTitle={v.youtube_title}
+                videoMostEmotion={v.youtube_most_emotion}
+                videoMostEmotionPercentage={v.youtube_most_emotion_per}
               />
             ))}
           </div>
