@@ -19,7 +19,10 @@
     "paths": {
       "assets/*": ["assets/*"],
       "components/*": ["components/*"],
-      "pages/*": ["pages/*"]
+      "pages/*": ["pages/*"],
+      "socket/*": ["socket/*"],
+      "types/*": ["types/*"],
+      "utils/*": ["utils/*"]
     }
   },
   "include": ["src"]
