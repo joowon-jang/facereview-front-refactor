@@ -20,23 +20,26 @@
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
   padding: 32px 20px;
   background: $gray-100;
-  width: 340px;
-  max-width: 340px;
   border-radius: 8px;
+  width: 340px;
   overflow: auto;
+  justify-content: center;
+  align-items: center;
 
-  .modal-label-container {
+  &.video-register {
+    background: $gray-50;
+    padding: 60px 60px 40px 60px;
+    width: 500px;
+  }
+
+  .modal-contents-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     margin-bottom: 24px;
 
-    .modal-icon-wrapper {
-      display: flex;
-      gap: 10px;
-    }
-
-    .modal-title-label {
+    &.video-register {
       margin-bottom: 12px;
     }
   }

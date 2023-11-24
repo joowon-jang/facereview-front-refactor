@@ -5,7 +5,7 @@ import TextInput from "components/TextInput/TextInput";
 import { useNavigate } from "react-router-dom";
 import "./editpage.scss";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
-import ModalDialog from "components/Modal/ModalDialog";
+import ModalDialog from "components/ModalDialog/ModalDialog";
 import { EmotionType } from "types";
 
 const EditPage = () => {
@@ -45,11 +45,66 @@ const EditPage = () => {
           />
           <ModalDialog
             type={"one-button"}
-            titleLabel="아이콘을 선택하세요"
             isOpen={isModalOpen}
             onClose={closeModal}
-            onSelectColor={handleColorChange}
-          />
+          >
+            <h3
+              className="font-title-mini editpage-modal-title"
+              style={{ marginBottom: "24px" }}
+            >
+              아이콘을 선택해주세요
+            </h3>
+            <div
+              className="editpage-modal-icon-wrapper"
+              style={{ display: "flex", gap: "10px", marginBottom: "12px" }}
+            >
+              <ProfileIcon
+                type="icon-medium"
+                color="neutral"
+                onSelectClick={() => {
+                  handleColorChange("neutral");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="happy"
+                onSelectClick={() => {
+                  handleColorChange("happy");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="surprise"
+                onSelectClick={() => {
+                  handleColorChange("surprise");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="sad"
+                onSelectClick={() => {
+                  handleColorChange("sad");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+              <ProfileIcon
+                type="icon-medium"
+                color="angry"
+                onSelectClick={() => {
+                  handleColorChange("angry");
+                  closeModal();
+                }}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
+          </ModalDialog>
           <div className="editpage-edit-container">
             <div className="editpage-input-container">
               <label htmlFor="editNickName">닉네임</label>

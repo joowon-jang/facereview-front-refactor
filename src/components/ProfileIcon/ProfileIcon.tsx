@@ -21,29 +21,23 @@ const ProfileIcon = ({
   onEditClick,
   onSelectClick,
 }: ProfileIconPropsType): ReactElement => {
-  const handleEditableClick = () => {
-    if (isEditable && onEditClick) {
-      onEditClick();
-    }
-  };
-
   return (
     <div
       className={`profile-icon ${type} ${color}`}
       style={style}
-      onClick={handleEditableClick}
+      onClick={onSelectClick}
     >
+      {onSelectClick && <div className="profile-icon-dim"></div>}
       <img
         className={`profile-image ${type}`}
         src={ProfileImage}
         alt="Person"
-        onClick={onSelectClick}
       />
       <img
         className={`editable-image ${type} ${isEditable ? "editable" : null}`}
         src={EditableImage}
         alt="Editable"
-        onClick={handleEditableClick}
+        onClick={onEditClick}
       />
     </div>
   );
