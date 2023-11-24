@@ -2,7 +2,6 @@ import { ReactElement, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Webcam from "react-webcam";
 import YouTube, { YouTubeEvent } from "react-youtube";
-import VideoItem from "components/VideoItem/VideoItem";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
 import { Options, YouTubePlayer } from "youtube-player/dist/types";
 import "./watchpage.scss";
@@ -37,12 +36,6 @@ const WatchPage = (): ReactElement => {
     width: 320,
     height: 180,
   };
-  const recommendVideoIds = [
-    "cVz_ArGCo-A",
-    "my7FSr-0EPM",
-    "paKZL7IWcHM",
-    "dTBsPShaBro",
-  ];
 
   const [graphData, setGraphData] = useState([
     {
@@ -137,7 +130,6 @@ const WatchPage = (): ReactElement => {
   });
 
   useEffect(() => {
-    let cnt = 0;
     const interval = setInterval(async () => {
       const capturedImage = await capture();
       const currentTime = await video?.getCurrentTime();
@@ -177,15 +169,15 @@ const WatchPage = (): ReactElement => {
     return () => {
       clearInterval(interval);
     };
-  }, [video]);
+  }, [capture, graphData, video]);
 
-  const CustomTooltip = ({ formattedValue, id }: any): ReactElement => {
-    return (
-      <div className="graph-tooltip-container">
-        <EmotionBadge type={"small"} emotion={id} />
-      </div>
-    );
-  };
+  // const CustomTooltip = ({ formattedValue, id }: any): ReactElement => {
+  //   return (
+  //     <div className="graph-tooltip-container">
+  //       <EmotionBadge type={"small"} emotion={id} />
+  //     </div>
+  //   );
+  // };
 
   const CommentItem = ({
     nickname,
@@ -338,7 +330,7 @@ const WatchPage = (): ReactElement => {
             이 영상은 어때요?
           </h4>
           <div className="recommend-video-container">
-            {recommendVideoIds.map((v) => (
+            {/* {recommendVideoIds.map((v) => (
               <VideoItem
                 key={`recommendVideo${v}`}
                 src={`https://www.youtube.com/embed/${v}`}
@@ -346,7 +338,7 @@ const WatchPage = (): ReactElement => {
                 videoId={v}
                 style={{ marginBottom: "24px" }}
               />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
