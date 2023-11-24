@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import "./mypage.scss";
 
-import VideoItem from "components/VideoItem/VideoItem";
 import Button from "components/Button/Button";
 import Chip from "components/Chip/Chip";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
@@ -11,9 +10,12 @@ import Devider from "components/Devider/Devider";
 import NextIcon from "components/NextIcon/NextIcon";
 
 import Etc from "assets/img/etc.png";
+import HeaderToken from "api/HeaderToken";
+import { useAuthStorage } from "store/authStore";
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const { setTempToken } = useAuthStorage();
   const watchedVideoIds: Array<{ srcProp: string; emotionProp: string }> = [
     { srcProp: "cVz_ArGCo-A", emotionProp: "happy" },
     { srcProp: "my7FSr-0EPM", emotionProp: "surprise" },
@@ -31,6 +33,12 @@ const MyPage = () => {
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
+  };
+
+  const handleLogoutClick = () => {
+    HeaderToken.set("");
+    setTempToken({ access_token: "" });
+    navigate("/main");
   };
 
   return (
@@ -52,7 +60,7 @@ const MyPage = () => {
             <Button
               label="로그아웃"
               type="small-outline"
-              onClick={() => navigate("/main")}
+              onClick={handleLogoutClick}
             />
           </div>
           <h3 className="mypage-title font-title-medium">
@@ -101,16 +109,17 @@ const MyPage = () => {
           <div className="mypage-video-container">
             <div className="mypage-video-wrapper">
               {filteredVideos.length > 0 ? (
-                filteredVideos.map((v) => (
-                  <VideoItem
-                    key={`recommendVideo${v.srcProp}`}
-                    width={360}
-                    src={`https://www.youtube.com/embed/${v.srcProp}`}
-                    style={{ marginRight: "60px" }}
-                    videoId={v.srcProp}
-                  />
-                ))
+                <></>
               ) : (
+                // filteredVideos.map((v) => (
+                //   <VideoItem
+                //     key={`recommendVideo${v.srcProp}`}
+                //     width={360}
+                //     src={`https://www.youtube.com/embed/${v.srcProp}`}
+                //     style={{ marginRight: "60px" }}
+                //     videoId={v.srcProp}
+                //   />
+                // ))
                 <div className="mypage-video-empty">
                   <img className="mypage-video-empty-img" src={Etc} alt="etc" />
                   <p className="font-label-large">아직 본 영상이 없어요</p>
