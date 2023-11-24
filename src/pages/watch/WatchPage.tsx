@@ -1,5 +1,11 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import {
+  ReactElement,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Webcam from "react-webcam";
 import YouTube, { YouTubeEvent } from "react-youtube";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
@@ -11,8 +17,11 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
-import { EmotionType } from "types";
+import { EmotionType, VideoDetailType } from "types";
 import { getVideoDetail } from "api/youtube";
+import { useAuthStorage } from "store/authStore";
+import { toast } from "react-toastify";
+import { getVideoComments, sendStartAnalysis } from "api/watch";
 
 type CommentItemType = {
   color: EmotionType;
@@ -23,6 +32,8 @@ type CommentItemType = {
 
 const WatchPage = (): ReactElement => {
   const { id } = useParams();
+  const { is_sign_in } = useAuthStorage();
+  const navigation = useNavigate();
   const opts: Options = {
     width: 852,
     height: 480,
@@ -69,6 +80,8 @@ const WatchPage = (): ReactElement => {
     },
   ];
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
+  const [videoData, setVideoData] = useState<VideoDetailType>();
+  const [watchingIndex, setWatchingIndex] = useState<number>();
   const [currentMyEmotion, setCurrentMyEmotion] =
     useState<EmotionType>("neutral");
   const [comment, setComment] = useState("");
@@ -100,13 +113,49 @@ const WatchPage = (): ReactElement => {
     return `${resHours}:${resMinutes}:${resSeconds}`;
   };
 
+  const handleCommentSubmit = () => {
+    if (is_sign_in) {
+      if (comment.length > 0) {
+      }
+      return;
+    }
+    toast.warn("로그인이 필요합니다.", { toastId: "need sign in" });
+    navigation("/auth/1");
+  };
+
   useEffect(() => {
-    getVideoDetail({ videoId: id || "" })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {});
     socket.connect();
+
+    getVideoDetail({ youtube_url: id || "" })
+      .then((res) => {
+        setVideoData(res);
+        console.log("OK /watch/main-youtube ----------------------", res);
+
+        sendStartAnalysis({ youtube_index: res.youtube_index })
+          .then((res) => {
+            setWatchingIndex(res.watching_data_index);
+            console.log("OK /watch/start-analysis ----------------------", res);
+          })
+          .catch((err) => {
+            console.log(
+              "ERROR /watch/start-analysis ----------------------",
+              err
+            );
+          });
+        getVideoComments({ youtube_index: res.youtube_index })
+          .then((res) => {
+            console.log("OK /watch/comment-list ----------------------", res);
+          })
+          .catch((err) => {
+            console.log(
+              "ERROR /watch/comment-list ----------------------",
+              err
+            );
+          });
+      })
+      .catch((err) => {
+        console.log("ERROR /watch/main-youtube ----------------------", err);
+      });
 
     socket.emit(
       "test",
@@ -118,6 +167,12 @@ const WatchPage = (): ReactElement => {
         console.log(response);
       }
     );
+    return () => {
+      socket.emit("user-disconnect", {
+        watching_data_index: watchingIndex,
+      });
+      console.log("watch end");
+    };
   }, []);
 
   useEffect(() => {
@@ -244,7 +299,7 @@ const WatchPage = (): ReactElement => {
               placeholder={"영상에 대한 의견을 남겨보아요"}
             />
             <UploadButton
-              onClick={() => {}}
+              onClick={handleCommentSubmit}
               style={{
                 marginLeft: "12px",
                 display: comment.length > 0 ? "block" : "none",
