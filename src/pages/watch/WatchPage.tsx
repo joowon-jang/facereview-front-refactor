@@ -162,26 +162,50 @@ const WatchPage = (): ReactElement => {
         watching_data_index: watchingIndex,
       });
 
-      socket.emit("user-d", {
-        watching_data_index: watchingIndex,
-      });
+      socket.emit(
+        "user-d",
+        {
+          watching_data_index: watchingIndex,
+        },
+        (response: any) => {
+          console.log(response);
+        }
+      );
 
-      socket.emit("abc", {
-        watching_data_index: watchingIndex,
-      });
+      socket.emit(
+        "abc",
+        {
+          watching_data_index: watchingIndex,
+        },
+        (response: any) => {
+          console.log(response);
+        }
+      );
     }, 3000);
 
     const handleUnmount = async () => {
       await socket.emit("user-disconnect", {
         watching_data_index: watchingIndex,
       });
-      await socket.emit("user-d", {
-        watching_data_index: watchingIndex,
-      });
+      await socket.emit(
+        "user-d",
+        {
+          watching_data_index: watchingIndex,
+        },
+        (response: any) => {
+          console.log(response);
+        }
+      );
 
-      await socket.emit("abc", {
-        watching_data_index: watchingIndex,
-      });
+      await socket.emit(
+        "abc",
+        {
+          watching_data_index: watchingIndex,
+        },
+        (response: any) => {
+          console.log(response);
+        }
+      );
       await socket.disconnect();
       console.log("watch end");
     };
