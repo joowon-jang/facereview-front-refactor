@@ -21,6 +21,8 @@ const AlertMessages = {
 };
 
 const AuthPage = () => {
+  const isMobile = window.innerWidth < 1200;
+
   const navigate = useNavigate();
   const { step } = useParams();
   const currentStep = +(step || 1);
@@ -287,7 +289,15 @@ const AuthPage = () => {
             <Button
               label={getConfirmButtonLabel()}
               type="cta-full"
-              style={{ marginTop: "48px" }}
+              style={
+                isMobile
+                  ? {
+                      position: "fixed",
+                      left: "0",
+                      bottom: "0",
+                    }
+                  : { marginTop: "48px" }
+              }
               onClick={handleSubmitButtonClick}
               isDisabled={!isConfirmButtonVisible()}
             />

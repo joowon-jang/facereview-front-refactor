@@ -1,0 +1,32 @@
+@import "assets/css/index.scss";
+
+.some-icon {
+  cursor: pointer;
+  &.large-next {
+    width: 32px;
+    height: 32px;
+  }
+  &.small-next {
+    width: 24px;
+    height: 24px;
+  }
+  &.close {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.some-icon-image {
+  &.large-next {
+    width: 32px;
+    height: 32px;
+  }
+  &.small-next {
+    width: 24px;
+    height: 24px;
+  }
+  &.close {
+    width: 20px;
+    height: 20px;
+  }
+}
