@@ -80,7 +80,13 @@ const MyPage = () => {
 
         <div className="mypage-watched-contents-container">
           <div className="mypage-watched-title-container">
-            <h3 className={isMobile ? "font-title-small" : "font-title-medium"}>
+            <h3
+              className={
+                isMobile
+                  ? "mypage-title font-title-small"
+                  : "mypage-title font-title-medium"
+              }
+            >
               최근 본 영상
             </h3>
             <div className="mypage-chip-wrapper">
