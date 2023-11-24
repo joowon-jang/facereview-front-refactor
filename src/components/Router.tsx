@@ -6,6 +6,7 @@ import ScreenContainer from "./ScreenContainer/ScreenContainer";
 import MyPage from "../pages/my/MyPage";
 import EditPage from "../pages/edit/EditPage";
 import TutorialPage from "pages/tutorial/TutorialPage";
+import AdminPage from "pages/admin/AdminPage";
 
 const Router = () => {
   return (
@@ -19,7 +20,10 @@ const Router = () => {
           <Route path="*" element={<MainPage />} />
         </Route>
         <Route element={<ScreenContainer headerShown={false} />}>
-          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/:step" element={<AuthPage />} />
+        </Route>
+        <Route element={<ScreenContainer isAdmin={true} headerShown={true} />}>
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
         <Route path="/tutorial/:step" element={<TutorialPage />} />
       </Routes>
