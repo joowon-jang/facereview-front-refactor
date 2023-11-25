@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import youtubeIcon from "assets/img/youtubeIcon.png";
 import Button from "components/Button/Button";
 import SomeIcon from "components/SomeIcon/SomeIcon";
+import { updateRequestVideoList } from "api/request";
 
 const MainPage = (): ReactElement => {
   const { is_sign_in, user_name } = useAuthStorage();
@@ -49,6 +50,7 @@ const MainPage = (): ReactElement => {
   };
   const closeModal = () => {
     setIsModalOpen(false);
+    setIsRegisterMatched(false);
     setRegisterInput("");
     setRegisteringVideoId("");
     setRegisteredVideoIds([]);
@@ -65,6 +67,20 @@ const MainPage = (): ReactElement => {
       setIsRegisterMatched(true);
     } else {
       setIsRegisterMatched(false);
+    }
+  };
+
+  const handleRegisterButtonClick = () => {
+    if (registeredVideoIds.length > 0) {
+      const promises = registeredVideoIds.map((videoId) =>
+        updateRequestVideoList({ youtube_url_id: videoId })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      );
     }
   };
 
@@ -219,10 +235,7 @@ const MainPage = (): ReactElement => {
             type={"video-register"}
             isOpen={isModalOpen}
             onClose={closeModal}
-            onCheck={() => {
-              toast.success("등록요청이 완료되었습니다.");
-              closeModal();
-            }}
+            onCheck={handleRegisterButtonClick}
           >
             <SomeIcon
               type={"close"}
