@@ -6,6 +6,10 @@
   align-items: center;
   padding: 24px 0px 24px 0px;
 
+  @include mobile {
+    padding: 8px 16px 8px 16px;
+  }
+
   .header-profile-icon-button {
     background: transparent;
     cursor: pointer;
