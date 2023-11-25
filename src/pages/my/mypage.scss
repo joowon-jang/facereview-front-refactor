@@ -134,9 +134,18 @@
         }
 
         .mypage-video-empty-img {
-          width: 100px;
-          height: 100px;
-          margin-bottom: 12px;
+          @include mobile {
+            width: 66px;
+            height: 66px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+          }
+          @include desktop {
+            width: 100px;
+            height: 100px;
+            margin-top: 30px;
+            margin-bottom: 12px;
+          }
         }
       }
     }

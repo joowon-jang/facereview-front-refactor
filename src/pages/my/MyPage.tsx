@@ -36,7 +36,6 @@ const MyPage = () => {
   const [recentVideo, setRecentVideo] = useState<VideoWatchedType[]>([]);
 
   const filteredRecentVideos = recentVideo.filter(
-    // recentVideo로 변경예정
     (v) => selectedEmotion === "all" || v.most_emotion === selectedEmotion
   );
 
@@ -186,14 +185,22 @@ const MyPage = () => {
               ) : (
                 <div className="mypage-video-empty">
                   <img className="mypage-video-empty-img" src={Etc} alt="etc" />
-                  <p className="font-label-large">아직 본 영상이 없어요</p>
+                  <p
+                    className={
+                      isMobile ? "font-lebel-medium" : "font-label-large"
+                    }
+                  >
+                    아직 본 영상이 없어요
+                  </p>
                 </div>
               )}
             </div>
           </div>
         </div>
         <div className="mypage-emotion-container">
-          <h2 className="font-title-medium">최근 나의 감정 그래프</h2>
+          <h2 className={isMobile ? "font-title-small" : "font-title-medium"}>
+            최근 나의 감정 그래프
+          </h2>
           <div className="mypage-emotion-graph-container"></div>
         </div>
       </div>
