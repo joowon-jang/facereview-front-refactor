@@ -79,3 +79,39 @@ export const tutorialComplete = async () => {
     throw error;
   }
 };
+
+export const getUserName = async () => {
+  try {
+    const url = "/mypage/user-name";
+    const res = await api.get(url);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const changeName = async (prop: { new_name: string }) => {
+  try {
+    const url = "/mypage/change-name";
+    const res = await api.post(url);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const changeProfilePhoto = async (prop: { new_name: number }) => {
+  try {
+    const url = "/mypage/change-profilephoto";
+    const res = await api.post(url);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

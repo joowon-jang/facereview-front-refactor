@@ -22,3 +22,10 @@ export type VideoDetailType = {
   youtube_hits: number;
   youtube_like: number;
 };
+export type VideoWatchedType = {
+  youtube_title: string;
+  youtube_url: string;
+  most_emotion: EmotionType;
+  most_emotion_per: number;
+  data_create_time: Date; // need to check python type
+};
