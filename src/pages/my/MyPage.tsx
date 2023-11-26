@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./mypage.scss";
@@ -13,8 +13,12 @@ import Etc from "assets/img/etc.png";
 import HeaderToken from "api/HeaderToken";
 import { useAuthStorage } from "store/authStore";
 import VideoItem from "components/VideoItem/VideoItem";
+import { getRecentVideo } from "api/youtube";
+import { VideoWatchedType } from "types/index";
 
 const MyPage = () => {
+  const { is_sign_in, user_name, user_profile } = useAuthStorage();
+
   const isMobile = window.innerWidth < 1200;
 
   const navigate = useNavigate();
@@ -29,9 +33,10 @@ const MyPage = () => {
   ];
 
   const [selectedEmotion, setSelectedEmotion] = useState("all");
+  const [recentVideo, setRecentVideo] = useState<VideoWatchedType[]>([]);
 
-  const filteredVideos = watchedVideoIds.filter(
-    (v) => selectedEmotion === "all" || v.emotionProp === selectedEmotion
+  const filteredRecentVideos = recentVideo.filter(
+    (v) => selectedEmotion === "all" || v.most_emotion === selectedEmotion
   );
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
@@ -43,6 +48,19 @@ const MyPage = () => {
     setTempToken({ access_token: "" });
     navigate("/main");
   };
+
+  useEffect(() => {
+    if (is_sign_in) {
+      //   getRecentVideo()
+      //     .then((data) => {
+      //       console.log(data);
+      //       setRecentVideo(data);
+      //     })
+      //     .catch((err) => console.log(err));
+      // } else {
+      //   navigate("/auth/1");
+    }
+  }, []);
 
   return (
     <>
@@ -61,7 +79,7 @@ const MyPage = () => {
                       isMobile ? "font-title-medium" : "font-title-large"
                     }
                   >
-                    하하호호님
+                    {user_name}님
                   </h2>
                   <SomeIcon
                     type={isMobile ? "small-next" : "large-next"}
@@ -148,15 +166,15 @@ const MyPage = () => {
           </div>
           <div className="mypage-video-container">
             <div className="mypage-video-wrapper">
-              {filteredVideos.length > 0 ? (
-                filteredVideos.map((v) => (
+              {filteredRecentVideos.length > 0 ? (
+                filteredRecentVideos.map((v) => (
                   <VideoItem
-                    src={`https://www.youtube.com/embed/${v.srcProp}`}
-                    width={isMobile ? window.innerWidth - 32 : 280}
-                    videoId={v.srcProp}
-                    videoTitle={""}
-                    videoMostEmotion={"happy"}
-                    videoMostEmotionPercentage={0}
+                    src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                    width={isMobile ? window.innerWidth - 32 : 360}
+                    videoId={v.youtube_url}
+                    videoTitle={v.youtube_title}
+                    videoMostEmotion={v.most_emotion}
+                    videoMostEmotionPercentage={v.most_emotion_per}
                     style={
                       isMobile
                         ? { paddingTop: "14px", paddingBottom: "14px" }
@@ -167,14 +185,22 @@ const MyPage = () => {
               ) : (
                 <div className="mypage-video-empty">
                   <img className="mypage-video-empty-img" src={Etc} alt="etc" />
-                  <p className="font-label-large">아직 본 영상이 없어요</p>
+                  <p
+                    className={
+                      isMobile ? "font-lebel-medium" : "font-label-large"
+                    }
+                  >
+                    아직 본 영상이 없어요
+                  </p>
                 </div>
               )}
             </div>
           </div>
         </div>
         <div className="mypage-emotion-container">
-          <h2 className="font-title-medium">최근 나의 감정 그래프</h2>
+          <h2 className={isMobile ? "font-title-small" : "font-title-medium"}>
+            최근 나의 감정 그래프
+          </h2>
           <div className="mypage-emotion-graph-container"></div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { VideoDataType, VideoDetailType } from "types";
+import { VideoDataType, VideoDetailType, VideoWatchedType } from "types";
 import api from "./index";
 
 export const getAllVideo = async () => {
@@ -29,6 +29,18 @@ export const getVideoDetail = async (props: { youtube_url: string }) => {
   try {
     const url = "/watch/main-youtube";
     const { data } = await api.post<VideoDetailType>(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getRecentVideo = async () => {
+  try {
+    const url = "/mypage/recent-video";
+    const { data } = await api.get<VideoWatchedType[]>(url);
 
     return data;
   } catch (error) {

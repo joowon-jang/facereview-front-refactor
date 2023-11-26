@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Button from "components/Button/Button";
 import TextInput from "components/TextInput/TextInput";
@@ -7,8 +7,11 @@ import "./editpage.scss";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import ModalDialog from "components/ModalDialog/ModalDialog";
 import { EmotionType } from "types";
+import { useAuthStorage } from "store/authStore";
+import { changeName } from "api/auth";
 
 const EditPage = () => {
+  const { is_sign_in, user_name, user_profile } = useAuthStorage();
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
   const [profileColor, setProfileColor] = useState<EmotionType>("neutral");
@@ -27,10 +30,23 @@ const EditPage = () => {
   };
 
   const handleEditButtonClick = () => {
-    toast.success("회원정보가 수정되었습니다.", { toastId: "edit success" });
+    changeName({ new_name: nickName })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     navigate("/my");
   };
+
+  useEffect(() => {
+    // if (is_sign_in) {
+    // } else {
+    //   navigate("/auth/1");
+    // }
+  }, []);
 
   return (
     <>

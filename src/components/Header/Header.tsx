@@ -7,6 +7,7 @@ import AnimatedLogo from "../AnimatedLogo/AnimatedLogo";
 import "./header.scss";
 
 const Header = (): ReactElement => {
+  const isMobile = window.innerWidth < 1200;
   const navigate = useNavigate();
   const { is_sign_in, user_profile } = useAuthStorage();
 
@@ -14,9 +15,9 @@ const Header = (): ReactElement => {
     <div className="header">
       <AnimatedLogo
         animationType="infinite"
-        animatedWrapperWidth={30}
+        animatedWrapperWidth={isMobile ? 15 : 30}
         gap={3}
-        style={{ height: "35px" }}
+        style={isMobile ? { height: "18px" } : { height: "35px" }}
       />
       {is_sign_in ? (
         <button
@@ -25,12 +26,15 @@ const Header = (): ReactElement => {
             navigate("/my");
           }}
         >
-          <ProfileIcon type={"icon-medium"} color={"neutral"} />
+          <ProfileIcon
+            type={isMobile ? "icon-small" : "icon-medium"}
+            color={"neutral"}
+          />
         </button>
       ) : (
         <Button
           label="로그인"
-          type="small"
+          type={isMobile ? "extra-small" : "small"}
           onClick={() => navigate("/auth/1")}
         ></Button>
       )}

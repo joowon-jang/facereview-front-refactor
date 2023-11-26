@@ -11,3 +11,17 @@ export const getRequestedVideoList = async () => {
     throw error;
   }
 };
+
+export const updateRequestVideoList = async (props: {
+  youtube_url_id: string;
+}) => {
+  try {
+    const url = "/register/recommend-register";
+    const res = await api.post(url, props);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
