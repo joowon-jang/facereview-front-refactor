@@ -115,3 +115,19 @@ export const changeProfilePhoto = async (prop: { new_profile: number }) => {
     throw error;
   }
 };
+
+export const changeFavoriteGenre = async (prop: {
+  user_favorite_genre_1: string;
+  user_favorite_genre_2: string;
+  user_favorite_genre_3: string;
+}) => {
+  try {
+    const url = "/mypage/change-favorite-genre";
+    const res = await api.post(url, prop);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

@@ -25,12 +25,6 @@ const MainPage = (): ReactElement => {
   const [registeringVideoId, setRegisteringVideoId] = useState("");
   const [registeredVideoIds, setRegisteredVideoIds] = useState<string[]>([]);
   const [isRegisterMatched, setIsRegisterMatched] = useState(false);
-  const recommendVideoIds = [
-    "cVz_ArGCo-A",
-    "my7FSr-0EPM",
-    "paKZL7IWcHM",
-    "dTBsPShaBro",
-  ];
 
   const [personalVideoIndicator, setPersonalVideoIndicator] =
     useState<number>(1);

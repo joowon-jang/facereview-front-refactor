@@ -7,6 +7,9 @@ interface AuthState {
   user_name: string;
   user_profile: number;
   user_tutorial: number;
+  user_favorite_genre_1: string;
+  user_favorite_genre_2: string;
+  user_favorite_genre_3: string;
   access_token: string;
   refresh_token: string;
   setToken: ({
@@ -35,6 +38,15 @@ interface AuthState {
   }) => void;
   setUserName: ({ user_name }: { user_name: string }) => void;
   setUserProfile: ({ user_profile }: { user_profile: number }) => void;
+  setUserFavoriteGenre: ({
+    user_favorite_genre_1,
+    user_favorite_genre_2,
+    user_favorite_genre_3,
+  }: {
+    user_favorite_genre_1: string;
+    user_favorite_genre_2: string;
+    user_favorite_genre_3: string;
+  }) => void;
   setTempToken: ({ access_token }: { access_token: string }) => void;
 }
 
@@ -47,6 +59,9 @@ export const useAuthStorage = create<AuthState>()(
         user_name: "",
         user_profile: 0,
         user_tutorial: 0,
+        user_favorite_genre_1: "",
+        user_favorite_genre_2: "",
+        user_favorite_genre_3: "",
         access_token: "",
         refresh_token: "",
         setToken: ({ access_token, refresh_token }) =>
@@ -79,6 +94,16 @@ export const useAuthStorage = create<AuthState>()(
         setUserProfile: ({ user_profile }) =>
           set((state) => ({
             user_profile,
+          })),
+        setUserFavoriteGenre: ({
+          user_favorite_genre_1,
+          user_favorite_genre_2,
+          user_favorite_genre_3,
+        }) =>
+          set((state) => ({
+            user_favorite_genre_1,
+            user_favorite_genre_2,
+            user_favorite_genre_3,
           })),
         setTempToken: ({ access_token }) =>
           set((state) => ({
