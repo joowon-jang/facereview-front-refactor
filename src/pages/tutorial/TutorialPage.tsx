@@ -51,14 +51,16 @@ const AuthPage = (): ReactElement => {
             {TUTORIAL_TEXT[currentStep]}
           </p>
           <div className="button-container">
+            {currentStep !== 3 ? (
+              <Button
+                label={"건너뛰기"}
+                type={"cta-fixed-secondary"}
+                onClick={handleSkipClick}
+              />
+            ) : null}
             <Button
-              label={"건너뛰기"}
-              type={"cta-fixed-secondary"}
-              onClick={handleSkipClick}
-            />
-            <Button
-              label={"다음"}
-              type={"cta-fixed"}
+              label={currentStep === 3 ? "완료" : "다음"}
+              type={currentStep === 3 ? "cta-full" : "cta-fixed"}
               onClick={handleContinueClick}
             />
           </div>
