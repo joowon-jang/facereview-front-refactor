@@ -74,3 +74,13 @@ export type YoutubeVideoDataType = {
     }
   ];
 };
+
+export type RegisterVideoDataType = {
+  youtube_url: string;
+  youtube_title: string;
+  youtube_channel: string;
+  youtube_length_hour: number;
+  youtube_length_minute: number;
+  youtube_length_second: number;
+  youtube_category: string;
+};

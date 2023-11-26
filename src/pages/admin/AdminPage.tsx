@@ -1,23 +1,19 @@
+import { ReactElement, useEffect, useState } from "react";
+import YouTube from "react-youtube";
+import { submitNewVideo } from "api/admin";
 import { getRequestedVideoList } from "api/request";
 import { getDataFromYoutube } from "api/youtube";
 import Button from "components/Button/Button";
-import TextInput from "components/TextInput/TextInput";
-import { ReactElement, useEffect, useState } from "react";
-import YouTube from "react-youtube";
-import { ReqeustedVideoType } from "types/index";
+import CategoryList from "components/CategoryList/CategoryList";
+import {
+  CategoryType,
+  RegisterVideoDataType,
+  ReqeustedVideoType,
+} from "types/index";
 import { getTimeArrFromDuration } from "utils/index";
 import { Options } from "youtube-player/dist/types";
 
 import "./adminpage.scss";
-
-type registerVideoDataType = {
-  youtube_url: string;
-  youtube_title: string;
-  youtube_channel: string;
-  youtube_length_hour: number;
-  youtube_length_minute: number;
-  youtube_length_second: number;
-};
 
 const opts: Options = {
   width: 560,
@@ -35,14 +31,28 @@ const MainPage = (): ReactElement => {
   >([]);
   const [currentSelectedUrl, setCurrentSelectedUrl] = useState("");
   const [currentVideoData, setCurrentVideoData] =
-    useState<registerVideoDataType>({
+    useState<RegisterVideoDataType>({
       youtube_url: "",
       youtube_title: "",
       youtube_channel: "",
       youtube_length_hour: 0,
       youtube_length_minute: 0,
       youtube_length_second: 0,
+      youtube_category: "",
     });
+  const [currentVideoCategoryList, setcurrentVideoCategoryList] = useState<
+    CategoryType[]
+  >([]);
+
+  const handleSubmitClick = () => {
+    submitNewVideo(currentVideoData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     getDataFromYoutube({ youtube_url: currentSelectedUrl })
@@ -57,11 +67,19 @@ const MainPage = (): ReactElement => {
           youtube_length_hour: hour,
           youtube_length_minute: minute,
           youtube_length_second: second,
+          youtube_category: "",
         };
         setCurrentVideoData(temp);
       })
       .catch((err) => {});
   }, [currentSelectedUrl]);
+
+  useEffect(() => {
+    setCurrentVideoData((prev) => ({
+      ...prev,
+      youtube_category: currentVideoCategoryList[0] || "",
+    }));
+  }, [currentVideoCategoryList]);
 
   useEffect(() => {
     getRequestedVideoList()
@@ -86,8 +104,20 @@ const MainPage = (): ReactElement => {
             style={{ marginBottom: "20px" }} // defaults -> {}
             opts={opts} // defaults -> {}
           />
-          <div className="input-container"></div>
-          <Button label={"등록하기"} type={"small"} />
+          <div className="right-container">
+            <div className="input-container">
+              <CategoryList
+                selected={currentVideoCategoryList}
+                setSelected={setcurrentVideoCategoryList}
+                maxSelection={1}
+              />
+            </div>
+            <Button
+              label={"등록하기"}
+              type={"cta-fit"}
+              onClick={handleSubmitClick}
+            />
+          </div>
         </div>
         <div className="request-video-container">
           {draftRequestedVideoList.map((d) => (
