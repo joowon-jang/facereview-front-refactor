@@ -135,7 +135,7 @@ const AuthPage = () => {
         return;
       }
       if (password.length >= 8 && password === confirmPassword) {
-        navigate("auth/3");
+        navigate("/auth/3");
       }
     }
     if (currentStep === 3 && !isSignIn) {
