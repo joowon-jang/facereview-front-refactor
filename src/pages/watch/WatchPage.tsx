@@ -93,7 +93,7 @@ const WatchPage = (): ReactElement => {
 
     const resHours = Math.floor(remainSeconds / (60 * 60))
       .toString()
-      .padStart(2, "0");
+      .padStart(1, "0");
     remainSeconds = remainSeconds % (60 * 60);
 
     const resMinutes = Math.floor(remainSeconds / 60)
