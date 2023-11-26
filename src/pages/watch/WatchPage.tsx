@@ -17,19 +17,12 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
-import { EmotionType, VideoDetailType } from "types";
+import { CommentType, EmotionType, VideoDetailType } from "types";
 import { getVideoDetail } from "api/youtube";
 import Devider from "components/Devider/Devider";
 import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
-import { getVideoComments } from "api/watch";
-
-type CommentItemType = {
-  color: EmotionType;
-  nickname: string;
-  commentTime: string;
-  commentText: string;
-};
+import { getVideoComments, sendNewComment } from "api/watch";
 
 const WatchPage = (): ReactElement => {
   const isMobile = window.innerWidth < 1200;
@@ -71,32 +64,19 @@ const WatchPage = (): ReactElement => {
       surprise: 5,
       surpriseColor: "#92C624",
       angry: 17,
-      angryColor: "#9F65FF",
+      angryColor: "#FF6B4B",
       neutral: 18,
-      neutralColor: "#7C7E8C",
+      neutralColor: "#393946",
     },
   ]);
-  const commentData: CommentItemType[] = [
-    {
-      color: "neutral",
-      nickname: "닉네임뭐로하지",
-      commentTime: "12분 전",
-      commentText:
-        "나영석 피디님을 보며 정말 놀랐던 이유는 어떻게 이런 사람들을 모아서 이런 케미를 이뤄 내지? 라는 생각이 들었을 때였습니다. 또한 제가 처음 나피디님을 알았던 1박2일 이후로 많은 시간이 지났지만 그 시대에 머물지 않고 뿅뿅 지구오락실에서 MZ세대와 같이 할 때도 그 세대의 문화를 수용하고 배우시려는 태도가 정말 존경스러웠습니다. 앞으로도 재밌는 예능 많이 부탁드립니다.",
-    },
-    {
-      color: "sad",
-      nickname: "하하호호",
-      commentTime: "1일 전",
-      commentText:
-        "나영석피디를 서진씨가잘만난것이큰행운이라고본다 나영석피디화이팅이다 할머니팬",
-    },
-  ];
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
   const [videoData, setVideoData] = useState<VideoDetailType>();
   const [currentMyEmotion, setCurrentMyEmotion] =
     useState<EmotionType>("neutral");
+  const [currentOthersEmotion, setCurrentOthersEmotion] =
+    useState<EmotionType>("neutral");
   const [comment, setComment] = useState("");
+  const [commentList, setCommentList] = useState<CommentType[]>([]);
 
   const capture = React.useCallback(async () => {
     const imageSrc = (await webcamRef.current?.getScreenshot()) || "";
@@ -128,6 +108,20 @@ const WatchPage = (): ReactElement => {
   const handleCommentSubmit = () => {
     if (is_sign_in) {
       if (comment.length > 0) {
+        sendNewComment({
+          comment_contents: comment,
+          youtube_url: id || "",
+        })
+          .then((res) => {
+            console.log("comment complete", res);
+            setComment("");
+          })
+          .catch((err) => {
+            console.log("comment error", err);
+            toast.error("댓글이 달리지 않았어요.", {
+              toastId: "error new comment",
+            });
+          });
       }
       return;
     }
@@ -141,9 +135,10 @@ const WatchPage = (): ReactElement => {
         setVideoData(res);
         console.log("OK /watch/main-youtube ----------------------", res);
 
-        getVideoComments({ youtube_index: res.youtube_index })
+        getVideoComments({ youtube_url: id || "" })
           .then((res) => {
             console.log("OK /watch/comment-list ----------------------", res);
+            setCommentList(res);
           })
           .catch((err) => {
             console.log(
@@ -213,26 +208,28 @@ const WatchPage = (): ReactElement => {
   }, [access_token, capture, graphData, video, videoData?.youtube_index]);
 
   const CommentItem = ({
-    nickname,
-    commentTime,
-    commentText,
-    color = "neutral",
-  }: CommentItemType): ReactElement => {
+    user_name,
+    comment_date,
+    comment_contents,
+    user_profile,
+  }: CommentType): ReactElement => {
     return (
       <div className="comment-item-container">
         <ProfileIcon
           type={"icon-small"}
-          color={color}
+          color={"neutral"}
           style={{ marginRight: "12px" }}
         />
         <div className="comment-text-wrapper">
           <div className="comment-info-wrapper">
-            <div className="comment-nickname font-label-small">{nickname}</div>
+            <div className="comment-nickname font-label-small">{user_name}</div>
             <div className="comment-time-text font-label-small">
-              {commentTime}
+              {comment_date}
             </div>
           </div>
-          <div className="comment-text font-body-medium">{commentText}</div>
+          <div className="comment-text font-body-medium">
+            {comment_contents}
+          </div>
         </div>
       </div>
     );
@@ -265,7 +262,7 @@ const WatchPage = (): ReactElement => {
               isMobile ? "title font-title-small" : "title font-title-medium"
             }
           >
-            [문돼의 온도] EP.35 불여우와의 갈등
+            {videoData?.youtube_title}
           </div>
           {isMobile && <Devider />}
         </div>
@@ -301,8 +298,8 @@ const WatchPage = (): ReactElement => {
                     "#FF4D8D",
                     "#479CFF",
                     "#92C624",
-                    "#9F65FF",
-                    "#7C7E8C",
+                    "#FF6B4B",
+                    "#393946",
                   ]}
                   borderColor={{
                     from: "color",
@@ -339,7 +336,7 @@ const WatchPage = (): ReactElement => {
                 <h4 className="others-emotion-title font-title-small">
                   실시간 다른 사람들의 감정
                 </h4>
-                <EmotionBadge type="big" emotion="sad" />
+                <EmotionBadge type="big" emotion={currentOthersEmotion} />
               </div>
             </div>
           </div>
@@ -373,16 +370,18 @@ const WatchPage = (): ReactElement => {
                 : "comment-info-text font-title-small"
             }
           >
-            댓글 231개
+            댓글 {commentList.length || 0}개
           </div>
           <div className="comment-list-container">
-            {commentData.map((comment, idx) => (
+            {commentList.map((comment, idx) => (
               <CommentItem
-                key={`comment-${comment.commentText}-${idx}`}
-                nickname={comment.nickname}
-                commentTime={comment.commentTime}
-                commentText={comment.commentText}
-                color={comment.color}
+                key={`comment-${comment.comment_contents}-${idx}`}
+                user_name={comment.user_name}
+                comment_date={comment.comment_date}
+                comment_contents={comment.comment_contents}
+                user_profile={comment.user_profile}
+                comment_index={comment.comment_index}
+                modify_check={comment.modify_check}
               />
             ))}
           </div>
@@ -420,8 +419,8 @@ const WatchPage = (): ReactElement => {
                     "#FF4D8D",
                     "#479CFF",
                     "#92C624",
-                    "#9F65FF",
-                    "#7C7E8C",
+                    "#FF6B4B",
+                    "#393946",
                   ]}
                   borderColor={{
                     from: "color",
@@ -458,7 +457,7 @@ const WatchPage = (): ReactElement => {
                 <h4 className="others-emotion-title font-title-small">
                   실시간 다른 사람들의 감정
                 </h4>
-                <EmotionBadge type="big" emotion="sad" />
+                <EmotionBadge type="big" emotion={currentOthersEmotion} />
               </div>
             </div>
           </>
@@ -472,7 +471,7 @@ const WatchPage = (): ReactElement => {
               <VideoItem
                 key={`recommendVideo${v}`}
                 src={`https://www.youtube.com/embed/${v}`}
-                width={320}
+                width={320}1
                 videoId={v}
                 style={{ marginBottom: "24px" }}
               />
