@@ -47,3 +47,11 @@ export type VideoWatchedType = {
   most_emotion: EmotionType;
   most_emotion_per: number;
 };
+export type CommentType = {
+  comment_contents: string;
+  comment_date: string;
+  comment_index: number;
+  modify_check: number;
+  user_name: string;
+  user_profile: number;
+};
