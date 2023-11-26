@@ -373,17 +373,23 @@ const WatchPage = (): ReactElement => {
             댓글 {commentList.length || 0}개
           </div>
           <div className="comment-list-container">
-            {commentList.map((comment, idx) => (
-              <CommentItem
-                key={`comment-${comment.comment_contents}-${idx}`}
-                user_name={comment.user_name}
-                comment_date={getTimeToString(comment.comment_date)}
-                comment_contents={comment.comment_contents}
-                user_profile={comment.user_profile}
-                comment_index={comment.comment_index}
-                modify_check={comment.modify_check}
-              />
-            ))}
+            {commentList.length > 0 ? (
+              commentList.map((comment, idx) => (
+                <CommentItem
+                  key={`comment-${comment.comment_contents}-${idx}`}
+                  user_name={comment.user_name}
+                  comment_date={getTimeToString(comment.comment_date)}
+                  comment_contents={comment.comment_contents}
+                  user_profile={comment.user_profile}
+                  comment_index={comment.comment_index}
+                  modify_check={comment.modify_check}
+                />
+              ))
+            ) : (
+              <p className="no-comments-text font-label-large">
+                아직 댓글이 없어요
+              </p>
+            )}
           </div>
         </div>
       </div>
