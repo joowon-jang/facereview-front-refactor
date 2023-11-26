@@ -8,13 +8,16 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import ModalDialog from "components/ModalDialog/ModalDialog";
 import { EmotionType } from "types";
 import { useAuthStorage } from "store/authStore";
-import { changeName } from "api/auth";
+import { changeName, changeProfilePhoto } from "api/auth";
+import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 
 const EditPage = () => {
   const { is_sign_in, user_name, user_profile } = useAuthStorage();
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
-  const [profileColor, setProfileColor] = useState<EmotionType>("neutral");
+  const [profileColor, setProfileColor] = useState<EmotionType>(
+    mapNumberToEmotion(user_profile)
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,7 +41,13 @@ const EditPage = () => {
         console.log(error);
       });
 
-    navigate("/my");
+    changeProfilePhoto({ new_profile: mapEmotionToNumber(profileColor) })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {

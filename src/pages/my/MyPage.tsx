@@ -15,6 +15,7 @@ import { useAuthStorage } from "store/authStore";
 import VideoItem from "components/VideoItem/VideoItem";
 import { getRecentVideo } from "api/youtube";
 import { VideoWatchedType } from "types/index";
+import { mapNumberToEmotion } from "utils/index";
 
 const MyPage = () => {
   const { is_sign_in, user_name, user_profile } = useAuthStorage();
@@ -23,14 +24,6 @@ const MyPage = () => {
 
   const navigate = useNavigate();
   const { setTempToken } = useAuthStorage();
-  const watchedVideoIds: Array<{ srcProp: string; emotionProp: string }> = [
-    { srcProp: "cVz_ArGCo-A", emotionProp: "happy" },
-    { srcProp: "my7FSr-0EPM", emotionProp: "surprise" },
-    { srcProp: "paKZL7IWcHM", emotionProp: "sad" },
-    { srcProp: "dTBsPShaBro", emotionProp: "sad" },
-    { srcProp: "MQteS5ZUEwg", emotionProp: "sad" },
-    { srcProp: "4Ddy_GClC68", emotionProp: "happy" },
-  ];
 
   const [selectedEmotion, setSelectedEmotion] = useState("all");
   const [recentVideo, setRecentVideo] = useState<VideoWatchedType[]>([]);
@@ -69,7 +62,7 @@ const MyPage = () => {
           <div className="mypage-user-info-container">
             <ProfileIcon
               type={isMobile ? "icon-medium" : "icon-large"}
-              color={"neutral"}
+              color={mapNumberToEmotion(user_profile)}
             />
             <div className="mypage-user-edit-container">
               <div className="mypage-name-container">
