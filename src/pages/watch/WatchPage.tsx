@@ -22,7 +22,11 @@ import { getRelatedVideo, getVideoDetail } from "api/youtube";
 import Devider from "components/Devider/Devider";
 import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
-import { getVideoComments, sendNewComment } from "api/watch";
+import {
+  getMainDistributionData,
+  getVideoComments,
+  sendNewComment,
+} from "api/watch";
 import { getTimeToString, mapNumberToEmotion } from "utils/index";
 
 const WatchPage = (): ReactElement => {
@@ -140,7 +144,6 @@ const WatchPage = (): ReactElement => {
 
         getVideoComments({ youtube_url: id || "" })
           .then((res) => {
-            console.log(res);
             setCommentList(res);
           })
           .catch((err) => {});
@@ -155,6 +158,12 @@ const WatchPage = (): ReactElement => {
 
   useEffect(() => {
     socket.connect();
+
+    getMainDistributionData({ youtube_url: id || "" })
+      .then((res) => {
+        console.log("getMainDistributionData", res);
+      })
+      .catch((err) => console.log(err));
 
     return () => {
       socket.disconnect();
@@ -179,6 +188,7 @@ const WatchPage = (): ReactElement => {
           string_frame_data: capturedImage,
           youtube_index: videoData?.youtube_index,
         },
+
         (response: {
           happy: number;
           sad: number;
@@ -186,6 +196,12 @@ const WatchPage = (): ReactElement => {
           angry: number;
           neutral: number;
           most_emotion: EmotionType;
+          youtube_emotion_data: string;
+          youtube_emotion_neutral_per: string;
+          youtube_emotion_angry_per: string;
+          youtube_emotion_happy_per: string;
+          youtube_emotion_surprise_per: string;
+          youtube_emotion_sad_per: string;
         }) => {
           setCurrentMyEmotion(response.most_emotion);
           setGraphData([
