@@ -95,10 +95,16 @@ const MainPage = (): ReactElement => {
     if (is_sign_in) {
       getPersonalRecommendedVideo()
         .then((res) => {
-          console.log(res);
+          console.log(
+            "OK /home/user-customized-list ----------------------",
+            res
+          );
         })
         .catch((err) => {
-          console.log(err);
+          console.log(
+            "ERROR /home/user-customized-list ----------------------",
+            err
+          );
         });
     }
   }, []);

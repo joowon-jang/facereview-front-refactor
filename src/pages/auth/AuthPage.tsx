@@ -9,17 +9,19 @@ import "./authpage.scss";
 import { checkEmail, signIn, signUp } from "api/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStorage } from "store/authStore";
-import { UserInfoType } from "types";
+import { CategoryType, UserInfoType } from "types";
 import { AxiosResponse } from "axios";
 import HeaderToken from "api/HeaderToken";
+import CategoryList from "components/CategoryList/CategoryList";
 
 const AlertMessages = {
   emailInvalid: "올바르지 않은 이메일 형식이에요",
   passwordInvalid: "최소 8자의 비밀번호를 입력해주세요",
   confirmPasswordInvalid: "동일한 비밀번호를 입력해주세요",
   nicknameInvalid: "최소 2자의 닉네임을 입력해주세요",
+  categoryInvalid: "3개의 카테고리를 선택해주세요",
 };
-
+const MAX_CATEGORY_LENGTH = 3;
 const AuthPage = () => {
   const isMobile = window.innerWidth < 1200;
 
@@ -32,10 +34,12 @@ const AuthPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [emailAlertMessage, setEmailAlertMessage] = useState("");
   const [passwordAlertMessage, setPasswordAlertMessage] = useState("");
   const [confirmPasswordAlertMessage, setConfirmPasswordAlertMessage] =
     useState("");
+  const [categoryAlertMessage, setCategoryAlertMessage] = useState("");
   const [nicknameAlertMessage, setNicknameAlertMessage] = useState("");
   const [isSignIn, setIsSignIn] = useState(true);
   const [isSingInSuccess, setIsSingInSuccess] = useState(false);
@@ -135,7 +139,7 @@ const AuthPage = () => {
         return;
       }
       if (password.length >= 8 && password === confirmPassword) {
-        navigate("auth/3");
+        navigate("/auth/3");
       }
     }
     if (currentStep === 3 && !isSignIn) {
@@ -143,9 +147,9 @@ const AuthPage = () => {
         email_id: email,
         password: password,
         user_name: nickname,
-        user_favorite_genre_1: "sports",
-        user_favorite_genre_2: "drama",
-        user_favorite_genre_3: "fear",
+        user_favorite_genre_1: categories[0],
+        user_favorite_genre_2: categories[1],
+        user_favorite_genre_3: categories[2],
       }).then((res: any) => {
         if (res.status === 200) {
           toast.success("가입이 완료되었어요", { toastId: "signUp complete" });
@@ -181,10 +185,27 @@ const AuthPage = () => {
     ) {
       return true;
     }
-    if (currentStep === 3 && !isSignIn && nicknameAlertMessage === " ") {
+    if (
+      currentStep === 3 &&
+      !isSignIn &&
+      nicknameAlertMessage === " " &&
+      categoryAlertMessage === " "
+    ) {
       return true;
     }
   };
+
+  useEffect(() => {
+    if (categories.length === 0) {
+      setCategoryAlertMessage("");
+      return;
+    }
+    if (categories.length === MAX_CATEGORY_LENGTH) {
+      setCategoryAlertMessage(" ");
+      return;
+    }
+    setCategoryAlertMessage(AlertMessages.categoryInvalid);
+  }, [categories]);
 
   return (
     <>
@@ -266,24 +287,43 @@ const AuthPage = () => {
             </div>
           ) : null}
           {currentStep === 3 && !isSignIn ? (
-            <div className="input-item-container">
-              <label
-                htmlFor="authNickname"
-                className="input-label font-title-mini"
-              >
-                닉네임
-              </label>
-              <TextInput
-                id="authNickname"
-                value={nickname}
-                onChange={handleNicknameChange}
-                placeholder="최소 2자의 닉네임을 입력해주세요"
-                maxLength={60}
-              />
-              <p className="input-alert-message font-body-large">
-                {nicknameAlertMessage}
-              </p>
-            </div>
+            <>
+              <div className="input-item-container">
+                <label
+                  htmlFor="authNickname"
+                  className="input-label font-title-mini"
+                >
+                  닉네임
+                </label>
+                <TextInput
+                  id="authNickname"
+                  value={nickname}
+                  onChange={handleNicknameChange}
+                  placeholder="최소 2자의 닉네임을 입력해주세요"
+                  maxLength={60}
+                />
+                <p className="input-alert-message font-body-large">
+                  {nicknameAlertMessage}
+                </p>
+              </div>
+              <div className="input-item-container">
+                <label
+                  htmlFor="authNickname"
+                  className="input-label font-title-mini"
+                >
+                  관심 카테고리(3개 선택)
+                </label>
+                <div className="category-wrapper">
+                  <CategoryList
+                    selected={categories}
+                    setSelected={setCategories}
+                  />
+                </div>
+                <p className="input-alert-message font-body-large">
+                  {categoryAlertMessage}
+                </p>
+              </div>
+            </>
           ) : null}
           {isConfirmButtonVisible() ? (
             <Button

@@ -12,18 +12,18 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log("🧨 [Req ERROR]", error, "\n");
+    // console.log("🧨 [Req ERROR]", error, "\n");
     return Promise.reject(error);
   }
 );
 
 api.interceptors.response.use(
   (response) => {
-    console.log("🔮 [Res]", response, "\n");
+    // console.log("🔮 [Res]", response, "\n");
     return response;
   },
   (error) => {
-    console.log("🧨 [Res ERROR]", error, "\n");
+    // console.log("🧨 [Res ERROR]", error, "\n");
     if (error.status === 408) {
     }
     return Promise.reject(error);

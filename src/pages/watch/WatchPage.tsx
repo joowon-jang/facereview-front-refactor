@@ -1,5 +1,11 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import {
+  ReactElement,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Webcam from "react-webcam";
 import YouTube, { YouTubeEvent } from "react-youtube";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
@@ -11,9 +17,12 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
-import { EmotionType } from "types";
+import { EmotionType, VideoDetailType } from "types";
 import { getVideoDetail } from "api/youtube";
 import Devider from "components/Devider/Devider";
+import { useAuthStorage } from "store/authStore";
+import { toast } from "react-toastify";
+import { getVideoComments } from "api/watch";
 
 type CommentItemType = {
   color: EmotionType;
@@ -44,6 +53,9 @@ const WatchPage = (): ReactElement => {
           rel: 0,
         },
       };
+  const { is_sign_in, access_token } = useAuthStorage();
+  const navigation = useNavigate();
+
   const webcamRef = useRef<Webcam>(null);
   const webcamOptions = {
     width: 320,
@@ -81,6 +93,7 @@ const WatchPage = (): ReactElement => {
     },
   ];
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
+  const [videoData, setVideoData] = useState<VideoDetailType>();
   const [currentMyEmotion, setCurrentMyEmotion] =
     useState<EmotionType>("neutral");
   const [comment, setComment] = useState("");
@@ -112,24 +125,44 @@ const WatchPage = (): ReactElement => {
     return `${resHours}:${resMinutes}:${resSeconds}`;
   };
 
-  useEffect(() => {
-    getVideoDetail({ videoId: id || "" })
+  const handleCommentSubmit = () => {
+    if (is_sign_in) {
+      if (comment.length > 0) {
+      }
+      return;
+    }
+    toast.warn("로그인이 필요합니다.", { toastId: "need sign in" });
+    navigation("/auth/1");
+  };
+
+  useLayoutEffect(() => {
+    getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
-        console.log(res);
+        setVideoData(res);
+        console.log("OK /watch/main-youtube ----------------------", res);
+
+        getVideoComments({ youtube_index: res.youtube_index })
+          .then((res) => {
+            console.log("OK /watch/comment-list ----------------------", res);
+          })
+          .catch((err) => {
+            console.log(
+              "ERROR /watch/comment-list ----------------------",
+              err
+            );
+          });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log("ERROR /watch/main-youtube ----------------------", err);
+      });
+  }, [id]);
+
+  useEffect(() => {
     socket.connect();
 
-    socket.emit(
-      "test",
-      {
-        client_message: "test hi this is client",
-      },
-      (response: any) => {
-        console.log("test socekt response");
-        console.log(response);
-      }
-    );
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -137,13 +170,7 @@ const WatchPage = (): ReactElement => {
       capture();
     }, 200);
 
-    return () => {
-      clearInterval(captureInterval);
-    };
-  });
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
+    const frameDataInterval = setInterval(async () => {
       const capturedImage = await capture();
       const currentTime = await video?.getCurrentTime();
       const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
@@ -151,11 +178,10 @@ const WatchPage = (): ReactElement => {
       socket.emit(
         "client_message",
         {
-          youtube_running_time: { formattedCurrentTime },
+          cur_access_token: access_token,
+          youtube_running_time: formattedCurrentTime,
           string_frame_data: capturedImage,
-
-          watching_data_index: "watching_data_index",
-          youtube_index: "youtube_index",
+          youtube_index: videoData?.youtube_index,
         },
         (response: {
           happy: number;
@@ -179,18 +205,12 @@ const WatchPage = (): ReactElement => {
         }
       );
     }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [capture, graphData, video]);
 
-  // const CustomTooltip = ({ formattedValue, id }: any): ReactElement => {
-  //   return (
-  //     <div className="graph-tooltip-container">
-  //       <EmotionBadge type={"small"} emotion={id} />
-  //     </div>
-  //   );
-  // };
+    return () => {
+      clearInterval(frameDataInterval);
+      clearInterval(captureInterval);
+    };
+  }, [access_token, capture, graphData, video, videoData?.youtube_index]);
 
   const CommentItem = ({
     nickname,
@@ -339,7 +359,7 @@ const WatchPage = (): ReactElement => {
               placeholder={"영상에 대한 의견을 남겨보아요"}
             />
             <UploadButton
-              onClick={() => {}}
+              onClick={handleCommentSubmit}
               style={{
                 marginLeft: "12px",
                 display: comment.length > 0 ? "block" : "none",
