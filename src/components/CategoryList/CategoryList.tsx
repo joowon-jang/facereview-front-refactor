@@ -12,6 +12,7 @@ const CategoryList = ({
   setSelected,
 }: CategoryListPropType): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
+  const MAX_CATEGORY_SIZE = 3;
   const categoryByName = {
     sports: "🤾‍♀️ 스포츠",
     game: "🎮 게임",
@@ -52,28 +53,34 @@ const CategoryList = ({
     "health",
     "vlog",
   ];
-  const [selectedCategories, setSelectedCategories] =
-    useState<CategoryType[]>(selected);
 
   const handleCategoryClick = (category: CategoryType) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories((prev) => {
+    if (selected.includes(category)) {
+      setSelected((prev) => {
         const popedCategoryList = prev.filter((item) => item !== category);
+        setSelected(popedCategoryList);
 
         return popedCategoryList;
       });
       return;
     }
-    setSelectedCategories((prev) => [...prev, category]);
+    if (selected.length < MAX_CATEGORY_SIZE) {
+      setSelected((prev) => {
+        const pushedCategoryList = [...prev, category];
+        setSelected(pushedCategoryList);
+
+        return pushedCategoryList;
+      });
+    }
   };
 
   return (
     <div className="categories-container">
-      {categories.map((category, idx) => (
+      {categories.map((category) => (
         <button
           key={uuidv4()}
           className={`category-item ${
-            selectedCategories.includes(category) ? "selected" : null
+            selected.includes(category) ? "selected" : null
           }`}
           onClick={() => handleCategoryClick(category)}
         >
