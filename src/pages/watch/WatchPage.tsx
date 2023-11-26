@@ -13,6 +13,7 @@ import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
 import { EmotionType } from "types";
 import { getVideoDetail } from "api/youtube";
+import Devider from "components/Devider/Devider";
 
 type CommentItemType = {
   color: EmotionType;
@@ -22,16 +23,27 @@ type CommentItemType = {
 };
 
 const WatchPage = (): ReactElement => {
+  const isMobile = window.innerWidth < 1200;
   const { id } = useParams();
-  const opts: Options = {
-    width: 852,
-    height: 480,
-    playerVars: {
-      autoplay: 1,
-      color: "white",
-      rel: 0,
-    },
-  };
+  const opts: Options = isMobile
+    ? {
+        width: "100%",
+        height: `${window.innerWidth * (9 / 16)}px`,
+        playerVars: {
+          autoplay: 1,
+          color: "white",
+          rel: 0,
+        },
+      }
+    : {
+        width: 852,
+        height: 480,
+        playerVars: {
+          autoplay: 1,
+          color: "white",
+          rel: 0,
+        },
+      };
   const webcamRef = useRef<Webcam>(null);
   const webcamOptions = {
     width: 320,
@@ -209,27 +221,110 @@ const WatchPage = (): ReactElement => {
   return (
     <div className="watch-page-container">
       <div className="main-container">
-        <YouTube
-          videoId={id}
-          // id={string} // defaults -> ''
-          // className={string} // defaults -> ''
-          // iframeClassName={string} // defaults -> ''
-          style={{ marginBottom: "20px" }} // defaults -> {}
-          // title={string} // defaults -> ''
-          // loading={string} // defaults -> undefined
-          opts={opts} // defaults -> {}
-          onReady={handleVideoReady} // defaults -> noop
-          // onPlay={func} // defaults -> noop
-          // onPause={func} // defaults -> noop
-          // onEnd={func} // defaults -> noop
-          // onError={func} // defaults -> noop
-          // onStateChange={func} // defaults -> noop
-          // onPlaybackRateChange={func} // defaults -> noop
-          // onPlaybackQualityChange={func} // defaults -> noop
-        />
-        <div className="title font-title-medium">
-          [문돼의 온도] EP.35 불여우와의 갈등
+        <div className="watch-page-test">
+          <YouTube
+            videoId={id}
+            // id={string} // defaults -> ''
+            // className={string} // defaults -> ''
+            // iframeClassName={string} // defaults -> ''
+            style={{ marginBottom: "20px" }} // defaults -> {}
+            // title={string} // defaults -> ''
+            // loading={string} // defaults -> undefined
+            opts={opts} // defaults -> {}
+            onReady={handleVideoReady} // defaults -> noop
+            // onPlay={func} // defaults -> noop
+            // onPause={func} // defaults -> noop
+            // onEnd={func} // defaults -> noop
+            // onError={func} // defaults -> noop
+            // onStateChange={func} // defaults -> noop
+            // onPlaybackRateChange={func} // defaults -> noop
+            // onPlaybackQualityChange={func} // defaults -> noop
+          />
+          <div
+            className={
+              isMobile ? "title font-title-small" : "title font-title-medium"
+            }
+          >
+            [문돼의 온도] EP.35 불여우와의 갈등
+          </div>
+          {isMobile && <Devider />}
         </div>
+
+        {isMobile && (
+          <div className="watch-page-cam-container">
+            <Webcam
+              style={{ borderRadius: "8px", marginBottom: "24px" }}
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={webcamOptions}
+              mirrored={true}
+              screenshotQuality={0.5}
+            />
+            <div className="my-emotion-container">
+              <div className="my-emotion-title-wrapper">
+                <h4 className="my-emotion-title font-title-small">
+                  실시간 나의 감정
+                </h4>
+                <EmotionBadge type="big" emotion={currentMyEmotion} />
+              </div>
+              <div className="graph-container">
+                <ResponsiveBar
+                  data={graphData}
+                  keys={["happy", "sad", "surprise", "angry", "neutral"]}
+                  indexBy="country"
+                  padding={0.3}
+                  layout="horizontal"
+                  valueScale={{ type: "linear" }}
+                  indexScale={{ type: "band", round: true }}
+                  colors={[
+                    "#FF4D8D",
+                    "#479CFF",
+                    "#92C624",
+                    "#9F65FF",
+                    "#7C7E8C",
+                  ]}
+                  borderColor={{
+                    from: "color",
+                    modifiers: [["darker", 1.6]],
+                  }}
+                  axisTop={null}
+                  axisRight={null}
+                  axisBottom={null}
+                  axisLeft={null}
+                  enableGridY={false}
+                  enableLabel={false}
+                  labelSkipWidth={12}
+                  labelSkipHeight={12}
+                  labelTextColor={{
+                    from: "color",
+                    modifiers: [["darker", 2.3]],
+                  }}
+                  margin={{ top: -10, bottom: -10 }}
+                  legends={[]}
+                  role="application"
+                  ariaLabel="Nivo bar chart demo"
+                  barAriaLabel={(e) =>
+                    e.id +
+                    ": " +
+                    e.formattedValue +
+                    " in country: " +
+                    e.indexValue
+                  }
+                />
+              </div>
+            </div>
+            <div className="others-emotion-container">
+              <div className="others-emotion-title-wrapper">
+                <h4 className="others-emotion-title font-title-small">
+                  실시간 다른 사람들의 감정
+                </h4>
+                <EmotionBadge type="big" emotion="sad" />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="comment-container">
           <div className="comment-input-container">
             <ProfileIcon
@@ -251,7 +346,15 @@ const WatchPage = (): ReactElement => {
               }}
             />
           </div>
-          <div className="comment-info-text font-title-small">댓글 231개</div>
+          <div
+            className={
+              isMobile
+                ? "comment-info-text font-title-mini"
+                : "comment-info-text font-title-small"
+            }
+          >
+            댓글 231개
+          </div>
           <div className="comment-list-container">
             {commentData.map((comment, idx) => (
               <CommentItem
@@ -266,66 +369,80 @@ const WatchPage = (): ReactElement => {
         </div>
       </div>
       <div className="side-container">
-        <Webcam
-          style={{ borderRadius: "8px", marginBottom: "24px" }}
-          audio={false}
-          ref={webcamRef}
-          screenshotFormat="image/jpeg"
-          videoConstraints={webcamOptions}
-          mirrored={true}
-          screenshotQuality={0.5}
-        />
-        <div className="my-emotion-container">
-          <div className="my-emotion-title-wrapper">
-            <h4 className="my-emotion-title font-title-small">
-              실시간 나의 감정
-            </h4>
-            <EmotionBadge type="big" emotion={currentMyEmotion} />
-          </div>
-          <div className="graph-container">
-            <ResponsiveBar
-              data={graphData}
-              keys={["happy", "sad", "surprise", "angry", "neutral"]}
-              indexBy="country"
-              padding={0.3}
-              layout="horizontal"
-              valueScale={{ type: "linear" }}
-              indexScale={{ type: "band", round: true }}
-              colors={["#FF4D8D", "#479CFF", "#92C624", "#9F65FF", "#7C7E8C"]}
-              borderColor={{
-                from: "color",
-                modifiers: [["darker", 1.6]],
-              }}
-              axisTop={null}
-              axisRight={null}
-              axisBottom={null}
-              axisLeft={null}
-              enableGridY={false}
-              enableLabel={false}
-              labelSkipWidth={12}
-              labelSkipHeight={12}
-              labelTextColor={{
-                from: "color",
-                modifiers: [["darker", 2.3]],
-              }}
-              margin={{ top: -10, bottom: -10 }}
-              legends={[]}
-              role="application"
-              ariaLabel="Nivo bar chart demo"
-              barAriaLabel={(e) =>
-                e.id + ": " + e.formattedValue + " in country: " + e.indexValue
-              }
+        {!isMobile && (
+          <>
+            <Webcam
+              style={{ borderRadius: "8px", marginBottom: "24px" }}
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={webcamOptions}
+              mirrored={true}
+              screenshotQuality={0.5}
             />
-          </div>
-        </div>
-        <div className="others-emotion-container">
-          <div className="others-emotion-title-wrapper">
-            <h4 className="others-emotion-title font-title-small">
-              실시간 다른 사람들의 감정
-            </h4>
-            <EmotionBadge type="big" emotion="sad" />
-          </div>
-        </div>
+            <div className="my-emotion-container">
+              <div className="my-emotion-title-wrapper">
+                <h4 className="my-emotion-title font-title-small">
+                  실시간 나의 감정
+                </h4>
+                <EmotionBadge type="big" emotion={currentMyEmotion} />
+              </div>
+              <div className="graph-container">
+                <ResponsiveBar
+                  data={graphData}
+                  keys={["happy", "sad", "surprise", "angry", "neutral"]}
+                  indexBy="country"
+                  padding={0.3}
+                  layout="horizontal"
+                  valueScale={{ type: "linear" }}
+                  indexScale={{ type: "band", round: true }}
+                  colors={[
+                    "#FF4D8D",
+                    "#479CFF",
+                    "#92C624",
+                    "#9F65FF",
+                    "#7C7E8C",
+                  ]}
+                  borderColor={{
+                    from: "color",
+                    modifiers: [["darker", 1.6]],
+                  }}
+                  axisTop={null}
+                  axisRight={null}
+                  axisBottom={null}
+                  axisLeft={null}
+                  enableGridY={false}
+                  enableLabel={false}
+                  labelSkipWidth={12}
+                  labelSkipHeight={12}
+                  labelTextColor={{
+                    from: "color",
+                    modifiers: [["darker", 2.3]],
+                  }}
+                  margin={{ top: -10, bottom: -10 }}
+                  legends={[]}
+                  role="application"
+                  ariaLabel="Nivo bar chart demo"
+                  barAriaLabel={(e) =>
+                    e.id +
+                    ": " +
+                    e.formattedValue +
+                    " in country: " +
+                    e.indexValue
+                  }
+                />
+              </div>
+            </div>
+            <div className="others-emotion-container">
+              <div className="others-emotion-title-wrapper">
+                <h4 className="others-emotion-title font-title-small">
+                  실시간 다른 사람들의 감정
+                </h4>
+                <EmotionBadge type="big" emotion="sad" />
+              </div>
+            </div>
+          </>
+        )}
         <div className="recommend-container">
           <h4 className="recommend-title font-title-small">
             이 영상은 어때요?

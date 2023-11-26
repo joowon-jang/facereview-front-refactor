@@ -1,8 +1,14 @@
-@import 'assets/css/index.scss';
+@import "assets/css/index.scss";
 
 .watch-page-container {
   display: flex;
   padding-top: 48px;
+
+  @include mobile {
+    flex-direction: column;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
 
   .main-container {
     width: 100%;
@@ -11,6 +17,58 @@
     .title {
       color: $gray-900;
       margin-bottom: 60px;
+    }
+
+    @include mobile {
+      .watch-page-test {
+        position: fixed;
+        background: $bg;
+        width: 100vw;
+        left: 0;
+        z-index: 1000;
+      }
+
+      .watch-page-cam-container {
+        margin-top: calc(100vw * (9 / 16) + 72px);
+      }
+
+      .my-emotion-container {
+        margin-bottom: 48px;
+
+        .my-emotion-title-wrapper {
+          display: flex;
+
+          .my-emotion-title {
+            color: $gray-900;
+            margin-right: 8px;
+          }
+        }
+
+        .graph-container {
+          height: 12px;
+          border-radius: 2px;
+          margin-top: 22px;
+
+          .graph-tooltip-container {
+            width: 80px;
+            height: 50px;
+            background: $gray-700;
+          }
+        }
+      }
+
+      .others-emotion-container {
+        margin-bottom: 60px;
+
+        .others-emotion-title-wrapper {
+          display: flex;
+
+          .others-emotion-title {
+            color: $gray-900;
+            margin-right: 8px;
+          }
+        }
+      }
     }
 
     .comment-container {
@@ -30,7 +88,6 @@
       }
 
       .comment-list-container {
-
         .comment-item-container {
           display: flex;
           align-items: flex-start;
@@ -44,7 +101,6 @@
               .comment-nickname {
                 color: $gray-500;
                 margin-right: 4px;
-
               }
 
               .comment-time-text {
@@ -59,7 +115,6 @@
           }
         }
       }
-
     }
   }
 
@@ -89,8 +144,6 @@
           background: $gray-700;
         }
       }
-
-
     }
 
     .others-emotion-container {
@@ -104,7 +157,6 @@
           margin-right: 8px;
         }
       }
-
     }
 
     .recommend-container {
@@ -113,7 +165,8 @@
         margin-bottom: 32px;
       }
 
-      .recommend-video-container {}
+      .recommend-video-container {
+      }
     }
   }
 }
