@@ -166,7 +166,7 @@ const WatchPage = (): ReactElement => {
         "client_message",
         {
           cur_access_token: access_token,
-          youtube_running_time: { formattedCurrentTime },
+          youtube_running_time: formattedCurrentTime,
           string_frame_data: capturedImage,
           youtube_index: videoData?.youtube_index,
         },
