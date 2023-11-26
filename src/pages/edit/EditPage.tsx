@@ -54,7 +54,7 @@ const EditPage = () => {
       .catch((error) => {
         console.log(error);
       });
-    navigate("/my");
+    navigate("/");
   };
 
   useEffect(() => {
