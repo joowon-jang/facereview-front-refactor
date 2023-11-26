@@ -48,3 +48,15 @@ export const getRecentVideo = async () => {
     throw error;
   }
 };
+
+export const getRelatedVideo = async (props: { youtube_url: string }) => {
+  try {
+    const url = "/watch/sub-youtube";
+    const { data } = await api.post<VideoWatchedType[]>(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
