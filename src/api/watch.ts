@@ -1,22 +1,10 @@
-import { VideoDetailType } from "types";
+import { CommentType, VideoDetailType } from "types";
 import api from "./index";
 
-export const sendStartAnalysis = async (props: { youtube_index: number }) => {
-  try {
-    const url = "/watch/start-analysis";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getVideoComments = async (props: { youtube_index: number }) => {
+export const getVideoComments = async (props: { youtube_url: string }) => {
   try {
     const url = "/watch/comment-list";
-    const { data } = await api.post<VideoDetailType>(url, props);
+    const { data } = await api.post<CommentType[]>(url, props);
 
     return data;
   } catch (error) {
@@ -27,10 +15,10 @@ export const getVideoComments = async (props: { youtube_index: number }) => {
 
 export const sendNewComment = async (props: {
   comment_contents: string;
-  youtube_index: number;
+  youtube_url: string;
 }) => {
   try {
-    const url = "/watch/watch/add-comment";
+    const url = "/watch/add-comment";
     const { data } = await api.post<VideoDetailType>(url, props);
 
     return data;
