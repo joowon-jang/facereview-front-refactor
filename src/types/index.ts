@@ -55,3 +55,9 @@ export type CommentType = {
   user_name: string;
   user_profile: number;
 };
+
+export type ReqeustedVideoType = {
+  index: number;
+  full_url: string;
+  url: string;
+};
