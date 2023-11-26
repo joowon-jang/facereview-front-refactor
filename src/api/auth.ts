@@ -104,7 +104,7 @@ export const changeName = async (prop: { new_name: string }) => {
   }
 };
 
-export const changeProfilePhoto = async (prop: { new_name: number }) => {
+export const changeProfilePhoto = async (prop: { new_profile: number }) => {
   try {
     const url = "/mypage/change-profilephoto";
     const res = await api.post(url);
