@@ -21,11 +21,7 @@ import { EmotionType, VideoDetailType } from "types";
 import { getVideoDetail } from "api/youtube";
 import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
-import {
-  getVideoComments,
-  sendFinishVideo,
-  sendStartAnalysis,
-} from "api/watch";
+import { getVideoComments } from "api/watch";
 
 type CommentItemType = {
   color: EmotionType;
@@ -36,7 +32,7 @@ type CommentItemType = {
 
 const WatchPage = (): ReactElement => {
   const { id } = useParams();
-  const { is_sign_in } = useAuthStorage();
+  const { is_sign_in, access_token } = useAuthStorage();
   const navigation = useNavigate();
   const opts: Options = {
     width: 852,
@@ -85,7 +81,6 @@ const WatchPage = (): ReactElement => {
   ];
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
   const [videoData, setVideoData] = useState<VideoDetailType>();
-  const [watchingIndex, setWatchingIndex] = useState<number>();
   const [currentMyEmotion, setCurrentMyEmotion] =
     useState<EmotionType>("neutral");
   const [comment, setComment] = useState("");
@@ -133,18 +128,6 @@ const WatchPage = (): ReactElement => {
         setVideoData(res);
         console.log("OK /watch/main-youtube ----------------------", res);
 
-        sendStartAnalysis({ youtube_index: res.youtube_index })
-          .then((res) => {
-            setWatchingIndex(res.watching_data_index);
-            console.log("OK /watch/start-analysis ----------------------", res);
-            console.log(res.watching_data_index);
-          })
-          .catch((err) => {
-            console.log(
-              "ERROR /watch/start-analysis ----------------------",
-              err
-            );
-          });
         getVideoComments({ youtube_index: res.youtube_index })
           .then((res) => {
             console.log("OK /watch/comment-list ----------------------", res);
@@ -159,78 +142,13 @@ const WatchPage = (): ReactElement => {
       .catch((err) => {
         console.log("ERROR /watch/main-youtube ----------------------", err);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     socket.connect();
 
-    setTimeout(() => {
-      console.log("setTimeout _-----------------------------------------");
-      socket.emit("user-disconnect", {
-        watching_data_index: watchingIndex,
-      });
-
-      socket.emit(
-        "user-d",
-        {
-          watching_data_index: watchingIndex,
-        },
-        (response: any) => {
-          console.log(response);
-        }
-      );
-
-      socket.emit(
-        "abc",
-        {
-          watching_data_index: watchingIndex,
-        },
-        (response: any) => {
-          console.log(response);
-        }
-      );
-
-      sendFinishVideo({ watching_data_index: watchingIndex || -1 }).then(
-        (res) => {
-          console.log("sendFinishVideo");
-        }
-      );
-    }, 3000);
-
-    const handleUnmount = async () => {
-      await socket.emit("user-disconnect", {
-        watching_data_index: watchingIndex,
-      });
-
-      socket.emit(
-        "user-d",
-        {
-          watching_data_index: watchingIndex,
-        },
-        (response: any) => {
-          console.log("user-d", response);
-        }
-      );
-
-      await socket.emit(
-        "user-d",
-        {
-          watching_data_index: watchingIndex,
-        },
-        (response: any) => {
-          console.log(response);
-        }
-      );
-      sendFinishVideo({ watching_data_index: watchingIndex || -1 }).then(
-        (res) => {
-          console.log("sendFinishVideo");
-        }
-      );
-      console.log("watch end");
-    };
-
     return () => {
-      handleUnmount();
+      socket.disconnect();
     };
   }, []);
 
@@ -239,13 +157,7 @@ const WatchPage = (): ReactElement => {
       capture();
     }, 200);
 
-    return () => {
-      clearInterval(captureInterval);
-    };
-  });
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
+    const frameDataInterval = setInterval(async () => {
       const capturedImage = await capture();
       const currentTime = await video?.getCurrentTime();
       const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
@@ -253,10 +165,9 @@ const WatchPage = (): ReactElement => {
       socket.emit(
         "client_message",
         {
-          youtube_running_time: { formattedCurrentTime },
+          cur_access_token: access_token,
+          youtube_running_time: formattedCurrentTime,
           string_frame_data: capturedImage,
-
-          watching_data_index: watchingIndex,
           youtube_index: videoData?.youtube_index,
         },
         (response: {
@@ -281,18 +192,12 @@ const WatchPage = (): ReactElement => {
         }
       );
     }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [capture, graphData, video]);
 
-  // const CustomTooltip = ({ formattedValue, id }: any): ReactElement => {
-  //   return (
-  //     <div className="graph-tooltip-container">
-  //       <EmotionBadge type={"small"} emotion={id} />
-  //     </div>
-  //   );
-  // };
+    return () => {
+      clearInterval(frameDataInterval);
+      clearInterval(captureInterval);
+    };
+  }, [access_token, capture, graphData, video, videoData?.youtube_index]);
 
   const CommentItem = ({
     nickname,
