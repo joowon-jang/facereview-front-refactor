@@ -142,11 +142,17 @@ const WatchPage = (): ReactElement => {
       .catch((err) => {
         console.log("ERROR /watch/main-youtube ----------------------", err);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     socket.connect();
 
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     const captureInterval = setInterval(() => {
       capture();
     }, 200);
@@ -188,7 +194,6 @@ const WatchPage = (): ReactElement => {
     }, 1000);
 
     return () => {
-      socket.disconnect();
       clearInterval(frameDataInterval);
       clearInterval(captureInterval);
     };

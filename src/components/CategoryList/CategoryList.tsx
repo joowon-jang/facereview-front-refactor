@@ -66,8 +66,6 @@ const CategoryList = ({
     }
     setSelectedCategories((prev) => [...prev, category]);
   };
-  console.log(selected);
-  console.log(selectedCategories);
 
   return (
     <div className="categories-container">
