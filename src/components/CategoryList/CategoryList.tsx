@@ -5,14 +5,15 @@ import "./categorylist.scss";
 type CategoryListPropType = {
   selected: CategoryType[];
   setSelected: React.Dispatch<React.SetStateAction<CategoryType[]>>;
+  maxSelection?: number;
 };
 
 const CategoryList = ({
   selected,
   setSelected,
+  maxSelection = 3,
 }: CategoryListPropType): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
-  const MAX_CATEGORY_SIZE = 3;
   const categoryByName = {
     sports: "🤾‍♀️ 스포츠",
     game: "🎮 게임",
@@ -64,7 +65,7 @@ const CategoryList = ({
       });
       return;
     }
-    if (selected.length < MAX_CATEGORY_SIZE) {
+    if (selected.length < maxSelection) {
       setSelected((prev) => {
         const pushedCategoryList = [...prev, category];
         setSelected(pushedCategoryList);
