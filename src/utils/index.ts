@@ -74,7 +74,6 @@ export const getTimeToString = (time: string) => {
 };
 
 export const getTimeArrFromDuration = (duration: string) => {
-  console.log(duration);
   let temp = duration.slice(2);
   let hour = 0,
     minute = 0,
@@ -93,8 +92,6 @@ export const getTimeArrFromDuration = (duration: string) => {
   }
 
   second = +temp.slice(0, -1);
-
-  console.log(hour, minute, second);
 
   return [hour, minute, second];
 };
