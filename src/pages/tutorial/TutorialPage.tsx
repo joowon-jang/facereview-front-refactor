@@ -14,6 +14,7 @@ const TUTORIAL_TEXT = [
 ];
 
 const AuthPage = (): ReactElement => {
+  const isMobile = window.innerWidth < 1200;
   const { step } = useParams();
   const navigate = useNavigate();
 
@@ -41,15 +42,24 @@ const AuthPage = (): ReactElement => {
   return (
     <div className="tutorial-container">
       <div className="tutorial-content">
-        <div className="tutorial-left-container">
-          <div className="visual-wrapper"></div>
-        </div>
+        {!isMobile && (
+          <div className="tutorial-left-container">
+            <div className="visual-wrapper"></div>
+          </div>
+        )}
         <div className="tutorial-right-container">
-          <StepIndicator step={currentStep} maxStep={3} />
+          {!isMobile && <StepIndicator step={currentStep} maxStep={3} />}
           <h6 className="step-title">{currentStep}</h6>
           <p className="tutorial-text font-title-large">
+            asd
             {TUTORIAL_TEXT[currentStep]}
           </p>
+          {isMobile && (
+            <div className="tutorial-mobile-container">
+              <div className="visual-wrapper"></div>
+              <StepIndicator step={currentStep} maxStep={3} />{" "}
+            </div>
+          )}
           <div className="button-container">
             <Button
               label={"건너뛰기"}
