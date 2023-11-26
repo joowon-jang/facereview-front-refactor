@@ -151,14 +151,7 @@ const WatchPage = (): ReactElement => {
       capture();
     }, 200);
 
-    return () => {
-      socket.disconnect();
-      clearInterval(captureInterval);
-    };
-  });
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
+    const frameDataInterval = setInterval(async () => {
       const capturedImage = await capture();
       const currentTime = await video?.getCurrentTime();
       const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
@@ -193,18 +186,13 @@ const WatchPage = (): ReactElement => {
         }
       );
     }, 1000);
+
     return () => {
-      clearInterval(interval);
+      socket.disconnect();
+      clearInterval(frameDataInterval);
+      clearInterval(captureInterval);
     };
   }, [access_token, capture, graphData, video, videoData?.youtube_index]);
-
-  // const CustomTooltip = ({ formattedValue, id }: any): ReactElement => {
-  //   return (
-  //     <div className="graph-tooltip-container">
-  //       <EmotionBadge type={"small"} emotion={id} />
-  //     </div>
-  //   );
-  // };
 
   const CommentItem = ({
     nickname,
