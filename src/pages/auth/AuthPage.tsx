@@ -107,10 +107,8 @@ const AuthPage = () => {
         if (password.length >= 8) {
           signIn({ email_id: email, password: password })
             .then(async (res: AxiosResponse<UserInfoType, any>) => {
-              console.log(res);
               if (res.status === 200) {
                 setIsSingInSuccess(true);
-                console.log(res);
                 HeaderToken.set(res.data.access_token);
                 setUserInfo({
                   is_admin: +res.data.user_role === 2,
@@ -123,7 +121,6 @@ const AuthPage = () => {
                 });
 
                 setTimeout(() => {
-                  console.log(res.data.user_tutorial);
                   if (res.data.user_tutorial) {
                     navigate("/");
                     return;
