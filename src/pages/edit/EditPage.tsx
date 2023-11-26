@@ -12,7 +12,8 @@ import { changeName, changeProfilePhoto } from "api/auth";
 import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 
 const EditPage = () => {
-  const { is_sign_in, user_name, user_profile } = useAuthStorage();
+  const { is_sign_in, user_name, user_profile, setUserName, setUserProfile } =
+    useAuthStorage();
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
   const [profileColor, setProfileColor] = useState<EmotionType>(
@@ -29,6 +30,16 @@ const EditPage = () => {
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    changeProfilePhoto({ new_profile: mapEmotionToNumber(profileColor) })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setUserProfile({ user_profile: res.data.user_profile });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setIsModalOpen(false);
   };
 
@@ -36,18 +47,14 @@ const EditPage = () => {
     changeName({ new_name: nickName })
       .then((res) => {
         console.log(res);
+        if (res.status === 200) {
+          setUserName({ user_name: res.data.user_name });
+        }
       })
       .catch((error) => {
         console.log(error);
       });
-
-    changeProfilePhoto({ new_profile: mapEmotionToNumber(profileColor) })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    navigate("/my");
   };
 
   useEffect(() => {
@@ -88,7 +95,6 @@ const EditPage = () => {
                 color="neutral"
                 onSelectClick={() => {
                   handleColorChange("neutral");
-                  closeModal();
                 }}
                 style={{ cursor: "pointer" }}
               />
@@ -97,7 +103,6 @@ const EditPage = () => {
                 color="happy"
                 onSelectClick={() => {
                   handleColorChange("happy");
-                  closeModal();
                 }}
                 style={{ cursor: "pointer" }}
               />
@@ -106,7 +111,6 @@ const EditPage = () => {
                 color="surprise"
                 onSelectClick={() => {
                   handleColorChange("surprise");
-                  closeModal();
                 }}
                 style={{ cursor: "pointer" }}
               />
@@ -115,7 +119,6 @@ const EditPage = () => {
                 color="sad"
                 onSelectClick={() => {
                   handleColorChange("sad");
-                  closeModal();
                 }}
                 style={{ cursor: "pointer" }}
               />
@@ -124,7 +127,6 @@ const EditPage = () => {
                 color="angry"
                 onSelectClick={() => {
                   handleColorChange("angry");
-                  closeModal();
                 }}
                 style={{ cursor: "pointer" }}
               />
@@ -145,9 +147,6 @@ const EditPage = () => {
                 }}
               />
             </div>
-            <p className="editpage-input-alert-message font-body-large">
-              닉네임이 중복돼요
-            </p>
           </div>
         </div>
 

@@ -95,7 +95,7 @@ export const getUserName = async () => {
 export const changeName = async (prop: { new_name: string }) => {
   try {
     const url = "/mypage/change-name";
-    const res = await api.post(url);
+    const res = await api.post(url, prop);
 
     return res;
   } catch (error) {
@@ -107,7 +107,7 @@ export const changeName = async (prop: { new_name: string }) => {
 export const changeProfilePhoto = async (prop: { new_profile: number }) => {
   try {
     const url = "/mypage/change-profilephoto";
-    const res = await api.post(url);
+    const res = await api.post(url, prop);
 
     return res;
   } catch (error) {
