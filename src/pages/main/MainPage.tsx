@@ -132,25 +132,24 @@ const MainPage = (): ReactElement => {
             가장 좋아할 영상을 준비했어요.
           </h4>
           <div className="video-container">
-            <div className="indicator-wrapper">
-              <StepIndicator
-                step={personalVideoIndicator}
-                maxStep={2}
-                indicatorWidth={37}
-              />
-            </div>
-            <div className="video-wrapper">
-              {allVideo.map((v) => (
-                <VideoItem
-                  key={`recommendVideo${v}`}
-                  width={isMobile ? window.innerWidth - 32 : 280}
-                  videoId={v.youtube_url}
-                  style={isMobile ? { marginBottom: "28px" } : {}}
-                  videoTitle={v.youtube_title}
-                  videoMostEmotion={"happy"}
-                  videoMostEmotionPercentage={0}
-                />
-              ))}
+            <div className="main-page-video-container">
+              <div className="main-page-video-wrapper">
+                {allVideo.map((v) => (
+                  <VideoItem
+                    src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                    width={isMobile ? window.innerWidth - 32 : 360}
+                    videoId={v.youtube_url}
+                    videoTitle={v.youtube_title}
+                    videoMostEmotion={v.youtube_most_emotion}
+                    videoMostEmotionPercentage={v.youtube_most_emotion_per}
+                    style={
+                      isMobile
+                        ? { paddingTop: "14px", paddingBottom: "14px" }
+                        : { marginRight: "60px" }
+                    }
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
