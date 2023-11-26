@@ -10,7 +10,8 @@ import { mapNumberToEmotion } from "utils/index";
 const Header = (): ReactElement => {
   const isMobile = window.innerWidth < 1200;
   const navigate = useNavigate();
-  const { is_sign_in, user_profile } = useAuthStorage();
+  const { is_sign_in } = useAuthStorage();
+  const user_profile = useAuthStorage((state) => state.user_profile);
 
   return (
     <div className="header">
