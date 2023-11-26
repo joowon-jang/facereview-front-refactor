@@ -72,3 +72,29 @@ export const getTimeToString = (time: string) => {
   }
   return minuteDiff + "분 전";
 };
+
+export const getTimeArrFromDuration = (duration: string) => {
+  console.log(duration);
+  let temp = duration.slice(2);
+  let hour = 0,
+    minute = 0,
+    second = 0;
+
+  const hourSplit = temp.split("H");
+  if (hourSplit.length !== 1) {
+    hour = +hourSplit[0];
+    temp = hourSplit[1];
+  }
+
+  const minuteSplit = temp.split("M");
+  if (minuteSplit.length !== 1) {
+    minute = +minuteSplit[0];
+    temp = minuteSplit[1];
+  }
+
+  second = +temp.slice(0, -1);
+
+  console.log(hour, minute, second);
+
+  return [hour, minute, second];
+};

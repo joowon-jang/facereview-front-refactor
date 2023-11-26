@@ -14,4 +14,36 @@
     margin-bottom: 25px;
   }
 
+  .request-video-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    .request-video-item {
+      margin-right: 40px;
+      margin-bottom: 80px;
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .draft-url-item {
+      padding: 4px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      border: 1px solid $primary-basic;
+      border-radius: 4px;
+
+      &:hover {
+        color: $gray-50;
+        background-color: $primary-basic;
+        cursor: pointer;
+      }
+    }
+
+
+  }
+
 }

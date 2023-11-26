@@ -61,3 +61,16 @@ export type ReqeustedVideoType = {
   full_url: string;
   url: string;
 };
+
+export type YoutubeVideoDataType = {
+  items: [
+    {
+      id: string;
+      snippet: {
+        title: string;
+        channelTitle: string;
+      };
+      contentDetails: { duration: string };
+    }
+  ];
+};

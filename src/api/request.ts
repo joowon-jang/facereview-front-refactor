@@ -4,9 +4,9 @@ import api from "./index";
 export const getRequestedVideoList = async () => {
   try {
     const url = "/register/recommend-list";
-    const res = await api.get<ReqeustedVideoType[]>(url);
+    const { data } = await api.get<ReqeustedVideoType[], any>(url);
 
-    return res;
+    return data;
   } catch (error) {
     console.log(error);
     throw error;
@@ -18,9 +18,9 @@ export const updateRequestVideoList = async (props: {
 }) => {
   try {
     const url = "/register/recommend-register";
-    const res = await api.post(url, props);
+    const { data } = await api.post(url, props);
 
-    return res;
+    return data;
   } catch (error) {
     console.log(error);
     throw error;
