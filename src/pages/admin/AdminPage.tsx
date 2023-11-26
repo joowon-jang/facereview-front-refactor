@@ -1,15 +1,22 @@
 import { getRequestedVideoList } from "api/request";
-import { ReactElement, useEffect } from "react";
+import axios from "axios";
+import { ReactElement, useEffect, useState } from "react";
 import { useAuthStorage } from "store/authStore";
+import { ReqeustedVideoType } from "types/index";
 import "./adminpage.scss";
 
 const MainPage = (): ReactElement => {
   const { is_sign_in, user_name } = useAuthStorage();
+  const [requestedVideoList, setRequestedVideoList] = useState<
+    ReqeustedVideoType[]
+  >([]);
 
   useEffect(() => {
     getRequestedVideoList()
       .then((res) => {
+        // axios.get(`https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=4Y4YSpF6d6w&key=AIzaSyAva4KgvWU_2Yjcz9g7Q8csTNzHYUc1KNM`)
         console.log(res);
+        // setRequestedVideoList(res);
       })
       .catch((err) => {
         console.log(err);

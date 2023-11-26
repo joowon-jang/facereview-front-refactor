@@ -140,6 +140,7 @@ const WatchPage = (): ReactElement => {
 
         getVideoComments({ youtube_url: id || "" })
           .then((res) => {
+            console.log(res);
             setCommentList(res);
           })
           .catch((err) => {});

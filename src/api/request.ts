@@ -1,9 +1,10 @@
+import { ReqeustedVideoType } from "types/index";
 import api from "./index";
 
 export const getRequestedVideoList = async () => {
   try {
     const url = "/register/recommend-list";
-    const res = await api.get(url);
+    const res = await api.get<ReqeustedVideoType[]>(url);
 
     return res;
   } catch (error) {
