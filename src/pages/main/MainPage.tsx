@@ -72,7 +72,7 @@ const MainPage = (): ReactElement => {
 
   const handleRegisterButtonClick = () => {
     if (registeredVideoIds.length > 0) {
-      const promises = registeredVideoIds.map((videoId) =>
+      registeredVideoIds.map((videoId) =>
         updateRequestVideoList({ youtube_url_id: videoId })
           .then((res) => {
             console.log(res);
