@@ -9,9 +9,10 @@ import "./authpage.scss";
 import { checkEmail, signIn, signUp } from "api/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStorage } from "store/authStore";
-import { UserInfoType } from "types";
+import { CategoryType, UserInfoType } from "types";
 import { AxiosResponse } from "axios";
 import HeaderToken from "api/HeaderToken";
+import CategoryList from "components/CategoryList/CategoryList";
 
 const AlertMessages = {
   emailInvalid: "올바르지 않은 이메일 형식이에요",
@@ -32,6 +33,7 @@ const AuthPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [emailAlertMessage, setEmailAlertMessage] = useState("");
   const [passwordAlertMessage, setPasswordAlertMessage] = useState("");
   const [confirmPasswordAlertMessage, setConfirmPasswordAlertMessage] =
@@ -265,7 +267,7 @@ const AuthPage = () => {
               </p>
             </div>
           ) : null}
-          {currentStep === 3 && !isSignIn ? (
+          {true || (currentStep === 3 && !isSignIn) ? (
             <div className="input-item-container">
               <label
                 htmlFor="authNickname"
@@ -280,6 +282,21 @@ const AuthPage = () => {
                 placeholder="최소 2자의 닉네임을 입력해주세요"
                 maxLength={60}
               />
+              <p className="input-alert-message font-body-large">
+                {nicknameAlertMessage}
+              </p>
+              <label
+                htmlFor="authNickname"
+                className="input-label font-title-mini"
+              >
+                관심 카테고리(3개 선택)
+              </label>
+              <div className="category-wrapper">
+                <CategoryList
+                  selected={categories}
+                  setSelected={setCategories}
+                />
+              </div>
               <p className="input-alert-message font-body-large">
                 {nicknameAlertMessage}
               </p>
