@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useAuthStorage } from "store/authStore";
-import StepIndicator from "components/StepIndicator/StepIndicator";
 import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
 import { getAllVideo, getPersonalRecommendedVideo } from "api/youtube";
@@ -25,10 +24,10 @@ const MainPage = (): ReactElement => {
   const [registeringVideoId, setRegisteringVideoId] = useState("");
   const [registeredVideoIds, setRegisteredVideoIds] = useState<string[]>([]);
   const [isRegisterMatched, setIsRegisterMatched] = useState(false);
-
-  const [personalVideoIndicator, setPersonalVideoIndicator] =
-    useState<number>(1);
   const [allVideo, setAllVideo] = useState<VideoDataType[]>([]);
+  const [personalRecommendedVideo, serPersonalRecommendedVideo] = useState<
+    VideoDataType[]
+  >([]);
 
   const filteredVideos = allVideo.filter(
     (v) =>
@@ -93,6 +92,7 @@ const MainPage = (): ReactElement => {
             "OK /home/user-customized-list ----------------------",
             res
           );
+          serPersonalRecommendedVideo(res);
         })
         .catch((err) => {
           console.log(
@@ -134,10 +134,10 @@ const MainPage = (): ReactElement => {
           <div className="video-container">
             <div className="main-page-video-container">
               <div className="main-page-video-wrapper">
-                {allVideo.map((v) => (
+                {personalRecommendedVideo.map((v) => (
                   <VideoItem
                     src={`https://www.youtube.com/embed/${v.youtube_url}`}
-                    width={isMobile ? window.innerWidth - 32 : 360}
+                    width={isMobile ? window.innerWidth - 32 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
                     videoMostEmotion={v.youtube_most_emotion}
@@ -145,7 +145,7 @@ const MainPage = (): ReactElement => {
                     style={
                       isMobile
                         ? { paddingTop: "14px", paddingBottom: "14px" }
-                        : { marginRight: "60px" }
+                        : { marginRight: "27px" }
                     }
                   />
                 ))}
