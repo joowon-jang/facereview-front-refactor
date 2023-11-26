@@ -3,6 +3,7 @@
 .watch-page-container {
   display: flex;
   padding-top: 48px;
+  padding-bottom: 98px;
 
   @include mobile {
     flex-direction: column;
@@ -114,6 +115,10 @@
             }
           }
         }
+
+        .no-comments-text {
+          color: $gray-600;
+        }
       }
     }
   }
@@ -165,8 +170,7 @@
         margin-bottom: 32px;
       }
 
-      .recommend-video-container {
-      }
+      .recommend-video-container {}
     }
   }
 }

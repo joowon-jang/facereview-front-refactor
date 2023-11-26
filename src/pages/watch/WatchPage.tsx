@@ -18,12 +18,12 @@ import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
 import { CommentType, EmotionType, VideoDetailType } from "types";
-import { getVideoDetail } from "api/youtube";
+import { getRelatedVideo, getVideoDetail } from "api/youtube";
 import Devider from "components/Devider/Devider";
 import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
 import { getVideoComments, sendNewComment } from "api/watch";
-import { mapNumberToEmotion } from "utils/index";
+import { getTimeToString, mapNumberToEmotion } from "utils/index";
 
 const WatchPage = (): ReactElement => {
   const isMobile = window.innerWidth < 1200;
@@ -79,8 +79,8 @@ const WatchPage = (): ReactElement => {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
-  const capture = React.useCallback(async () => {
-    const imageSrc = (await webcamRef.current?.getScreenshot()) || "";
+  const capture = React.useCallback(() => {
+    const imageSrc = webcamRef.current?.getScreenshot() || "";
     return imageSrc?.split(",")[1];
   }, [webcamRef]);
 
@@ -114,11 +114,14 @@ const WatchPage = (): ReactElement => {
           youtube_url: id || "",
         })
           .then((res) => {
-            console.log("comment complete", res);
+            getVideoComments({ youtube_url: id || "" })
+              .then((res) => {
+                setCommentList(res);
+              })
+              .catch((err) => {});
             setComment("");
           })
           .catch((err) => {
-            console.log("comment error", err);
             toast.error("댓글이 달리지 않았어요.", {
               toastId: "error new comment",
             });
@@ -134,23 +137,19 @@ const WatchPage = (): ReactElement => {
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
         setVideoData(res);
-        console.log("OK /watch/main-youtube ----------------------", res);
 
         getVideoComments({ youtube_url: id || "" })
           .then((res) => {
-            console.log("OK /watch/comment-list ----------------------", res);
             setCommentList(res);
           })
-          .catch((err) => {
-            console.log(
-              "ERROR /watch/comment-list ----------------------",
-              err
-            );
-          });
+          .catch((err) => {});
       })
-      .catch((err) => {
-        console.log("ERROR /watch/main-youtube ----------------------", err);
-      });
+      .catch((err) => {});
+    getRelatedVideo({ youtube_url: id || "" })
+      .then((res) => {
+        console.log("related", res);
+      })
+      .catch((err) => {});
   }, [id]);
 
   useEffect(() => {
@@ -374,17 +373,23 @@ const WatchPage = (): ReactElement => {
             댓글 {commentList.length || 0}개
           </div>
           <div className="comment-list-container">
-            {commentList.map((comment, idx) => (
-              <CommentItem
-                key={`comment-${comment.comment_contents}-${idx}`}
-                user_name={comment.user_name}
-                comment_date={comment.comment_date}
-                comment_contents={comment.comment_contents}
-                user_profile={comment.user_profile}
-                comment_index={comment.comment_index}
-                modify_check={comment.modify_check}
-              />
-            ))}
+            {commentList.length > 0 ? (
+              commentList.map((comment, idx) => (
+                <CommentItem
+                  key={`comment-${comment.comment_contents}-${idx}`}
+                  user_name={comment.user_name}
+                  comment_date={getTimeToString(comment.comment_date)}
+                  comment_contents={comment.comment_contents}
+                  user_profile={comment.user_profile}
+                  comment_index={comment.comment_index}
+                  modify_check={comment.modify_check}
+                />
+              ))
+            ) : (
+              <p className="no-comments-text font-label-large">
+                아직 댓글이 없어요
+              </p>
+            )}
           </div>
         </div>
       </div>

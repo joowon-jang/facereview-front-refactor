@@ -14,6 +14,7 @@ import youtubeIcon from "assets/img/youtubeIcon.png";
 import Button from "components/Button/Button";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 import { updateRequestVideoList } from "api/request";
+import { getTimeToString } from "utils/index";
 
 const MainPage = (): ReactElement => {
   const { is_sign_in, user_name } = useAuthStorage();
