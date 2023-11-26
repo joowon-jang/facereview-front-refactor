@@ -12,8 +12,8 @@ import { changeName, changeProfilePhoto } from "api/auth";
 import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 
 const EditPage = () => {
-  const { is_sign_in, user_name, user_profile, setUserName, setUserProfile } =
-    useAuthStorage();
+  const { is_sign_in, setUserName, setUserProfile } = useAuthStorage();
+  const user_profile = useAuthStorage((state) => state.user_profile);
   const navigate = useNavigate();
   const [nickName, setNickName] = useState("");
   const [profileColor, setProfileColor] = useState<EmotionType>(
@@ -22,10 +22,7 @@ const EditPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleColorChange = (color: EmotionType) => {
-    setProfileColor(color);
-  };
-
+  const handleSelectClick = () => {};
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -34,12 +31,13 @@ const EditPage = () => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          setUserProfile({ user_profile: res.data.user_profile });
+          setUserProfile({ user_profile: mapEmotionToNumber(profileColor) });
         }
       })
       .catch((error) => {
         console.log(error);
       });
+    console.log(profileColor);
     setIsModalOpen(false);
   };
 
@@ -48,7 +46,7 @@ const EditPage = () => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          setUserName({ user_name: res.data.user_name });
+          setUserName({ user_name: nickName });
         }
       })
       .catch((error) => {
@@ -93,41 +91,31 @@ const EditPage = () => {
               <ProfileIcon
                 type="icon-medium"
                 color="neutral"
-                onSelectClick={() => {
-                  handleColorChange("neutral");
-                }}
+                onSelectClick={handleSelectClick}
                 style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="happy"
-                onSelectClick={() => {
-                  handleColorChange("happy");
-                }}
+                onSelectClick={handleSelectClick}
                 style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="surprise"
-                onSelectClick={() => {
-                  handleColorChange("surprise");
-                }}
+                onSelectClick={handleSelectClick}
                 style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="sad"
-                onSelectClick={() => {
-                  handleColorChange("sad");
-                }}
+                onSelectClick={handleSelectClick}
                 style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="angry"
-                onSelectClick={() => {
-                  handleColorChange("angry");
-                }}
+                onSelectClick={handleSelectClick}
                 style={{ cursor: "pointer" }}
               />
             </div>
