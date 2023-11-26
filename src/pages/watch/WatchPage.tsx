@@ -23,6 +23,7 @@ import Devider from "components/Devider/Devider";
 import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
 import { getVideoComments, sendNewComment } from "api/watch";
+import { mapNumberToEmotion } from "utils/index";
 
 const WatchPage = (): ReactElement => {
   const isMobile = window.innerWidth < 1200;
@@ -46,7 +47,7 @@ const WatchPage = (): ReactElement => {
           rel: 0,
         },
       };
-  const { is_sign_in, access_token } = useAuthStorage();
+  const { is_sign_in, access_token, user_profile } = useAuthStorage();
   const navigation = useNavigate();
 
   const webcamRef = useRef<Webcam>(null);
@@ -217,7 +218,7 @@ const WatchPage = (): ReactElement => {
       <div className="comment-item-container">
         <ProfileIcon
           type={"icon-small"}
-          color={"neutral"}
+          color={mapNumberToEmotion(user_profile)}
           style={{ marginRight: "12px" }}
         />
         <div className="comment-text-wrapper">
@@ -346,7 +347,7 @@ const WatchPage = (): ReactElement => {
           <div className="comment-input-container">
             <ProfileIcon
               type={"icon-medium"}
-              color={"neutral"}
+              color={mapNumberToEmotion(user_profile)}
               style={{ marginRight: "12px" }}
             />
             <TextInput
