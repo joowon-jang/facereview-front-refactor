@@ -6,40 +6,66 @@ import { useNavigate } from "react-router-dom";
 import "./editpage.scss";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import ModalDialog from "components/ModalDialog/ModalDialog";
-import { EmotionType } from "types";
+import { CategoryType, EmotionType } from "types";
 import { useAuthStorage } from "store/authStore";
-import { changeName, changeProfilePhoto } from "api/auth";
+import { changeFavoriteGenre, changeName, changeProfilePhoto } from "api/auth";
 import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
+import CategoryList from "components/CategoryList/CategoryList";
 
 const EditPage = () => {
-  const { is_sign_in, user_name, user_profile, setUserName, setUserProfile } =
-    useAuthStorage();
+  const {
+    user_name,
+    setUserName,
+    setUserProfile,
+    setUserFavoriteGenre,
+    user_favorite_genre_1,
+    user_favorite_genre_2,
+    user_favorite_genre_3,
+  } = useAuthStorage();
+  const user_profile = useAuthStorage((state) => state.user_profile);
   const navigate = useNavigate();
-  const [nickName, setNickName] = useState("");
+  const [nickName, setNickName] = useState(user_name);
+  const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(
+    []
+  );
   const [profileColor, setProfileColor] = useState<EmotionType>(
+    mapNumberToEmotion(user_profile)
+  );
+  const [selectedColor, setSelectedColor] = useState<EmotionType>(
+    mapNumberToEmotion(user_profile)
+  );
+  const [localProfileColor, setLocalProfileColor] = useState<EmotionType>(
     mapNumberToEmotion(user_profile)
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleColorChange = (color: EmotionType) => {
-    setProfileColor(color);
+  const handleColorSelect = (color: EmotionType) => {
+    setSelectedColor(color);
   };
 
   const openModal = () => {
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleModalCheck = () => {
+    setProfileColor(selectedColor);
+    setLocalProfileColor(selectedColor);
+
     changeProfilePhoto({ new_profile: mapEmotionToNumber(profileColor) })
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          setUserProfile({ user_profile: res.data.user_profile });
+          setUserProfile({ user_profile: mapEmotionToNumber(profileColor) });
         }
       })
       .catch((error) => {
         console.log(error);
       });
+    console.log(profileColor);
+
     setIsModalOpen(false);
   };
 
@@ -48,21 +74,37 @@ const EditPage = () => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          setUserName({ user_name: res.data.user_name });
+          setUserName({ user_name: nickName });
+
+          navigate("/my");
         }
       })
       .catch((error) => {
         console.log(error);
       });
-    navigate("/");
+    changeFavoriteGenre({
+      user_favorite_genre_1: selectedCategories[0],
+      user_favorite_genre_2: selectedCategories[1],
+      user_favorite_genre_3: selectedCategories[2],
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setUserFavoriteGenre({
+            user_favorite_genre_1: selectedCategories[0],
+            user_favorite_genre_2: selectedCategories[1],
+            user_favorite_genre_3: selectedCategories[2],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
-    // if (is_sign_in) {
-    // } else {
-    //   navigate("/auth/1");
-    // }
-  }, []);
+    setProfileColor(selectedColor);
+  }, [selectedColor]);
 
   return (
     <>
@@ -71,7 +113,7 @@ const EditPage = () => {
         <div className="editpage-user-container">
           <ProfileIcon
             type={"icon-large"}
-            color={profileColor}
+            color={localProfileColor}
             isEditable={true}
             onEditClick={openModal}
           />
@@ -79,6 +121,7 @@ const EditPage = () => {
             type={"one-button"}
             isOpen={isModalOpen}
             onClose={closeModal}
+            onCheck={handleModalCheck}
           >
             <h3
               className="font-title-mini editpage-modal-title"
@@ -93,42 +136,52 @@ const EditPage = () => {
               <ProfileIcon
                 type="icon-medium"
                 color="neutral"
-                onSelectClick={() => {
-                  handleColorChange("neutral");
+                onSelectClick={() => handleColorSelect("neutral")}
+                style={{
+                  cursor: "pointer",
+                  border:
+                    selectedColor === "neutral" ? "3px solid #76FFCE" : "none",
                 }}
-                style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="happy"
-                onSelectClick={() => {
-                  handleColorChange("happy");
+                onSelectClick={() => handleColorSelect("happy")}
+                style={{
+                  cursor: "pointer",
+                  border:
+                    selectedColor === "happy" ? "3px solid #76FFCE" : "none",
                 }}
-                style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="surprise"
-                onSelectClick={() => {
-                  handleColorChange("surprise");
+                onSelectClick={() => handleColorSelect("surprise")}
+                style={{
+                  cursor: "pointer",
+                  border:
+                    selectedColor === "surprise" ? "3px solid #76FFCE" : "none",
                 }}
-                style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="sad"
-                onSelectClick={() => {
-                  handleColorChange("sad");
+                onSelectClick={() => handleColorSelect("sad")}
+                style={{
+                  cursor: "pointer",
+                  border:
+                    selectedColor === "sad" ? "3px solid #76FFCE" : "none",
                 }}
-                style={{ cursor: "pointer" }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="angry"
-                onSelectClick={() => {
-                  handleColorChange("angry");
+                onSelectClick={() => handleColorSelect("angry")}
+                style={{
+                  cursor: "pointer",
+                  border:
+                    selectedColor === "angry" ? "3px solid #76FFCE" : "none",
                 }}
-                style={{ cursor: "pointer" }}
               />
             </div>
           </ModalDialog>
@@ -146,6 +199,17 @@ const EditPage = () => {
                   marginBottom: "8px",
                 }}
               />
+              {nickName.length < 2 && (
+                <p className="editpage-input-alert-message font-body-large">
+                  최소 2자이상 입력해주세요.
+                </p>
+              )}
+            </div>
+            <div className="editpage-category-wrapper">
+              <CategoryList
+                selected={selectedCategories}
+                setSelected={setSelectedCategories}
+              />
             </div>
           </div>
         </div>
@@ -153,8 +217,8 @@ const EditPage = () => {
         <Button
           label="수정"
           type="cta-full"
-          style={{ width: "380px", marginTop: "48px" }}
-          isDisabled={nickName === ""}
+          style={{ width: "380px", marginTop: "16px" }}
+          isDisabled={nickName.length < 2 || selectedCategories.length < 3}
           onClick={handleEditButtonClick}
         />
       </div>

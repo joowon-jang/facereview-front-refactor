@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useAuthStorage } from "store/authStore";
-import StepIndicator from "components/StepIndicator/StepIndicator";
 import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
 import { getAllVideo, getPersonalRecommendedVideo } from "api/youtube";
@@ -26,16 +25,10 @@ const MainPage = (): ReactElement => {
   const [registeringVideoId, setRegisteringVideoId] = useState("");
   const [registeredVideoIds, setRegisteredVideoIds] = useState<string[]>([]);
   const [isRegisterMatched, setIsRegisterMatched] = useState(false);
-  const recommendVideoIds = [
-    "cVz_ArGCo-A",
-    "my7FSr-0EPM",
-    "paKZL7IWcHM",
-    "dTBsPShaBro",
-  ];
-
-  const [personalVideoIndicator, setPersonalVideoIndicator] =
-    useState<number>(1);
   const [allVideo, setAllVideo] = useState<VideoDataType[]>([]);
+  const [personalRecommendedVideo, serPersonalRecommendedVideo] = useState<
+    VideoDataType[]
+  >([]);
 
   const filteredVideos = allVideo.filter(
     (v) =>
@@ -100,6 +93,7 @@ const MainPage = (): ReactElement => {
             "OK /home/user-customized-list ----------------------",
             res
           );
+          serPersonalRecommendedVideo(res);
         })
         .catch((err) => {
           console.log(
@@ -139,25 +133,24 @@ const MainPage = (): ReactElement => {
             가장 좋아할 영상을 준비했어요.
           </h4>
           <div className="video-container">
-            <div className="indicator-wrapper">
-              <StepIndicator
-                step={personalVideoIndicator}
-                maxStep={2}
-                indicatorWidth={37}
-              />
-            </div>
-            <div className="video-wrapper">
-              {allVideo.map((v) => (
-                <VideoItem
-                  key={`recommendVideo${v}`}
-                  width={isMobile ? window.innerWidth - 32 : 280}
-                  videoId={v.youtube_url}
-                  style={isMobile ? { marginBottom: "28px" } : {}}
-                  videoTitle={v.youtube_title}
-                  videoMostEmotion={"happy"}
-                  videoMostEmotionPercentage={0}
-                />
-              ))}
+            <div className="main-page-video-container">
+              <div className="main-page-video-wrapper">
+                {personalRecommendedVideo.map((v) => (
+                  <VideoItem
+                    src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                    width={isMobile ? window.innerWidth - 32 : 280}
+                    videoId={v.youtube_url}
+                    videoTitle={v.youtube_title}
+                    videoMostEmotion={v.youtube_most_emotion}
+                    videoMostEmotionPercentage={v.youtube_most_emotion_per}
+                    style={
+                      isMobile
+                        ? { paddingTop: "14px", paddingBottom: "14px" }
+                        : { marginRight: "27px" }
+                    }
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
