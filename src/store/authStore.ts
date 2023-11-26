@@ -33,6 +33,8 @@ interface AuthState {
     user_profile: number;
     user_tutorial: number;
   }) => void;
+  setUserName: ({ user_name }: { user_name: string }) => void;
+  setUserProfile: ({ user_profile }: { user_profile: number }) => void;
   setTempToken: ({ access_token }: { access_token: string }) => void;
 }
 
@@ -70,6 +72,14 @@ export const useAuthStorage = create<AuthState>()(
             user_profile,
             user_tutorial,
           })),
+        setUserName: ({ user_name }) =>
+          set((state) => ({
+            user_name,
+          })),
+        setUserProfile: ({ user_profile }) =>
+          set((state) => ({
+            user_profile,
+          })),
         setTempToken: ({ access_token }) =>
           set((state) => ({
             is_admin: false,
@@ -80,6 +90,7 @@ export const useAuthStorage = create<AuthState>()(
             access_token: access_token,
           })),
       }),
+
       {
         name: "auth-storage",
       }

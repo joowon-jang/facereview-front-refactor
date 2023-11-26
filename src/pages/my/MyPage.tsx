@@ -44,14 +44,12 @@ const MyPage = () => {
 
   useEffect(() => {
     if (is_sign_in) {
-      //   getRecentVideo()
-      //     .then((data) => {
-      //       console.log(data);
-      //       setRecentVideo(data);
-      //     })
-      //     .catch((err) => console.log(err));
-      // } else {
-      //   navigate("/auth/1");
+      getRecentVideo()
+        .then((data) => {
+          console.log(data);
+          setRecentVideo(data);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 

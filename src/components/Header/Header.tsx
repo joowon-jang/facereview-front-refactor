@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStorage } from "store/authStore";
 import AnimatedLogo from "../AnimatedLogo/AnimatedLogo";
 import "./header.scss";
+import { mapNumberToEmotion } from "utils/index";
 
 const Header = (): ReactElement => {
   const isMobile = window.innerWidth < 1200;
@@ -28,7 +29,7 @@ const Header = (): ReactElement => {
         >
           <ProfileIcon
             type={isMobile ? "icon-small" : "icon-medium"}
-            color={"neutral"}
+            color={mapNumberToEmotion(user_profile)}
           />
         </button>
       ) : (
