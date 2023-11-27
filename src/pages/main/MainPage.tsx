@@ -29,7 +29,7 @@ const MainPage = (): ReactElement => {
   const [personalRecommendedVideo, serPersonalRecommendedVideo] = useState<
     VideoDataType[]
   >([]);
-  const [genreVideo, setGenreVideo] = useState<VideoDataType[]>([]);
+  const [genreVideo, setGenreVideo] = useState<VideoDataType[]>([]); // 장르가 9가지라서 아직 어떻게 쓸 지 모름
 
   const filteredVideos = allVideo.filter(
     (v) =>

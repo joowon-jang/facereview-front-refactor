@@ -6,6 +6,114 @@ import {
 } from "types";
 import api, { youtubeApi } from "./index";
 
+export const getSportsVideo = async () => {
+  try {
+    const url = "/home/sports-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getGameVideo = async () => {
+  try {
+    const url = "/home/game-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getFearVideo = async () => {
+  try {
+    const url = "/home/fear-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getInformationVideo = async () => {
+  try {
+    const url = "/home/information-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getVarietyShowVideo = async () => {
+  try {
+    const url = "/home/verietyshow-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getCookVideo = async () => {
+  try {
+    const url = "/home/cook-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getTravelVideo = async () => {
+  try {
+    const url = "/home/travel-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getEatingVideo = async () => {
+  try {
+    const url = "/home/eating-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getDramaVideo = async () => {
+  try {
+    const url = "/home/drama-list";
+    const { data } = await api.get<VideoDataType[]>(url);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const getAllVideo = async () => {
   try {
     const url = "/home/all-list";
