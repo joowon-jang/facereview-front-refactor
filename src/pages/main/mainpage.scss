@@ -25,16 +25,21 @@
     @include desktop {
       width: calc(50vw + 600px);
     }
-    width: 100%;
-    margin-bottom: 120px;
+    @include mobile {
+      width: 100%;
+    }
+    margin-bottom: 100px;
 
     .main-page-video-container {
       display: flex;
+      margin-left: -20px;
       overflow-x: auto;
     }
 
     .main-page-video-wrapper {
       display: flex;
+      padding-left: 20px;
+      padding-bottom: 20px;
 
       @include mobile {
         flex-direction: column;
@@ -60,25 +65,31 @@
     .video-container {
       margin-left: -20px;
 
-      .chip-wrapper {
+      .main-page-chip-container {
+        display: flex;
+        width: 100%;
         overflow-x: auto;
-        white-space: nowrap;
-        padding-left: 20px;
 
-        @include mobile {
-          padding-top: 24px;
-          padding-bottom: 32px;
-        }
-        @include desktop {
-          padding-top: 16px;
-          padding-bottom: 56px;
-        }
+        .chip-wrapper {
+          display: flex;
+          white-space: nowrap;
+          padding-left: 20px;
 
-        -ms-overflow-style: none; /* 인터넷 익스플로러 */
-        scrollbar-width: none; /* 파이어폭스 */
-      }
-      .chip-wrapper::-webkit-scrollbar {
-        display: none; /* 크롬, 사파리, 오페라, 엣지 */
+          @include mobile {
+            padding-top: 24px;
+            padding-bottom: 32px;
+          }
+          @include desktop {
+            padding-top: 16px;
+            padding-bottom: 56px;
+          }
+
+          -ms-overflow-style: none; /* 인터넷 익스플로러 */
+          scrollbar-width: none; /* 파이어폭스 */
+        }
+        .chip-wrapper::-webkit-scrollbar {
+          display: none; /* 크롬, 사파리, 오페라, 엣지 */
+        }
       }
 
       .video-wrapper {

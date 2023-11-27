@@ -176,60 +176,62 @@ const MainPage = (): ReactElement => {
           )}
         </h2>
         <div className="video-container">
-          <div className="chip-wrapper">
-            <Chip
-              type={isMobile ? "category-small" : "category-big"}
-              choose={"all"}
-              onClick={() => handleChipClick("all")}
-              isSelected={selectedEmotion === "all"}
-              style={
-                isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
-              }
-            />
-            <Chip
-              type={isMobile ? "category-small" : "category-big"}
-              choose={"happy"}
-              onClick={() => handleChipClick("happy")}
-              isSelected={selectedEmotion === "happy"}
-              style={
-                isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
-              }
-            />
-            <Chip
-              type={isMobile ? "category-small" : "category-big"}
-              choose={"surprise"}
-              onClick={() => handleChipClick("surprise")}
-              isSelected={selectedEmotion === "surprise"}
-              style={
-                isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
-              }
-            />
-            <Chip
-              type={isMobile ? "category-small" : "category-big"}
-              choose={"sad"}
-              onClick={() => handleChipClick("sad")}
-              isSelected={selectedEmotion === "sad"}
-              style={
-                isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
-              }
-            />
-            <Chip
-              type={isMobile ? "category-small" : "category-big"}
-              choose={"angry"}
-              onClick={() => handleChipClick("angry")}
-              isSelected={selectedEmotion === "angry"}
-              style={
-                isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
-              }
-            />
-            <Chip
-              type={isMobile ? "category-small" : "category-big"}
-              choose={"plus"}
-              onClick={openModal}
-              style={
-                isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
-              }
-            />
+          <div className="main-page-chip-container">
+            <div className="chip-wrapper">
+              <Chip
+                type={isMobile ? "category-small" : "category-big"}
+                choose={"all"}
+                onClick={() => handleChipClick("all")}
+                isSelected={selectedEmotion === "all"}
+                style={
+                  isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
+                }
+              />
+              <Chip
+                type={isMobile ? "category-small" : "category-big"}
+                choose={"happy"}
+                onClick={() => handleChipClick("happy")}
+                isSelected={selectedEmotion === "happy"}
+                style={
+                  isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
+                }
+              />
+              <Chip
+                type={isMobile ? "category-small" : "category-big"}
+                choose={"surprise"}
+                onClick={() => handleChipClick("surprise")}
+                isSelected={selectedEmotion === "surprise"}
+                style={
+                  isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
+                }
+              />
+              <Chip
+                type={isMobile ? "category-small" : "category-big"}
+                choose={"sad"}
+                onClick={() => handleChipClick("sad")}
+                isSelected={selectedEmotion === "sad"}
+                style={
+                  isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
+                }
+              />
+              <Chip
+                type={isMobile ? "category-small" : "category-big"}
+                choose={"angry"}
+                onClick={() => handleChipClick("angry")}
+                isSelected={selectedEmotion === "angry"}
+                style={
+                  isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
+                }
+              />
+              <Chip
+                type={isMobile ? "category-small" : "category-big"}
+                choose={"plus"}
+                onClick={openModal}
+                style={
+                  isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
+                }
+              />
+            </div>
           </div>
           <ModalDialog
             type={"video-register"}
