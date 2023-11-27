@@ -23,6 +23,7 @@ import Devider from "components/Devider/Devider";
 import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
 import {
+  addHits,
   getMainDistributionData,
   getVideoComments,
   sendNewComment,
@@ -51,6 +52,14 @@ const WatchPage = (): ReactElement => {
           rel: 0,
         },
       };
+  const emotionByEmotionText: { emotion: EmotionType; emotionText: string }[] =
+    [
+      { emotion: "happy", emotionText: "즐거운" },
+      { emotion: "sad", emotionText: "슬픈" },
+      { emotion: "surprise", emotionText: "놀란" },
+      { emotion: "angry", emotionText: "화나는" },
+      { emotion: "neutral", emotionText: "무표정" },
+    ];
   const { is_sign_in, access_token, user_profile } = useAuthStorage();
   const navigation = useNavigate();
 
@@ -60,17 +69,31 @@ const WatchPage = (): ReactElement => {
     height: 180,
   };
 
-  const [graphData, setGraphData] = useState([
+  const [myGraphData, setMyGraphData] = useState([
     {
-      happy: 48,
+      happy: 0,
       happyColor: "#FF4D8D",
-      sad: 12,
+      sad: 0,
       sadColor: "#479CFF",
-      surprise: 5,
+      surprise: 0,
       surpriseColor: "#92C624",
-      angry: 17,
+      angry: 0,
       angryColor: "#FF6B4B",
-      neutral: 18,
+      neutral: 100,
+      neutralColor: "#393946",
+    },
+  ]);
+  const [othersGraphData, setOthersGraphData] = useState([
+    {
+      happy: 0,
+      happyColor: "#FF4D8D",
+      sad: 0,
+      sadColor: "#479CFF",
+      surprise: 0,
+      surpriseColor: "#92C624",
+      angry: 0,
+      angryColor: "#FF6B4B",
+      neutral: 100,
       neutralColor: "#393946",
     },
   ]);
@@ -140,40 +163,39 @@ const WatchPage = (): ReactElement => {
   useLayoutEffect(() => {
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
-        console.log("getVideoDetail", res);
         setVideoData(res);
-
-        getVideoComments({ youtube_url: id || "" })
-          .then((res) => {
-            setCommentList(res);
-          })
-          .catch((err) => {});
-      })
-      .catch((err) => {});
-    getRelatedVideo({ youtube_url: id || "" })
-      .then((res) => {
-        console.log("related", res);
       })
       .catch((err) => {});
   }, [id]);
 
   useEffect(() => {
     socket.connect();
+    addHits({
+      youtube_url: id || "",
+      user_categorization: is_sign_in ? "user" : "non-user",
+    })
+      .then((res) => {})
+      .catch((err) => console.log(err));
+    getRelatedVideo({ youtube_url: id || "" })
+      .then((res) => {
+        console.log("related", res);
+      })
+      .catch((err) => {});
+    getVideoComments({ youtube_url: id || "" })
+      .then((res) => {
+        setCommentList(res);
+      })
+      .catch((err) => {});
 
     getMainDistributionData({ youtube_url: id || "" })
       .then((res) => {
         console.log("getMainDistributionData", res);
       })
       .catch((err) => console.log(err));
-
-    socket.on("client_message", (msg) => {
-      console.log("client-message", msg);
-    });
-
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [id, is_sign_in]);
 
   useEffect(() => {
     const captureInterval = setInterval(() => {
@@ -192,34 +214,45 @@ const WatchPage = (): ReactElement => {
           youtube_running_time: formattedCurrentTime,
           string_frame_data: capturedImage,
           youtube_index: videoData?.youtube_index,
+        },
+        (response: {
+          happy: number;
+          sad: number;
+          surprise: number;
+          angry: number;
+          neutral: number;
+          most_emotion: EmotionType;
+          youtube_emotion_data: EmotionType;
+          youtube_emotion_neutral_per: number;
+          youtube_emotion_angry_per: number;
+          youtube_emotion_happy_per: number;
+          youtube_emotion_surprise_per: number;
+          youtube_emotion_sad_per: number;
+        }) => {
+          console.log(response);
+          setCurrentMyEmotion(response.most_emotion);
+          setMyGraphData([
+            {
+              ...myGraphData[0],
+              happy: response.happy,
+              sad: response.sad,
+              surprise: response.surprise,
+              angry: response.angry,
+              neutral: response.neutral,
+            },
+          ]);
+          setCurrentOthersEmotion(response.youtube_emotion_data);
+          setOthersGraphData([
+            {
+              ...othersGraphData[0],
+              happy: response.youtube_emotion_happy_per,
+              sad: response.youtube_emotion_sad_per,
+              surprise: response.youtube_emotion_surprise_per,
+              angry: response.youtube_emotion_angry_per,
+              neutral: response.youtube_emotion_neutral_per,
+            },
+          ]);
         }
-
-        // (response: {
-        //   happy: number;
-        //   sad: number;
-        //   surprise: number;
-        //   angry: number;
-        //   neutral: number;
-        //   most_emotion: EmotionType;
-        //   youtube_emotion_data: string;
-        //   youtube_emotion_neutral_per: string;
-        //   youtube_emotion_angry_per: string;
-        //   youtube_emotion_happy_per: string;
-        //   youtube_emotion_surprise_per: string;
-        //   youtube_emotion_sad_per: string;
-        // }) => {
-        //   setCurrentMyEmotion(response.most_emotion);
-        //   setGraphData([
-        //     {
-        //       ...graphData[0],
-        //       happy: response.happy,
-        //       sad: response.sad,
-        //       surprise: response.surprise,
-        //       angry: response.angry,
-        //       neutral: response.neutral,
-        //     },
-        //   ]);
-        // }
       );
     }, 1000);
 
@@ -227,7 +260,41 @@ const WatchPage = (): ReactElement => {
       clearInterval(frameDataInterval);
       clearInterval(captureInterval);
     };
-  }, [access_token, capture, graphData, video, videoData?.youtube_index]);
+  }, [
+    access_token,
+    capture,
+    myGraphData,
+    othersGraphData,
+    video,
+    videoData?.youtube_index,
+  ]);
+
+  const GraphDetailDataItem = ({
+    graphData,
+    emotion,
+    emotionText,
+    mostEmotion,
+  }: {
+    graphData: any;
+    emotion: EmotionType;
+    emotionText: string;
+    mostEmotion: EmotionType;
+  }) => {
+    return (
+      <div
+        className={`graph-detail-item ${
+          emotion === mostEmotion ? "active" : null
+        }`}
+      >
+        <EmotionBadge type={"big"} emotion={emotion} />
+
+        <p className="font-label-medium emotion-text">{emotionText}</p>
+        <p className="font-label-medium emotion-percentage">
+          {"" + graphData[0][emotion] + "%"}
+        </p>
+      </div>
+    );
+  };
 
   const CommentItem = ({
     user_name,
@@ -300,16 +367,16 @@ const WatchPage = (): ReactElement => {
               mirrored={true}
               screenshotQuality={0.5}
             />
-            <div className="my-emotion-container">
-              <div className="my-emotion-title-wrapper">
-                <h4 className="my-emotion-title font-title-small">
+            <div className="emotion-container">
+              <div className="emotion-title-wrapper">
+                <h4 className="emotion-title font-title-small">
                   실시간 나의 감정
                 </h4>
                 <EmotionBadge type="big" emotion={currentMyEmotion} />
               </div>
               <div className="graph-container">
                 <ResponsiveBar
-                  data={graphData}
+                  data={myGraphData}
                   keys={["happy", "sad", "surprise", "angry", "neutral"]}
                   indexBy="country"
                   padding={0.3}
@@ -352,14 +419,74 @@ const WatchPage = (): ReactElement => {
                   }
                 />
               </div>
+
+              <div className="graph-detail-container">
+                {emotionByEmotionText.map((e) => (
+                  <GraphDetailDataItem
+                    graphData={myGraphData}
+                    emotion={e.emotion}
+                    emotionText={e.emotionText}
+                    mostEmotion={currentMyEmotion}
+                  />
+                ))}
+              </div>
             </div>
-            <div className="others-emotion-container">
-              <div className="others-emotion-title-wrapper">
-                <h4 className="others-emotion-title font-title-small">
+            <div className="emotion-container">
+              <div className="emotion-title-wrapper">
+                <h4 className="emotion-title font-title-small">
                   실시간 다른 사람들의 감정
                 </h4>
                 <EmotionBadge type="big" emotion={currentOthersEmotion} />
               </div>
+            </div>
+            <div className="graph-container">
+              <ResponsiveBar
+                data={othersGraphData}
+                keys={["happy", "sad", "surprise", "angry", "neutral"]}
+                indexBy="country"
+                padding={0.3}
+                layout="horizontal"
+                valueScale={{ type: "linear" }}
+                indexScale={{ type: "band", round: true }}
+                colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+                borderColor={{
+                  from: "color",
+                  modifiers: [["darker", 1.6]],
+                }}
+                axisTop={null}
+                axisRight={null}
+                axisBottom={null}
+                axisLeft={null}
+                enableGridY={false}
+                enableLabel={false}
+                labelSkipWidth={12}
+                labelSkipHeight={12}
+                labelTextColor={{
+                  from: "color",
+                  modifiers: [["darker", 2.3]],
+                }}
+                margin={{ top: -10, bottom: -10 }}
+                legends={[]}
+                role="application"
+                ariaLabel="Nivo bar chart demo"
+                barAriaLabel={(e) =>
+                  e.id +
+                  ": " +
+                  e.formattedValue +
+                  " in country: " +
+                  e.indexValue
+                }
+              />
+            </div>
+            <div className="graph-detail-container">
+              {emotionByEmotionText.map((e) => (
+                <GraphDetailDataItem
+                  graphData={othersGraphData}
+                  emotion={e.emotion}
+                  emotionText={e.emotionText}
+                  mostEmotion={currentOthersEmotion}
+                />
+              ))}
             </div>
           </div>
         )}
@@ -427,16 +554,16 @@ const WatchPage = (): ReactElement => {
               mirrored={true}
               screenshotQuality={0.5}
             />
-            <div className="my-emotion-container">
-              <div className="my-emotion-title-wrapper">
-                <h4 className="my-emotion-title font-title-small">
+            <div className="emotion-container">
+              <div className="emotion-title-wrapper">
+                <h4 className="emotion-title font-title-small">
                   실시간 나의 감정
                 </h4>
                 <EmotionBadge type="big" emotion={currentMyEmotion} />
               </div>
               <div className="graph-container">
                 <ResponsiveBar
-                  data={graphData}
+                  data={myGraphData}
                   keys={["happy", "sad", "surprise", "angry", "neutral"]}
                   indexBy="country"
                   padding={0.3}
@@ -479,13 +606,78 @@ const WatchPage = (): ReactElement => {
                   }
                 />
               </div>
+              <div className="graph-detail-container">
+                {emotionByEmotionText.map((e) => (
+                  <GraphDetailDataItem
+                    graphData={myGraphData}
+                    emotion={e.emotion}
+                    emotionText={e.emotionText}
+                    mostEmotion={currentMyEmotion}
+                  />
+                ))}
+              </div>
             </div>
-            <div className="others-emotion-container">
-              <div className="others-emotion-title-wrapper">
-                <h4 className="others-emotion-title font-title-small">
+            <div className="emotion-container">
+              <div className="emotion-title-wrapper">
+                <h4 className="emotion-title font-title-small">
                   실시간 다른 사람들의 감정
                 </h4>
                 <EmotionBadge type="big" emotion={currentOthersEmotion} />
+              </div>
+              <div className="graph-container">
+                <ResponsiveBar
+                  data={othersGraphData}
+                  keys={["happy", "sad", "surprise", "angry", "neutral"]}
+                  indexBy="country"
+                  padding={0.3}
+                  layout="horizontal"
+                  valueScale={{ type: "linear" }}
+                  indexScale={{ type: "band", round: true }}
+                  colors={[
+                    "#FF4D8D",
+                    "#479CFF",
+                    "#92C624",
+                    "#FF6B4B",
+                    "#393946",
+                  ]}
+                  borderColor={{
+                    from: "color",
+                    modifiers: [["darker", 1.6]],
+                  }}
+                  axisTop={null}
+                  axisRight={null}
+                  axisBottom={null}
+                  axisLeft={null}
+                  enableGridY={false}
+                  enableLabel={false}
+                  labelSkipWidth={12}
+                  labelSkipHeight={12}
+                  labelTextColor={{
+                    from: "color",
+                    modifiers: [["darker", 2.3]],
+                  }}
+                  margin={{ top: -10, bottom: -10 }}
+                  legends={[]}
+                  role="application"
+                  ariaLabel="Nivo bar chart demo"
+                  barAriaLabel={(e) =>
+                    e.id +
+                    ": " +
+                    e.formattedValue +
+                    " in country: " +
+                    e.indexValue
+                  }
+                />
+              </div>
+              <div className="graph-detail-container">
+                {emotionByEmotionText.map((e) => (
+                  <GraphDetailDataItem
+                    graphData={othersGraphData}
+                    emotion={e.emotion}
+                    emotionText={e.emotionText}
+                    mostEmotion={currentOthersEmotion}
+                  />
+                ))}
               </div>
             </div>
           </>

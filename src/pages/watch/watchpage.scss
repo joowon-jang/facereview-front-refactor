@@ -126,13 +126,13 @@
   .side-container {
     width: 320px;
 
-    .my-emotion-container {
+    .emotion-container {
       margin-bottom: 48px;
 
-      .my-emotion-title-wrapper {
+      .emotion-title-wrapper {
         display: flex;
 
-        .my-emotion-title {
+        .emotion-title {
           color: $gray-900;
           margin-right: 8px;
         }
@@ -149,17 +149,32 @@
           background: $gray-700;
         }
       }
-    }
 
-    .others-emotion-container {
-      margin-bottom: 60px;
-
-      .others-emotion-title-wrapper {
+      .graph-detail-container {
         display: flex;
+        justify-content: space-between;
+        margin-top: 22px;
 
-        .others-emotion-title {
-          color: $gray-900;
-          margin-right: 8px;
+        .graph-detail-item {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          &.active .emotion-text,
+          &.active .emotion-percentage {
+            color: $primary-basic;
+          }
+
+          .emotion-text {
+            color: $gray-800;
+            margin: 6px 0 6px 0;
+          }
+
+          .emotion-percentage {
+            color: $gray-800;
+          }
         }
       }
     }
