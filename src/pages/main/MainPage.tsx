@@ -69,9 +69,7 @@ const MainPage = (): ReactElement => {
     if (registeredVideoIds.length > 0) {
       registeredVideoIds.map((videoId) =>
         updateRequestVideoList({ youtube_url_id: videoId })
-          .then((res) => {
-            console.log(res);
-          })
+          .then((res) => {})
           .catch((error) => {
             console.log(error);
           })
@@ -82,7 +80,6 @@ const MainPage = (): ReactElement => {
   useEffect(() => {
     getAllVideo()
       .then((data) => {
-        console.log(data);
         setAllVideo(data);
       })
       .catch((err) => console.log(err));
@@ -90,10 +87,6 @@ const MainPage = (): ReactElement => {
     if (is_sign_in) {
       getPersonalRecommendedVideo()
         .then((res) => {
-          console.log(
-            "OK /home/user-customized-list ----------------------",
-            res
-          );
           serPersonalRecommendedVideo(res);
         })
         .catch((err) => {
