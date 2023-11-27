@@ -93,8 +93,6 @@ const MainPage = (): ReactElement => {
     getRequestedVideoList()
       .then((res) => {
         setDraftRequestedVideoList(res);
-        setCurrentSelectedUrl(res[0].url);
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
