@@ -6,125 +6,39 @@ import {
 } from "types";
 import api, { youtubeApi } from "./index";
 
-export const getSportsVideo = async (props: {
-  user_categorization: string;
-}) => {
+const getVideoList = async (
+  category: string,
+  props: { user_categorization: string }
+) => {
   try {
-    const url = "/home/sports-list";
+    const url = `/home/${category}-list`;
     const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
 
-export const getGameVideo = async (props: { user_categorization: string }) => {
-  try {
-    const url = "/home/game-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getFearVideo = async (props: { user_categorization: string }) => {
-  try {
-    const url = "/home/fear-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getInformationVideo = async (props: {
-  user_categorization: string;
-}) => {
-  try {
-    const url = "/home/information-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getVarietyVideo = async (props: {
-  user_categorization: string;
-}) => {
-  try {
-    const url = "/home/varietyshow-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getCookVideo = async (props: { user_categorization: string }) => {
-  try {
-    const url = "/home/cook-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getTravelVideo = async (props: {
-  user_categorization: string;
-}) => {
-  try {
-    const url = "/home/travel-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getEatingVideo = async (props: {
-  user_categorization: string;
-}) => {
-  try {
-    const url = "/home/eating-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const getDaramaVideo = async (props: {
-  user_categorization: string;
-}) => {
-  try {
-    const url = "/home/darama-list";
-    const { data } = await api.post(url, props);
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+export const getSportsVideo = (props: { user_categorization: string }) =>
+  getVideoList("sports", props);
+export const getGameVideo = (props: { user_categorization: string }) =>
+  getVideoList("game", props);
+export const getFearVideo = (props: { user_categorization: string }) =>
+  getVideoList("fear", props);
+export const getInformationVideo = (props: { user_categorization: string }) =>
+  getVideoList("information", props);
+export const getVarietyVideo = (props: { user_categorization: string }) =>
+  getVideoList("varietyshow", props);
+export const getCookVideo = (props: { user_categorization: string }) =>
+  getVideoList("cook", props);
+export const getTravelVideo = (props: { user_categorization: string }) =>
+  getVideoList("travel", props);
+export const getEatingVideo = (props: { user_categorization: string }) =>
+  getVideoList("eating", props);
+export const getDramaVideo = (props: { user_categorization: string }) =>
+  getVideoList("drama", props);
 
 export const getAllVideo = async () => {
   try {

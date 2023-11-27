@@ -82,6 +82,7 @@
       }
       @include desktop {
         padding-right: calc(50vw - 660px);
+        height: 287px;
         padding-top: 16px;
       }
     }
@@ -129,7 +130,9 @@
       }
 
       .video-wrapper {
-        width: 1300px;
+        @include desktop {
+          width: 1300px;
+        }
         display: flex;
         flex-wrap: wrap;
         padding-left: 20px;

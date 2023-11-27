@@ -4,8 +4,16 @@ import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
 import {
   getAllVideo,
+  getCookVideo,
+  getDramaVideo,
+  getEatingVideo,
+  getFearVideo,
+  getGameVideo,
+  getInformationVideo,
   getPersonalRecommendedVideo,
   getSportsVideo,
+  getTravelVideo,
+  getVarietyVideo,
 } from "api/youtube";
 import { VideoDataType } from "types";
 
@@ -33,11 +41,14 @@ const MainPage = (): ReactElement => {
   const [personalRecommendedVideo, serPersonalRecommendedVideo] = useState<
     VideoDataType[]
   >([]);
-  const [genreVideo, setGenreVideo] = useState<VideoDataType[]>([]); // 장르가 9가지라서 아직 어떻게 쓸 지 모름
+  const [genreVideos, setGenreVideos] = useState<Array<VideoDataType>[]>(
+    Array.from({ length: 9 }, () => [])
+  );
   const filteredVideos = allVideo.filter(
     (v) =>
       selectedEmotion === "all" || v.youtube_most_emotion === selectedEmotion
   );
+  const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
@@ -87,17 +98,6 @@ const MainPage = (): ReactElement => {
       })
       .catch((err) => console.log(err));
 
-    getSportsVideo(
-      is_sign_in
-        ? { user_categorization: "user" }
-        : { user_categorization: "non_user" }
-    )
-      .then((data) => {
-        console.log(data);
-        setGenreVideo(data);
-      })
-      .catch((err) => console.log(err));
-
     if (is_sign_in) {
       getPersonalRecommendedVideo()
         .then((res) => {
@@ -111,6 +111,41 @@ const MainPage = (): ReactElement => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    const userCategorization = is_sign_in ? "user" : "non_user";
+
+    const videoRequests = [
+      getSportsVideo({ user_categorization: userCategorization }),
+      getGameVideo({ user_categorization: userCategorization }),
+      getFearVideo({ user_categorization: userCategorization }),
+      getInformationVideo({ user_categorization: userCategorization }),
+      getVarietyVideo({ user_categorization: userCategorization }),
+      getCookVideo({ user_categorization: userCategorization }),
+      getTravelVideo({ user_categorization: userCategorization }),
+      getEatingVideo({ user_categorization: userCategorization }),
+      getDramaVideo({ user_categorization: userCategorization }),
+    ];
+
+    Promise.all(videoRequests)
+      .then((dataArray) => {
+        const updatedGenreVideo = dataArray.map((data, index) => {
+          return data;
+        });
+        setGenreVideos(updatedGenreVideo);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setGenreCurrentIndex((prevIndex) => (prevIndex + 1) % genreVideos.length);
+    }, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [genreVideos.length]);
 
   useEffect(() => {
     extractVideoId();
@@ -186,11 +221,10 @@ const MainPage = (): ReactElement => {
         <div className="video-container">
           <div className="main-page-video-container">
             <div className="main-page-video-wrapper">
-              {genreVideo.map((v) => (
+              {genreVideos[genreCurrentIndex].map((v) => (
                 <VideoItem
                   type="small-emoji"
                   key={uuidv4()}
-                  src={`https://www.youtube.com/embed/${v.youtube_url}`}
                   width={isMobile ? window.innerWidth - 32 : 280}
                   videoId={v.youtube_url}
                   videoTitle={v.youtube_title}
@@ -365,7 +399,6 @@ const MainPage = (): ReactElement => {
               <VideoItem
                 type="small-emoji"
                 key={uuidv4()}
-                src={`https://www.youtube.com/embed/${v.youtube_url}`}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
                 style={
