@@ -140,6 +140,7 @@ const WatchPage = (): ReactElement => {
   useLayoutEffect(() => {
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
+        console.log("getVideoDetail", res);
         setVideoData(res);
 
         getVideoComments({ youtube_url: id || "" })
@@ -165,6 +166,10 @@ const WatchPage = (): ReactElement => {
       })
       .catch((err) => console.log(err));
 
+    socket.on("client_message", (msg) => {
+      console.log("client-message", msg);
+    });
+
     return () => {
       socket.disconnect();
     };
@@ -187,34 +192,34 @@ const WatchPage = (): ReactElement => {
           youtube_running_time: formattedCurrentTime,
           string_frame_data: capturedImage,
           youtube_index: videoData?.youtube_index,
-        },
-
-        (response: {
-          happy: number;
-          sad: number;
-          surprise: number;
-          angry: number;
-          neutral: number;
-          most_emotion: EmotionType;
-          youtube_emotion_data: string;
-          youtube_emotion_neutral_per: string;
-          youtube_emotion_angry_per: string;
-          youtube_emotion_happy_per: string;
-          youtube_emotion_surprise_per: string;
-          youtube_emotion_sad_per: string;
-        }) => {
-          setCurrentMyEmotion(response.most_emotion);
-          setGraphData([
-            {
-              ...graphData[0],
-              happy: response.happy,
-              sad: response.sad,
-              surprise: response.surprise,
-              angry: response.angry,
-              neutral: response.neutral,
-            },
-          ]);
         }
+
+        // (response: {
+        //   happy: number;
+        //   sad: number;
+        //   surprise: number;
+        //   angry: number;
+        //   neutral: number;
+        //   most_emotion: EmotionType;
+        //   youtube_emotion_data: string;
+        //   youtube_emotion_neutral_per: string;
+        //   youtube_emotion_angry_per: string;
+        //   youtube_emotion_happy_per: string;
+        //   youtube_emotion_surprise_per: string;
+        //   youtube_emotion_sad_per: string;
+        // }) => {
+        //   setCurrentMyEmotion(response.most_emotion);
+        //   setGraphData([
+        //     {
+        //       ...graphData[0],
+        //       happy: response.happy,
+        //       sad: response.sad,
+        //       surprise: response.surprise,
+        //       angry: response.angry,
+        //       neutral: response.neutral,
+        //     },
+        //   ]);
+        // }
       );
     }, 1000);
 
