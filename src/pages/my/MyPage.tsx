@@ -46,7 +46,6 @@ const MyPage = () => {
     if (is_sign_in) {
       getRecentVideo()
         .then((data) => {
-          console.log(data);
           setRecentVideo(data);
         })
         .catch((err) => console.log(err));

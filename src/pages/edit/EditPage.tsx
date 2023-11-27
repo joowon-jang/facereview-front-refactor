@@ -48,10 +48,12 @@ const EditPage = () => {
 
     changeProfilePhoto({ new_profile: mapEmotionToNumber(profileColor) })
       .then((res) => {
-        console.log(res);
         setLocalProfileColor(selectedColor);
         if (res.status === 200) {
           setUserProfile({ user_profile: mapEmotionToNumber(profileColor) });
+          toast.success("프로필사진이 변경되었어요.", {
+            toastId: "success change profile image",
+          });
         }
       })
       .catch((error) => {
@@ -64,7 +66,6 @@ const EditPage = () => {
   const handleEditButtonClick = () => {
     changeName({ new_name: nickName })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           setUserName({ user_name: nickName });
 
@@ -81,9 +82,10 @@ const EditPage = () => {
       user_favorite_genre_3: selectedCategories[2],
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
-          console.log(res);
+          toast.success("회원정보가 수정되었어요.", {
+            toastId: "success change info",
+          });
         }
       })
       .catch((error) => {
