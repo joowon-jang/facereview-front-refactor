@@ -13,20 +13,13 @@ import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 import CategoryList from "components/CategoryList/CategoryList";
 
 const EditPage = () => {
-  const {
-    user_name,
-    setUserName,
-    setUserProfile,
-    setUserFavoriteGenre,
-    user_favorite_genre_1,
-    user_favorite_genre_2,
-    user_favorite_genre_3,
-  } = useAuthStorage();
+  const { user_name, setUserName, setUserProfile, user_favorite_genres } =
+    useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
   const navigate = useNavigate();
   const [nickName, setNickName] = useState(user_name);
   const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(
-    []
+    user_favorite_genres as CategoryType[]
   );
   const [profileColor, setProfileColor] = useState<EmotionType>(
     mapNumberToEmotion(user_profile)
@@ -52,11 +45,11 @@ const EditPage = () => {
   };
   const handleModalCheck = () => {
     setProfileColor(selectedColor);
-    setLocalProfileColor(selectedColor);
 
     changeProfilePhoto({ new_profile: mapEmotionToNumber(profileColor) })
       .then((res) => {
         console.log(res);
+        setLocalProfileColor(selectedColor);
         if (res.status === 200) {
           setUserProfile({ user_profile: mapEmotionToNumber(profileColor) });
         }
@@ -64,7 +57,6 @@ const EditPage = () => {
       .catch((error) => {
         console.log(error);
       });
-    console.log(profileColor);
 
     setIsModalOpen(false);
   };
@@ -82,6 +74,7 @@ const EditPage = () => {
       .catch((error) => {
         console.log(error);
       });
+
     changeFavoriteGenre({
       user_favorite_genre_1: selectedCategories[0],
       user_favorite_genre_2: selectedCategories[1],
@@ -90,11 +83,7 @@ const EditPage = () => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          setUserFavoriteGenre({
-            user_favorite_genre_1: selectedCategories[0],
-            user_favorite_genre_2: selectedCategories[1],
-            user_favorite_genre_3: selectedCategories[2],
-          });
+          console.log(res);
         }
       })
       .catch((error) => {
