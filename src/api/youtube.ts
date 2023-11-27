@@ -1,6 +1,7 @@
 import {
   VideoDataType,
   VideoDetailType,
+  VideoRelatedType,
   VideoWatchedType,
   YoutubeVideoDataType,
 } from "types";
@@ -165,7 +166,7 @@ export const getRecentVideo = async () => {
 export const getRelatedVideo = async (props: { youtube_url: string }) => {
   try {
     const url = "/watch/sub-youtube";
-    const { data } = await api.post<VideoWatchedType[]>(url, props);
+    const { data } = await api.post<VideoRelatedType[]>(url, props);
 
     return data;
   } catch (error) {
