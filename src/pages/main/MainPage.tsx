@@ -190,7 +190,6 @@ const MainPage = (): ReactElement => {
                 <VideoItem
                   type="small-emoji"
                   key={uuidv4()}
-                  src={`https://www.youtube.com/embed/${v.youtube_url}`}
                   width={isMobile ? window.innerWidth - 32 : 280}
                   videoId={v.youtube_url}
                   videoTitle={v.youtube_title}
@@ -365,7 +364,6 @@ const MainPage = (): ReactElement => {
               <VideoItem
                 type="small-emoji"
                 key={uuidv4()}
-                src={`https://www.youtube.com/embed/${v.youtube_url}`}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
                 style={
