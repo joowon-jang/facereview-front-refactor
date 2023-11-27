@@ -82,6 +82,12 @@
 }
 
 .plus-icon {
-  width: 20px;
-  height: 20px;
+  @include desktop {
+    width: 20px;
+    height: 20px;
+  }
+  @include mobile {
+    width: 15px;
+    height: 15px;
+  }
 }
