@@ -2,7 +2,11 @@ import { ReactElement, useEffect, useState } from "react";
 import { useAuthStorage } from "store/authStore";
 import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
-import { getAllVideo, getPersonalRecommendedVideo } from "api/youtube";
+import {
+  getAllVideo,
+  getPersonalRecommendedVideo,
+  getSportsVideo,
+} from "api/youtube";
 import { VideoDataType } from "types";
 
 import Chip from "components/Chip/Chip";
@@ -18,7 +22,6 @@ import { getTimeToString } from "utils/index";
 const MainPage = (): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
-
   const isMobile = window.innerWidth < 1200;
   const [selectedEmotion, setSelectedEmotion] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +34,6 @@ const MainPage = (): ReactElement => {
     VideoDataType[]
   >([]);
   const [genreVideo, setGenreVideo] = useState<VideoDataType[]>([]); // 장르가 9가지라서 아직 어떻게 쓸 지 모름
-
   const filteredVideos = allVideo.filter(
     (v) =>
       selectedEmotion === "all" || v.youtube_most_emotion === selectedEmotion
@@ -85,6 +87,17 @@ const MainPage = (): ReactElement => {
       })
       .catch((err) => console.log(err));
 
+    getSportsVideo(
+      is_sign_in
+        ? { user_categorization: "user" }
+        : { user_categorization: "non_user" }
+    )
+      .then((data) => {
+        console.log(data);
+        setGenreVideo(data);
+      })
+      .catch((err) => console.log(err));
+
     if (is_sign_in) {
       getPersonalRecommendedVideo()
         .then((res) => {
@@ -131,8 +144,8 @@ const MainPage = (): ReactElement => {
               <div className="main-page-video-wrapper">
                 {personalRecommendedVideo.map((v) => (
                   <VideoItem
+                    type="small-emoji"
                     key={uuidv4()}
-                    src={`https://www.youtube.com/embed/${v.youtube_url}`}
                     width={isMobile ? window.innerWidth - 32 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
@@ -141,7 +154,7 @@ const MainPage = (): ReactElement => {
                     style={
                       isMobile
                         ? { paddingTop: "14px", paddingBottom: "14px" }
-                        : { marginRight: "27px" }
+                        : { marginRight: "28px" }
                     }
                   />
                 ))}
@@ -173,8 +186,9 @@ const MainPage = (): ReactElement => {
         <div className="video-container">
           <div className="main-page-video-container">
             <div className="main-page-video-wrapper">
-              {allVideo.map((v) => (
+              {genreVideo.map((v) => (
                 <VideoItem
+                  type="small-emoji"
                   key={uuidv4()}
                   src={`https://www.youtube.com/embed/${v.youtube_url}`}
                   width={isMobile ? window.innerWidth - 32 : 280}
@@ -185,7 +199,7 @@ const MainPage = (): ReactElement => {
                   style={
                     isMobile
                       ? { paddingTop: "14px", paddingBottom: "14px" }
-                      : { marginRight: "27px" }
+                      : { marginRight: "28px" }
                   }
                 />
               ))}
@@ -349,12 +363,15 @@ const MainPage = (): ReactElement => {
           <div className="video-wrapper">
             {filteredVideos.map((v) => (
               <VideoItem
+                type="small-emoji"
                 key={uuidv4()}
                 src={`https://www.youtube.com/embed/${v.youtube_url}`}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
                 style={
-                  isMobile ? { marginBottom: "28px" } : { marginBottom: "56px" }
+                  isMobile
+                    ? { marginBottom: "28px" }
+                    : { marginRight: "28px", marginBottom: "56px" }
                 }
                 videoTitle={v.youtube_title}
                 videoMostEmotion={v.youtube_most_emotion}

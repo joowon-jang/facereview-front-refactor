@@ -162,7 +162,8 @@ const MyPage = () => {
               {filteredRecentVideos.length > 0 ? (
                 filteredRecentVideos.map((v) => (
                   <VideoItem
-                    src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                    type="big-emoji"
+                    key={`videoItem${v.youtube_url}${v.most_emotion_per}`}
                     width={isMobile ? window.innerWidth - 32 : 360}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}

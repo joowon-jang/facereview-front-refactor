@@ -2,12 +2,12 @@ import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import YouTube, { YouTubeEvent } from "react-youtube";
 import { EmotionType } from "types";
-import { emojiOfEmotion } from "utils";
+import { emojiOfEmotion, labelOfEmotion } from "utils";
 import { Options, YouTubePlayer } from "youtube-player/dist/types";
 import "./videoitem.scss";
 
 type VideoItemPropsType = {
-  src?: string;
+  type: "small-emoji" | "big-emoji";
   videoId: string;
   videoTitle: string;
   videoMostEmotion: EmotionType;
@@ -17,7 +17,7 @@ type VideoItemPropsType = {
 };
 
 const VideoItem = ({
-  src,
+  type,
   videoId,
   videoTitle,
   videoMostEmotion,
@@ -106,13 +106,22 @@ const VideoItem = ({
         <h3 className="video-title font-label-large">{videoTitle}</h3>
         {loadedVideoMostEmotion === "None" ||
         videoMostEmotionPercentage === 0 ? (
-          <h3 className="video-emotion-data font-body-medium">
+          <h3 className="video-emotion-data-empty font-body-medium">
             아직 시청기록이 없어요.
           </h3>
         ) : (
-          <h3 className="video-emotion-data font-body-medium">
-            {emojiOfEmotion[videoMostEmotion]} {videoMostEmotionPercentage}%
-          </h3>
+          <div className="video-emotion-container">
+            <div
+              className={`video-emoji-container ${type} ${videoMostEmotion}`}
+            >
+              {emojiOfEmotion[videoMostEmotion]}
+            </div>
+            <h3 className="video-emotion-data font-body-medium">
+              {labelOfEmotion[videoMostEmotion]}
+              {type === "big-emoji" ? <br /> : ` `}
+              {videoMostEmotionPercentage}%
+            </h3>
+          </div>
         )}
       </div>
     </div>

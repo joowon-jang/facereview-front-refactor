@@ -6,10 +6,12 @@ import {
 } from "types";
 import api, { youtubeApi } from "./index";
 
-export const getSportsVideo = async () => {
+export const getSportsVideo = async (props: {
+  user_categorization: string;
+}) => {
   try {
     const url = "/home/sports-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -18,10 +20,10 @@ export const getSportsVideo = async () => {
   }
 };
 
-export const getGameVideo = async () => {
+export const getGameVideo = async (props: { user_categorization: string }) => {
   try {
     const url = "/home/game-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -30,10 +32,10 @@ export const getGameVideo = async () => {
   }
 };
 
-export const getFearVideo = async () => {
+export const getFearVideo = async (props: { user_categorization: string }) => {
   try {
     const url = "/home/fear-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -42,10 +44,12 @@ export const getFearVideo = async () => {
   }
 };
 
-export const getInformationVideo = async () => {
+export const getInformationVideo = async (props: {
+  user_categorization: string;
+}) => {
   try {
     const url = "/home/information-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -54,10 +58,12 @@ export const getInformationVideo = async () => {
   }
 };
 
-export const getVarietyShowVideo = async () => {
+export const getVarietyVideo = async (props: {
+  user_categorization: string;
+}) => {
   try {
-    const url = "/home/verietyshow-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const url = "/home/varietyshow-list";
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -66,10 +72,10 @@ export const getVarietyShowVideo = async () => {
   }
 };
 
-export const getCookVideo = async () => {
+export const getCookVideo = async (props: { user_categorization: string }) => {
   try {
     const url = "/home/cook-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -78,10 +84,12 @@ export const getCookVideo = async () => {
   }
 };
 
-export const getTravelVideo = async () => {
+export const getTravelVideo = async (props: {
+  user_categorization: string;
+}) => {
   try {
     const url = "/home/travel-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -90,10 +98,12 @@ export const getTravelVideo = async () => {
   }
 };
 
-export const getEatingVideo = async () => {
+export const getEatingVideo = async (props: {
+  user_categorization: string;
+}) => {
   try {
     const url = "/home/eating-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
@@ -102,10 +112,12 @@ export const getEatingVideo = async () => {
   }
 };
 
-export const getDramaVideo = async () => {
+export const getDaramaVideo = async (props: {
+  user_categorization: string;
+}) => {
   try {
-    const url = "/home/drama-list";
-    const { data } = await api.get<VideoDataType[]>(url);
+    const url = "/home/darama-list";
+    const { data } = await api.post(url, props);
 
     return data;
   } catch (error) {
