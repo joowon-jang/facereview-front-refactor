@@ -41,6 +41,8 @@ const VideoItem = ({
   };
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
 
+  const loadedVideoMostEmotion: string = videoMostEmotion as string;
+
   const handleClick = () => {
     navigation(`/watch/${videoId}`);
   };
@@ -102,9 +104,16 @@ const VideoItem = ({
       </div>
       <div className="video-info-container">
         <h3 className="video-title font-label-large">{videoTitle}</h3>
-        <h3 className="video-emotion-data font-body-medium">
-          {emojiOfEmotion[videoMostEmotion]} {videoMostEmotionPercentage}%
-        </h3>
+        {loadedVideoMostEmotion === "None" ||
+        videoMostEmotionPercentage === 0 ? (
+          <h3 className="video-emotion-data font-body-medium">
+            아직 시청기록이 없어요.
+          </h3>
+        ) : (
+          <h3 className="video-emotion-data font-body-medium">
+            {emojiOfEmotion[videoMostEmotion]} {videoMostEmotionPercentage}%
+          </h3>
+        )}
       </div>
     </div>
   );
