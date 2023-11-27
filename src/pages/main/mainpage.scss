@@ -57,6 +57,42 @@
     // }
   }
 
+  .genre-contents-container {
+    @include desktop {
+      width: calc(50vw + 600px);
+    }
+    @include mobile {
+      width: 100%;
+    }
+    margin-bottom: 100px;
+
+    .main-page-video-container {
+      display: flex;
+      margin-left: -20px;
+      overflow-x: auto;
+    }
+
+    .main-page-video-wrapper {
+      display: flex;
+      padding-left: 20px;
+      padding-bottom: 20px;
+
+      @include mobile {
+        flex-direction: column;
+      }
+      @include desktop {
+        padding-right: calc(50vw - 660px);
+        padding-top: 16px;
+      }
+    }
+    // -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    // scrollbar-width: none; /* 파이어폭스 */
+
+    // .main-page-video-container::-webkit-scrollbar {
+    //   display: none; /* 크롬, 사파리, 오페라, 엣지 */
+    // }
+  }
+
   .hot-contents-container {
     .title {
       margin-bottom: 16px;
