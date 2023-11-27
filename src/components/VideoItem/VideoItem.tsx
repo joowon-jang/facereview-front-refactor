@@ -106,7 +106,7 @@ const VideoItem = ({
         <h3 className="video-title font-label-large">{videoTitle}</h3>
         {loadedVideoMostEmotion === "None" ||
         videoMostEmotionPercentage === 0 ? (
-          <h3 className="video-emotion-data font-body-medium">
+          <h3 className="video-emotion-data-empty font-body-medium">
             아직 시청기록이 없어요.
           </h3>
         ) : (
