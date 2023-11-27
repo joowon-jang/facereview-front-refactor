@@ -118,6 +118,9 @@ const AuthPage = () => {
                   user_tutorial: res.data.user_tutorial,
                   access_token: res.data.access_token,
                   refresh_token: res.data.refresh_token,
+                  user_favorite_genre_1: res.data.user_favorite_genre_1,
+                  user_favorite_genre_2: res.data.user_favorite_genre_2,
+                  user_favorite_genre_3: res.data.user_favorite_genre_3,
                 });
 
                 setTimeout(() => {

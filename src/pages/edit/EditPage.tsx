@@ -17,7 +17,6 @@ const EditPage = () => {
     user_name,
     setUserName,
     setUserProfile,
-    setUserFavoriteGenre,
     user_favorite_genre_1,
     user_favorite_genre_2,
     user_favorite_genre_3,
@@ -82,6 +81,7 @@ const EditPage = () => {
       .catch((error) => {
         console.log(error);
       });
+
     changeFavoriteGenre({
       user_favorite_genre_1: selectedCategories[0],
       user_favorite_genre_2: selectedCategories[1],
@@ -90,17 +90,26 @@ const EditPage = () => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          setUserFavoriteGenre({
-            user_favorite_genre_1: selectedCategories[0],
-            user_favorite_genre_2: selectedCategories[1],
-            user_favorite_genre_3: selectedCategories[2],
-          });
+          console.log(res);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    const loadedCategory1: CategoryType = user_favorite_genre_1 as CategoryType;
+    const loadedCategory2: CategoryType = user_favorite_genre_2 as CategoryType;
+    const loadedCategory3: CategoryType = user_favorite_genre_3 as CategoryType;
+    const loadedCategories: CategoryType[] = [
+      loadedCategory1,
+      loadedCategory2,
+      loadedCategory3,
+    ];
+
+    setSelectedCategories(loadedCategories);
+  }, []);
 
   useEffect(() => {
     setProfileColor(selectedColor);

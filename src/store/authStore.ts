@@ -27,6 +27,9 @@ interface AuthState {
     user_name,
     user_profile,
     user_tutorial,
+    user_favorite_genre_1,
+    user_favorite_genre_2,
+    user_favorite_genre_3,
   }: {
     is_admin: boolean;
     is_sign_in: boolean;
@@ -35,6 +38,9 @@ interface AuthState {
     user_name: string;
     user_profile: number;
     user_tutorial: number;
+    user_favorite_genre_1: string;
+    user_favorite_genre_2: string;
+    user_favorite_genre_3: string;
   }) => void;
   setUserName: ({ user_name }: { user_name: string }) => void;
   setUserProfile: ({ user_profile }: { user_profile: number }) => void;
@@ -77,6 +83,9 @@ export const useAuthStorage = create<AuthState>()(
           user_name,
           user_profile,
           user_tutorial,
+          user_favorite_genre_1,
+          user_favorite_genre_2,
+          user_favorite_genre_3,
         }) =>
           set((state) => ({
             is_admin: is_admin,
@@ -86,6 +95,9 @@ export const useAuthStorage = create<AuthState>()(
             user_name,
             user_profile,
             user_tutorial,
+            user_favorite_genre_1,
+            user_favorite_genre_2,
+            user_favorite_genre_3,
           })),
         setUserName: ({ user_name }) =>
           set((state) => ({
