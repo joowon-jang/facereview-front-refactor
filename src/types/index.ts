@@ -59,6 +59,13 @@ export type CommentType = {
   user_profile: number;
 };
 
+export type VideoRelatedType = {
+  youtube_title: string;
+  youtube_url: string;
+  most_emotion: EmotionType;
+  emotion_per: number;
+};
+
 export type ReqeustedVideoType = {
   index: number;
   full_url: string;

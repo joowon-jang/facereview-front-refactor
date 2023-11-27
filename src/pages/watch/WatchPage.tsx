@@ -17,7 +17,12 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
-import { CommentType, EmotionType, VideoDetailType } from "types";
+import {
+  CommentType,
+  EmotionType,
+  VideoDetailType,
+  VideoRelatedType,
+} from "types";
 import { getRelatedVideo, getVideoDetail } from "api/youtube";
 import Devider from "components/Devider/Devider";
 import { useAuthStorage } from "store/authStore";
@@ -29,8 +34,10 @@ import {
   sendNewComment,
 } from "api/watch";
 import { getTimeToString, mapNumberToEmotion } from "utils/index";
+import VideoItem from "components/VideoItem/VideoItem";
 
 const WatchPage = (): ReactElement => {
+  const { v4: uuidv4 } = require("uuid");
   const isMobile = window.innerWidth < 1200;
   const { id } = useParams();
   const opts: Options = isMobile
@@ -103,6 +110,9 @@ const WatchPage = (): ReactElement => {
     useState<EmotionType>("neutral");
   const [currentOthersEmotion, setCurrentOthersEmotion] =
     useState<EmotionType>("neutral");
+  const [relatedVideoList, setRelatedVideoList] = useState<VideoRelatedType[]>(
+    []
+  );
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
@@ -178,7 +188,7 @@ const WatchPage = (): ReactElement => {
       .catch((err) => console.log(err));
     getRelatedVideo({ youtube_url: id || "" })
       .then((res) => {
-        console.log("related", res);
+        setRelatedVideoList(res);
       })
       .catch((err) => {});
     getVideoComments({ youtube_url: id || "" })
@@ -188,9 +198,7 @@ const WatchPage = (): ReactElement => {
       .catch((err) => {});
 
     getMainDistributionData({ youtube_url: id || "" })
-      .then((res) => {
-        console.log("getMainDistributionData", res);
-      })
+      .then((res) => {})
       .catch((err) => console.log(err));
     return () => {
       socket.disconnect();
@@ -229,7 +237,6 @@ const WatchPage = (): ReactElement => {
           youtube_emotion_surprise_per: number;
           youtube_emotion_sad_per: number;
         }) => {
-          console.log(response);
           setCurrentMyEmotion(response.most_emotion);
           setMyGraphData([
             {
@@ -687,15 +694,17 @@ const WatchPage = (): ReactElement => {
             이 영상은 어때요?
           </h4>
           <div className="recommend-video-container">
-            {/* {recommendVideoIds.map((v) => (
+            {relatedVideoList.map((v) => (
               <VideoItem
-                key={`recommendVideo${v}`}
-                src={`https://www.youtube.com/embed/${v}`}
-                width={320}1
-                videoId={v}
+                key={uuidv4()}
+                width={320}
+                videoId={v.youtube_url}
+                videoTitle={v.youtube_title}
+                videoMostEmotion={v.most_emotion}
+                videoMostEmotionPercentage={v.emotion_per}
                 style={{ marginBottom: "24px" }}
               />
-            ))} */}
+            ))}
           </div>
         </div>
       </div>
