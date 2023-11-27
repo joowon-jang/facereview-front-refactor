@@ -40,14 +40,22 @@ const MainPage = (): ReactElement => {
       youtube_length_second: 0,
       youtube_category: "",
     });
-  const [currentVideoCategoryList, setcurrentVideoCategoryList] = useState<
+  const [currentVideoCategoryList, setCurrentVideoCategoryList] = useState<
     CategoryType[]
   >([]);
 
   const handleSubmitClick = () => {
     submitNewVideo(currentVideoData)
       .then((res) => {
-        console.log(res);
+        getRequestedVideoList()
+          .then((res) => {
+            setCurrentVideoCategoryList([]);
+            setCurrentSelectedUrl(res[0].url);
+            setDraftRequestedVideoList(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -99,23 +107,30 @@ const MainPage = (): ReactElement => {
           리뷰어들이 추가요청한 영상들을 관리해주세요.
         </h4>
         <div className="selected-video-container">
-          <YouTube
-            videoId={currentSelectedUrl}
-            style={{ marginBottom: "20px" }} // defaults -> {}
-            opts={opts} // defaults -> {}
-          />
+          <div className="left-container">
+            <YouTube
+              videoId={currentSelectedUrl}
+              style={{ marginBottom: "20px" }} // defaults -> {}
+              opts={opts} // defaults -> {}
+            />
+          </div>
           <div className="right-container">
             <div className="input-container">
               <CategoryList
                 selected={currentVideoCategoryList}
-                setSelected={setcurrentVideoCategoryList}
+                setSelected={setCurrentVideoCategoryList}
                 maxSelection={1}
               />
             </div>
             <Button
               label={"등록하기"}
-              type={"cta-fit"}
+              type={"cta-full"}
               onClick={handleSubmitClick}
+              isDisabled={
+                !currentVideoData.youtube_url ||
+                !currentVideoCategoryList.length
+              }
+              style={{ marginTop: "40px" }}
             />
           </div>
         </div>
@@ -123,7 +138,9 @@ const MainPage = (): ReactElement => {
           {draftRequestedVideoList.map((d) => (
             <div
               key={uuidv4()}
-              className="draft-url-item"
+              className={`draft-url-item ${
+                d.url === currentSelectedUrl ? "active" : null
+              }`}
               onClick={() => setCurrentSelectedUrl(d.url)}
             >
               <p className="font-label-medium draft-url-text">{d.url}</p>
