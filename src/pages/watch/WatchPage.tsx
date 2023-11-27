@@ -703,6 +703,7 @@ const WatchPage = (): ReactElement => {
                 videoMostEmotion={v.most_emotion}
                 videoMostEmotionPercentage={v.emotion_per}
                 style={{ marginBottom: "24px" }}
+                type={"small-emoji"}
               />
             ))}
           </div>
