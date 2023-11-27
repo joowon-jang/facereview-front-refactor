@@ -29,6 +29,7 @@ const MainPage = (): ReactElement => {
   const [personalRecommendedVideo, serPersonalRecommendedVideo] = useState<
     VideoDataType[]
   >([]);
+  const [genreVideo, setGenreVideo] = useState<VideoDataType[]>([]);
 
   const filteredVideos = allVideo.filter(
     (v) =>
@@ -117,8 +118,7 @@ const MainPage = (): ReactElement => {
               isMobile ? "title font-title-medium" : "title font-title-large"
             }
           >
-            {user_name}님이 좋아할
-            {isMobile && <br />}
+            {user_name}님이 좋아할{` `} {isMobile && <br />}
             오늘의 영상들을 골라봤어요.
           </h2>
           <h4
@@ -128,7 +128,7 @@ const MainPage = (): ReactElement => {
                 : "subtitle font-title-small"
             }
           >
-            시청 기록과 감정을 분석해서
+            시청 기록과 감정을 분석해서{` `}
             {isMobile && <br />}
             가장 좋아할 영상을 준비했어요.
           </h4>
@@ -156,6 +156,48 @@ const MainPage = (): ReactElement => {
         </div>
       ) : null}
 
+      <div className="genre-contents-container">
+        <h2
+          className={
+            isMobile ? "title font-title-medium" : "title font-title-large"
+          }
+        >
+          장르별 추천{` `}
+          {isMobile && <br />}
+          영상을 골라봤어요.
+        </h2>
+        <h4
+          className={
+            isMobile ? "subtitle font-title-mini" : "subtitle font-title-small"
+          }
+        >
+          장르별로 가장 많이{` `}
+          {isMobile && <br />}
+          시청된 영상을 준비했어요.
+        </h4>
+        <div className="video-container">
+          <div className="main-page-video-container">
+            <div className="main-page-video-wrapper">
+              {allVideo.map((v) => (
+                <VideoItem
+                  src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                  width={isMobile ? window.innerWidth - 32 : 280}
+                  videoId={v.youtube_url}
+                  videoTitle={v.youtube_title}
+                  videoMostEmotion={v.youtube_most_emotion}
+                  videoMostEmotionPercentage={v.youtube_most_emotion_per}
+                  style={
+                    isMobile
+                      ? { paddingTop: "14px", paddingBottom: "14px" }
+                      : { marginRight: "27px" }
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="hot-contents-container">
         <h2
           className={
@@ -164,12 +206,13 @@ const MainPage = (): ReactElement => {
         >
           {is_sign_in ? (
             <div>
-              {`${user_name}님을 위해 준비한`} {isMobile && <br />}
+              {`${user_name}님을 위해 준비한 `}
+              {isMobile && <br />}
               인기있는 영상이에요.
             </div>
           ) : (
             <div>
-              감정별로 볼 수 있는
+              감정별로 볼 수 있는{` `}
               {isMobile && <br />}
               영상을 추천해드릴게요.
             </div>
