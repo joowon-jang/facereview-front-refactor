@@ -16,7 +16,15 @@
 
   .selected-video-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    height: 340px;
+
+    margin-bottom: 40px;
+
+    .left-container {
+      width: 500px;
+      height: 320px;
+    }
   }
 
   .request-video-container {
@@ -28,12 +36,6 @@
       margin-bottom: 80px;
     }
 
-    .input-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     .draft-url-item {
       padding: 4px;
       margin-right: 8px;
@@ -42,6 +44,13 @@
       border-radius: 4px;
 
       &:hover {
+        color: $gray-50;
+        background-color: $primary-basic;
+        cursor: pointer;
+      }
+
+      &.active {
+
         color: $gray-50;
         background-color: $primary-basic;
         cursor: pointer;
