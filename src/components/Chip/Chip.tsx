@@ -25,7 +25,7 @@ const Chip = ({
   const labelOfChoose = {
     all: "전체",
     happy: "😄 즐거운",
-    surprise: "🫢 놀라운",
+    surprise: "😲 놀라운",
     angry: "😠 화나는",
     sad: "😥 슬픈",
     plus: <img className="plus-icon" src={plusIcon} alt="plusIcon" />,
