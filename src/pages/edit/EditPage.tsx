@@ -45,11 +45,11 @@ const EditPage = () => {
   };
   const handleModalCheck = () => {
     setProfileColor(selectedColor);
-    setLocalProfileColor(selectedColor);
 
     changeProfilePhoto({ new_profile: mapEmotionToNumber(profileColor) })
       .then((res) => {
         console.log(res);
+        setLocalProfileColor(selectedColor);
         if (res.status === 200) {
           setUserProfile({ user_profile: mapEmotionToNumber(profileColor) });
         }
@@ -57,7 +57,6 @@ const EditPage = () => {
       .catch((error) => {
         console.log(error);
       });
-    console.log(profileColor);
 
     setIsModalOpen(false);
   };
