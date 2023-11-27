@@ -41,3 +41,19 @@ export const sendFinishVideo = async (props: {
     throw error;
   }
 };
+
+export const getMainDistributionData = async (props: {
+  youtube_url: string;
+}) => {
+  try {
+    const url = "/watch/main-distribution-data";
+    const { data } = await api.post(url, props);
+
+    console.log(data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
