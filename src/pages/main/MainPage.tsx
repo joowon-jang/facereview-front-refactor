@@ -20,6 +20,7 @@ import { updateRequestVideoList } from "api/request";
 import { getTimeToString } from "utils/index";
 
 const MainPage = (): ReactElement => {
+  const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
   const isMobile = window.innerWidth < 1200;
   const [selectedEmotion, setSelectedEmotion] = useState("all");
@@ -71,9 +72,7 @@ const MainPage = (): ReactElement => {
     if (registeredVideoIds.length > 0) {
       registeredVideoIds.map((videoId) =>
         updateRequestVideoList({ youtube_url_id: videoId })
-          .then((res) => {
-            console.log(res);
-          })
+          .then((res) => {})
           .catch((error) => {
             console.log(error);
           })
@@ -84,7 +83,6 @@ const MainPage = (): ReactElement => {
   useEffect(() => {
     getAllVideo()
       .then((data) => {
-        console.log(data);
         setAllVideo(data);
       })
       .catch((err) => console.log(err));
@@ -103,10 +101,6 @@ const MainPage = (): ReactElement => {
     if (is_sign_in) {
       getPersonalRecommendedVideo()
         .then((res) => {
-          console.log(
-            "OK /home/user-customized-list ----------------------",
-            res
-          );
           serPersonalRecommendedVideo(res);
         })
         .catch((err) => {
@@ -151,7 +145,7 @@ const MainPage = (): ReactElement => {
                 {personalRecommendedVideo.map((v) => (
                   <VideoItem
                     type="small-emoji"
-                    key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
+                    key={uuidv4()}
                     width={isMobile ? window.innerWidth - 32 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
@@ -195,7 +189,8 @@ const MainPage = (): ReactElement => {
               {genreVideo.map((v) => (
                 <VideoItem
                   type="small-emoji"
-                  key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
+                  key={uuidv4()}
+                  src={`https://www.youtube.com/embed/${v.youtube_url}`}
                   width={isMobile ? window.innerWidth - 32 : 280}
                   videoId={v.youtube_url}
                   videoTitle={v.youtube_title}
@@ -341,6 +336,7 @@ const MainPage = (): ReactElement => {
 
               {registeredVideoIds.map((v) => (
                 <img
+                  key={uuidv4()}
                   className="main-page-modal-thumbnail-registered"
                   src={`http://img.youtube.com/vi/${v}/mqdefault.jpg`}
                   alt=""
@@ -368,7 +364,8 @@ const MainPage = (): ReactElement => {
             {filteredVideos.map((v) => (
               <VideoItem
                 type="small-emoji"
-                key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
+                key={uuidv4()}
+                src={`https://www.youtube.com/embed/${v.youtube_url}`}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
                 style={
