@@ -13,19 +13,13 @@ import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 import CategoryList from "components/CategoryList/CategoryList";
 
 const EditPage = () => {
-  const {
-    user_name,
-    setUserName,
-    setUserProfile,
-    user_favorite_genre_1,
-    user_favorite_genre_2,
-    user_favorite_genre_3,
-  } = useAuthStorage();
+  const { user_name, setUserName, setUserProfile, user_favorite_genres } =
+    useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
   const navigate = useNavigate();
   const [nickName, setNickName] = useState(user_name);
   const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(
-    []
+    user_favorite_genres as CategoryType[]
   );
   const [profileColor, setProfileColor] = useState<EmotionType>(
     mapNumberToEmotion(user_profile)
@@ -97,19 +91,6 @@ const EditPage = () => {
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    const loadedCategory1: CategoryType = user_favorite_genre_1 as CategoryType;
-    const loadedCategory2: CategoryType = user_favorite_genre_2 as CategoryType;
-    const loadedCategory3: CategoryType = user_favorite_genre_3 as CategoryType;
-    const loadedCategories: CategoryType[] = [
-      loadedCategory1,
-      loadedCategory2,
-      loadedCategory3,
-    ];
-
-    setSelectedCategories(loadedCategories);
-  }, []);
 
   useEffect(() => {
     setProfileColor(selectedColor);
