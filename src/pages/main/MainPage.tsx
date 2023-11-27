@@ -2,7 +2,11 @@ import { ReactElement, useEffect, useState } from "react";
 import { useAuthStorage } from "store/authStore";
 import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
-import { getAllVideo, getPersonalRecommendedVideo } from "api/youtube";
+import {
+  getAllVideo,
+  getPersonalRecommendedVideo,
+  getSportsVideo,
+} from "api/youtube";
 import { VideoDataType } from "types";
 
 import Chip from "components/Chip/Chip";
@@ -137,7 +141,8 @@ const MainPage = (): ReactElement => {
               <div className="main-page-video-wrapper">
                 {personalRecommendedVideo.map((v) => (
                   <VideoItem
-                    src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                    type="small-emoji"
+                    key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
                     width={isMobile ? window.innerWidth - 32 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
@@ -146,7 +151,7 @@ const MainPage = (): ReactElement => {
                     style={
                       isMobile
                         ? { paddingTop: "14px", paddingBottom: "14px" }
-                        : { marginRight: "27px" }
+                        : { marginRight: "28px" }
                     }
                   />
                 ))}
@@ -180,7 +185,8 @@ const MainPage = (): ReactElement => {
             <div className="main-page-video-wrapper">
               {allVideo.map((v) => (
                 <VideoItem
-                  src={`https://www.youtube.com/embed/${v.youtube_url}`}
+                  type="small-emoji"
+                  key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
                   width={isMobile ? window.innerWidth - 32 : 280}
                   videoId={v.youtube_url}
                   videoTitle={v.youtube_title}
@@ -189,7 +195,7 @@ const MainPage = (): ReactElement => {
                   style={
                     isMobile
                       ? { paddingTop: "14px", paddingBottom: "14px" }
-                      : { marginRight: "27px" }
+                      : { marginRight: "28px" }
                   }
                 />
               ))}
@@ -352,12 +358,14 @@ const MainPage = (): ReactElement => {
           <div className="video-wrapper">
             {filteredVideos.map((v) => (
               <VideoItem
+                type="small-emoji"
                 key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
-                src={`https://www.youtube.com/embed/${v.youtube_url}`}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
                 style={
-                  isMobile ? { marginBottom: "28px" } : { marginBottom: "56px" }
+                  isMobile
+                    ? { marginBottom: "28px" }
+                    : { marginRight: "28px", marginBottom: "56px" }
                 }
                 videoTitle={v.youtube_title}
                 videoMostEmotion={v.youtube_most_emotion}

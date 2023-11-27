@@ -1,10 +1,18 @@
 import { EmotionType } from "types/index";
 
+export const labelOfEmotion = {
+  happy: "즐거운",
+  surprise: "놀라운",
+  sad: "슬픈",
+  angry: "화나는",
+  neutral: "평온한",
+};
+
 export const emojiOfEmotion = {
   happy: "😄",
   surprise: "😲",
-  angry: "😠",
   sad: "😥",
+  angry: "😠",
   neutral: "😐",
 };
 
