@@ -25,9 +25,7 @@ export type UserInfoType = {
   user_tutorial: number;
   access_token: string;
   refresh_token: string;
-  user_favorite_genre_1: string;
-  user_favorite_genre_2: string;
-  user_favorite_genre_3: string;
+  user_favorite_genre: string[];
 };
 export type VideoDataType = {
   youtube_url: string;
