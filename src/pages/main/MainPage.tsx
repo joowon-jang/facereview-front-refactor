@@ -16,6 +16,7 @@ import { updateRequestVideoList } from "api/request";
 import { getTimeToString } from "utils/index";
 
 const MainPage = (): ReactElement => {
+  const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
 
   const isMobile = window.innerWidth < 1200;
@@ -130,6 +131,7 @@ const MainPage = (): ReactElement => {
               <div className="main-page-video-wrapper">
                 {personalRecommendedVideo.map((v) => (
                   <VideoItem
+                    key={uuidv4()}
                     src={`https://www.youtube.com/embed/${v.youtube_url}`}
                     width={isMobile ? window.innerWidth - 32 : 280}
                     videoId={v.youtube_url}
@@ -173,6 +175,7 @@ const MainPage = (): ReactElement => {
             <div className="main-page-video-wrapper">
               {allVideo.map((v) => (
                 <VideoItem
+                  key={uuidv4()}
                   src={`https://www.youtube.com/embed/${v.youtube_url}`}
                   width={isMobile ? window.innerWidth - 32 : 280}
                   videoId={v.youtube_url}
@@ -319,6 +322,7 @@ const MainPage = (): ReactElement => {
 
               {registeredVideoIds.map((v) => (
                 <img
+                  key={uuidv4()}
                   className="main-page-modal-thumbnail-registered"
                   src={`http://img.youtube.com/vi/${v}/mqdefault.jpg`}
                   alt=""
@@ -345,7 +349,7 @@ const MainPage = (): ReactElement => {
           <div className="video-wrapper">
             {filteredVideos.map((v) => (
               <VideoItem
-                key={`videoItem${v.youtube_url}${v.youtube_most_emotion_per}`}
+                key={uuidv4()}
                 src={`https://www.youtube.com/embed/${v.youtube_url}`}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
