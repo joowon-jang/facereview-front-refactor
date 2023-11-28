@@ -7,6 +7,7 @@ interface AuthState {
   user_name: string;
   user_profile: number;
   user_tutorial: number;
+  user_announced: boolean;
   user_favorite_genres: string[];
   access_token: string;
   refresh_token: string;
@@ -36,6 +37,7 @@ interface AuthState {
     user_tutorial: number;
     user_favorite_genres: string[];
   }) => void;
+  setUserAnnounced: ({ user_announced }: { user_announced: boolean }) => void;
   setUserName: ({ user_name }: { user_name: string }) => void;
   setUserProfile: ({ user_profile }: { user_profile: number }) => void;
   setUserFavoriteGenres: (genres: string[]) => void;
@@ -51,6 +53,7 @@ export const useAuthStorage = create<AuthState>()(
         user_name: "",
         user_profile: 0,
         user_tutorial: 0,
+        user_announced: false,
         user_favorite_genres: [],
         access_token: "",
         refresh_token: "",
@@ -78,6 +81,10 @@ export const useAuthStorage = create<AuthState>()(
             user_profile,
             user_tutorial,
             user_favorite_genres,
+          })),
+        setUserAnnounced: ({ user_announced }) =>
+          set((state) => ({
+            user_announced,
           })),
         setUserName: ({ user_name }) =>
           set((state) => ({

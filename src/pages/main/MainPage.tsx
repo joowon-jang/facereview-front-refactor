@@ -15,7 +15,7 @@ import {
   getTravelVideo,
   getVarietyVideo,
 } from "api/youtube";
-import { VideoDataType } from "types";
+import { EmotionType, VideoDataType } from "types";
 
 import Chip from "components/Chip/Chip";
 import ModalDialog from "components/ModalDialog/ModalDialog";
@@ -50,6 +50,25 @@ const MainPage = (): ReactElement => {
   );
   const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
   const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
+
+  const dummyVideoIds: Array<{ srcProp: string; emotionProp: EmotionType }> = [
+    { srcProp: "MQteS5ZUEwg", emotionProp: "sad" },
+    { srcProp: "4Ddy_GClC68", emotionProp: "happy" },
+    { srcProp: "dTBsPShaBro", emotionProp: "surprise" },
+    { srcProp: "SeeiDfqtcTU", emotionProp: "angry" },
+    { srcProp: "auR98D6X_eo", emotionProp: "angry" },
+    { srcProp: "VgrXUxsIVtg", emotionProp: "happy" },
+    { srcProp: "eMpzQVVY6zo", emotionProp: "surprise" },
+    { srcProp: "ojUMHhHpmDc", emotionProp: "angry" },
+    { srcProp: "pasRphQvEUE", emotionProp: "sad" },
+    { srcProp: "B549suUxjQw", emotionProp: "surprise" },
+    { srcProp: "EjCs5ej41XI", emotionProp: "angry" },
+    { srcProp: "W7cR4kcQq_E", emotionProp: "happy" },
+    { srcProp: "DINfn8QXbFo", emotionProp: "sad" },
+    { srcProp: "rDVTie6zQyY", emotionProp: "happy" },
+    { srcProp: "Y2FjO0P0H6Q", emotionProp: "surprise" },
+    { srcProp: "A9IgZu-nvzA", emotionProp: "sad" },
+  ];
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
@@ -193,15 +212,15 @@ const MainPage = (): ReactElement => {
           <div className="video-container">
             <div className="main-page-video-container">
               <div className="main-page-video-wrapper">
-                {personalRecommendedVideo.map((v) => (
+                {dummyVideoIds.map((v) => (
                   <VideoItem
                     type="small-emoji"
                     key={uuidv4()}
                     width={isMobile ? window.innerWidth - 32 : 280}
-                    videoId={v.youtube_url}
-                    videoTitle={v.youtube_title}
-                    videoMostEmotion={v.youtube_most_emotion}
-                    videoMostEmotionPercentage={v.youtube_most_emotion_per}
+                    videoId={v.srcProp}
+                    videoTitle={v.srcProp}
+                    videoMostEmotion={v.emotionProp}
+                    videoMostEmotionPercentage={0}
                     style={
                       isMobile
                         ? { paddingTop: "14px", paddingBottom: "14px" }
@@ -241,15 +260,15 @@ const MainPage = (): ReactElement => {
             onMouseLeave={() => setGenreChangeTerm(2000)}
           >
             <div className="main-page-video-wrapper">
-              {genreVideos[genreCurrentIndex].map((v) => (
+              {dummyVideoIds.map((v) => (
                 <VideoItem
                   type="small-emoji"
                   key={uuidv4()}
                   width={isMobile ? window.innerWidth - 32 : 280}
-                  videoId={v.youtube_url}
-                  videoTitle={v.youtube_title}
-                  videoMostEmotion={v.youtube_most_emotion}
-                  videoMostEmotionPercentage={v.youtube_most_emotion_per}
+                  videoId={v.srcProp}
+                  videoTitle={v.srcProp}
+                  videoMostEmotion={v.emotionProp}
+                  videoMostEmotionPercentage={0}
                   style={
                     isMobile
                       ? { paddingTop: "14px", paddingBottom: "14px" }
@@ -341,7 +360,8 @@ const MainPage = (): ReactElement => {
             </div>
           </div>
           <ModalDialog
-            type={"video-register"}
+            type={"one-button"}
+            name="video-register-modal"
             isOpen={isModalOpen}
             onClose={closeModal}
             onCheck={handleRegisterButtonClick}
@@ -415,20 +435,20 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
-            {filteredVideos.map((v) => (
+            {dummyVideoIds.map((v) => (
               <VideoItem
                 type="small-emoji"
                 key={uuidv4()}
                 width={isMobile ? window.innerWidth - 32 : 280}
-                videoId={v.youtube_url}
+                videoId={v.srcProp}
+                videoTitle={v.srcProp}
+                videoMostEmotion={v.emotionProp}
+                videoMostEmotionPercentage={0}
                 style={
                   isMobile
-                    ? { marginBottom: "28px" }
+                    ? { paddingTop: "14px", paddingBottom: "14px" }
                     : { marginRight: "28px", marginBottom: "56px" }
                 }
-                videoTitle={v.youtube_title}
-                videoMostEmotion={v.youtube_most_emotion}
-                videoMostEmotionPercentage={v.youtube_most_emotion_per}
               />
             ))}
           </div>
