@@ -15,6 +15,32 @@
     width: 100%;
     margin-right: 28px;
 
+    .video-container {
+      position: relative;
+      margin-bottom: 20px;
+
+      &:hover .video-graph-container {
+        opacity: 1;
+      }
+
+      .video-graph-container {
+        position: absolute;
+        bottom: 50px;
+        width: 100%;
+        height: 32px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        color: $gray-900;
+        background: $system-dim-black;
+        opacity: 0;
+        transition: all 0.2s;
+        pointer-events: none;
+      }
+
+    }
+
+
+
     .title {
       color: $gray-900;
       margin-bottom: 60px;
@@ -187,5 +213,11 @@
 
       .recommend-video-container {}
     }
+  }
+}
+
+.custom-tooltip {
+  .custom-tooltip-text {
+    color: $gray-900;
   }
 }
