@@ -2,7 +2,7 @@ import { ErrorResponseImpl } from "@remix-run/router/dist/utils";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.facereview.net",
+  baseURL: "http://api.facereview.net",
   timeout: 30000,
 });
 
