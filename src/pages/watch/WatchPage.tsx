@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Webcam from "react-webcam";
 import YouTube, { YouTubeEvent } from "react-youtube";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
@@ -30,17 +30,20 @@ import { useAuthStorage } from "store/authStore";
 import { toast } from "react-toastify";
 import {
   addHits,
+  addLike,
   getMainDistributionData,
   getVideoComments,
   sendNewComment,
 } from "api/watch";
 import { getTimeToString, mapNumberToEmotion } from "utils/index";
 import VideoItem from "components/VideoItem/VideoItem";
+import LikeButton from "components/LikeButton/LikeButton";
 
 const WatchPage = (): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
   const isMobile = window.innerWidth < 1200;
   const { id } = useParams();
+  const navigate = useNavigate();
   const opts: Options = isMobile
     ? {
         width: "100%",
@@ -238,6 +241,72 @@ const WatchPage = (): ReactElement => {
         { x: "0:01:01", y: 17 },
       ],
     },
+    {
+      id: "surprise",
+      data: [
+        { x: "0:00:01", y: 40 },
+        { x: "0:00:02", y: 40 },
+        { x: "0:00:03", y: 40 },
+        { x: "0:00:04", y: 40 },
+        { x: "0:00:05", y: 40 },
+        { x: "0:00:06", y: 40 },
+        { x: "0:00:07", y: 40 },
+        { x: "0:00:08", y: 40 },
+        { x: "0:00:09", y: 40 },
+        { x: "0:00:10", y: 40 },
+        { x: "0:00:11", y: 40 },
+        { x: "0:00:12", y: 40 },
+        { x: "0:00:13", y: 40 },
+        { x: "0:00:14", y: 40 },
+        { x: "0:00:15", y: 40 },
+        { x: "0:00:16", y: 40 },
+        { x: "0:00:17", y: 40 },
+        { x: "0:00:18", y: 40 },
+        { x: "0:00:19", y: 40 },
+        { x: "0:00:20", y: 40 },
+        { x: "0:00:21", y: 0 },
+        { x: "0:00:22", y: 0 },
+        { x: "0:00:23", y: 0 },
+        { x: "0:00:24", y: 0 },
+        { x: "0:00:25", y: 0 },
+        { x: "0:00:26", y: 0 },
+        { x: "0:00:27", y: 0 },
+        { x: "0:00:28", y: 0 },
+        { x: "0:00:29", y: 0 },
+        { x: "0:00:30", y: 0 },
+        { x: "0:00:31", y: 0 },
+        { x: "0:00:32", y: 0 },
+        { x: "0:00:33", y: 0 },
+        { x: "0:00:34", y: 0 },
+        { x: "0:00:35", y: 0 },
+        { x: "0:00:36", y: 0 },
+        { x: "0:00:37", y: 0 },
+        { x: "0:00:38", y: 0 },
+        { x: "0:00:39", y: 0 },
+        { x: "0:00:40", y: 0 },
+        { x: "0:00:41", y: 0 },
+        { x: "0:00:42", y: 0 },
+        { x: "0:00:43", y: 0 },
+        { x: "0:00:44", y: 0 },
+        { x: "0:00:45", y: 0 },
+        { x: "0:00:46", y: 0 },
+        { x: "0:00:47", y: 0 },
+        { x: "0:00:48", y: 0 },
+        { x: "0:00:49", y: 0 },
+        { x: "0:00:50", y: 0 },
+        { x: "0:00:51", y: 0 },
+        { x: "0:00:52", y: 0 },
+        { x: "0:00:53", y: 0 },
+        { x: "0:00:54", y: 0 },
+        { x: "0:00:55", y: 0 },
+        { x: "0:00:56", y: 0 },
+        { x: "0:00:57", y: 0 },
+        { x: "0:00:58", y: 0 },
+        { x: "0:00:59", y: 0 },
+        { x: "0:01:00", y: 0 },
+        { x: "0:01:01", y: 0 },
+      ],
+    },
   ]);
   const [video, setVideo] = useState<YouTubePlayer | null>(null);
   const [videoData, setVideoData] = useState<VideoDetailType>();
@@ -305,9 +374,25 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
+  const handleLikeClick = () => {
+    if (is_sign_in) {
+      addLike({ youtube_url: id || "" })
+        .then((res) => {
+          console.log("0000000000addLike");
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log("0000000000addLike");
+          console.log(err);
+        });
+    }
+    navigate("/auth/1");
+  };
+
   useLayoutEffect(() => {
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
+        console.log(res);
         setVideoData(res);
       })
       .catch((err) => {});
@@ -502,12 +587,11 @@ const WatchPage = (): ReactElement => {
                 startLabelPadding={8}
                 endLabel={false}
                 endLabelPadding={5}
-                pointSize={2}
-                activePointSize={2}
+                pointSize={0}
+                activePointSize={0}
                 inactivePointSize={0}
                 pointColor={{ theme: "background" }}
-                pointBorderWidth={1}
-                activePointBorderWidth={1}
+                pointBorderWidth={0}
                 pointBorderColor={{ from: "serie.color" }}
                 enableGridX={false}
                 enableGridY={false}
@@ -541,12 +625,24 @@ const WatchPage = (): ReactElement => {
               />
             </div>
           </div>
-          <div
-            className={
-              isMobile ? "title font-title-small" : "title font-title-medium"
-            }
-          >
-            {videoData?.youtube_title}
+          <div className="video-information-container">
+            <div
+              className={
+                isMobile ? "title font-title-small" : "title font-title-medium"
+              }
+            >
+              {videoData?.youtube_title}
+            </div>
+            <div className="right-side">
+              <LikeButton
+                label={(videoData?.youtube_like || 0) + ""}
+                isActive={false}
+                onClick={handleLikeClick}
+              />
+              <p className="video-hits-text font-label-small">
+                조회수 {videoData?.youtube_hits || 0}회
+              </p>
+            </div>
           </div>
           {isMobile && <Devider />}
         </div>
