@@ -99,9 +99,9 @@ const EditPage = () => {
 
   return (
     <>
-      <div className="editpage-container">
+      <div className="edit-page-container">
         <h2 className="font-title-large">프로필 편집</h2>
-        <div className="editpage-user-container">
+        <div className="edit-page-user-container">
           <ProfileIcon
             type={"icon-large"}
             color={localProfileColor}
@@ -110,26 +110,22 @@ const EditPage = () => {
           />
           <ModalDialog
             type={"one-button"}
+            name="edit-page-modal"
             isOpen={isModalOpen}
             onClose={closeModal}
             onCheck={handleModalCheck}
           >
-            <h3
-              className="font-title-mini editpage-modal-title"
-              style={{ marginBottom: "24px" }}
-            >
+            <h3 className="font-title-mini edit-page-modal-title">
               아이콘을 선택해주세요
             </h3>
-            <div
-              className="editpage-modal-icon-wrapper"
-              style={{ display: "flex", gap: "10px", marginBottom: "12px" }}
-            >
+            <div className="edit-page-modal-icon-wrapper">
               <ProfileIcon
                 type="icon-medium"
                 color="neutral"
                 onSelectClick={() => handleColorSelect("neutral")}
                 style={{
                   cursor: "pointer",
+                  marginRight: "10px",
                   border:
                     selectedColor === "neutral" ? "3px solid #76FFCE" : "none",
                 }}
@@ -140,6 +136,7 @@ const EditPage = () => {
                 onSelectClick={() => handleColorSelect("happy")}
                 style={{
                   cursor: "pointer",
+                  marginRight: "10px",
                   border:
                     selectedColor === "happy" ? "3px solid #76FFCE" : "none",
                 }}
@@ -150,6 +147,7 @@ const EditPage = () => {
                 onSelectClick={() => handleColorSelect("surprise")}
                 style={{
                   cursor: "pointer",
+                  marginRight: "10px",
                   border:
                     selectedColor === "surprise" ? "3px solid #76FFCE" : "none",
                 }}
@@ -160,6 +158,7 @@ const EditPage = () => {
                 onSelectClick={() => handleColorSelect("sad")}
                 style={{
                   cursor: "pointer",
+                  marginRight: "10px",
                   border:
                     selectedColor === "sad" ? "3px solid #76FFCE" : "none",
                 }}
@@ -176,8 +175,8 @@ const EditPage = () => {
               />
             </div>
           </ModalDialog>
-          <div className="editpage-edit-container">
-            <div className="editpage-input-container">
+          <div className="edit-page-edit-container">
+            <div className="edit-page-input-container">
               <label htmlFor="editNickName">닉네임</label>
               <TextInput
                 id={"editNickName"}
@@ -191,12 +190,12 @@ const EditPage = () => {
                 }}
               />
               {nickName.length < 2 && (
-                <p className="editpage-input-alert-message font-body-large">
+                <p className="edit-page-input-alert-message font-body-large">
                   최소 2자이상 입력해주세요.
                 </p>
               )}
             </div>
-            <div className="editpage-category-wrapper">
+            <div className="edit-page-category-wrapper">
               <CategoryList
                 selected={selectedCategories}
                 setSelected={setSelectedCategories}

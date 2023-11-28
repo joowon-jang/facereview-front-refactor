@@ -83,6 +83,7 @@ const VideoItem = ({
           src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
           alt=""
         />
+        
         {/* <YouTube
           videoId={videoId}
           // id={string} // defaults -> ''

@@ -4,7 +4,7 @@
   background: $system-dim-black;
   width: 100%;
   height: 100%;
-  z-index: 99;
+  z-index: 999;
   position: fixed;
   top: 0;
   left: 0;
@@ -15,22 +15,27 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 100;
+  z-index: 1000;
   transform: translate(-50%, -50%);
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
-  padding: 32px 20px;
-  background: $gray-100;
+  background: $gray-80;
   outline: none;
   border-radius: 8px;
-  width: 340px;
   overflow: auto;
   justify-content: center;
   align-items: center;
 
-  &.video-register {
-    background: $gray-50;
-    padding: 60px 60px 40px 60px;
+  &.video-register-modal {
+    padding: 60px 40px 0px 40px;
     width: 500px;
+  }
+  &.edit-page-modal {
+    padding: 32px 20px;
+    padding: 40px 10px 20px 10px;
+    width: 340px;
+  }
+  &.watch-page-modal {
+    padding: 40px 0px 32px 0px;
+    width: 440px;
   }
 
   .modal-contents-container {
@@ -38,15 +43,28 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 24px;
 
-    &.video-register {
+    &.edit-page-modal {
+      margin-bottom: 12px;
+    }
+    &.watch-page-modal {
       margin-bottom: 12px;
     }
   }
 
   .modal-button-wrapper {
     display: flex;
+    width: 100%;
     justify-content: space-between;
+
+    &.video-register-modal {
+      padding: 12px 10px 40px 10px;
+    }
+    &.watch-page-modal {
+      padding: 12px 30px 14px 30px;
+    }
+    &.edit-page-modal {
+      padding: 12px 10px 14px 10px;
+    }
   }
 }

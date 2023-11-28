@@ -1,6 +1,6 @@
 @import "assets/css/index.scss";
 
-.mypage-container {
+.my-page-container {
   display: flex;
   flex-direction: column;
   padding-bottom: 98px;
@@ -15,7 +15,7 @@
     width: calc(50vw + 600px);
   }
 
-  .mypage-user-container {
+  .my-page-user-container {
     display: flex;
     flex-direction: column;
 
@@ -27,7 +27,7 @@
       flex-direction: column;
     }
 
-    .mypage-user-info-container {
+    .my-page-user-info-container {
       display: flex;
 
       @include mobile {
@@ -39,7 +39,7 @@
       }
     }
 
-    .mypage-user-edit-container {
+    .my-page-user-edit-container {
       display: flex;
       justify-content: space-between;
 
@@ -50,14 +50,14 @@
         margin-top: 20px;
       }
 
-      .mypage-name-wrapper {
+      .my-page-name-wrapper {
         display: flex;
         align-items: center;
       }
     }
   }
 
-  .mypage-watched-contents-container {
+  .my-page-watched-contents-container {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -70,21 +70,21 @@
       margin-top: 56px;
     }
 
-    .mypage-watched-title-container {
+    .my-page-watched-title-container {
       display: flex;
       flex-direction: column;
       width: 100%;
 
-      .mypage-title {
+      .my-page-title {
         padding-left: 20px;
       }
 
-      .mypage-chip-container {
+      .my-page-chip-container {
         display: flex;
         width: 100%;
         overflow-x: auto;
 
-        .mypage-chip-wrapper {
+        .my-page-chip-wrapper {
           display: flex;
           white-space: nowrap;
           padding-left: 20px;
@@ -107,14 +107,14 @@
       }
     }
 
-    .mypage-video-container {
+    .my-page-video-container {
       display: flex;
       overflow-x: auto;
       padding-bottom: 88px;
       padding-left: 20px;
     }
 
-    .mypage-video-wrapper {
+    .my-page-video-wrapper {
       display: flex;
 
       @include mobile {
@@ -125,7 +125,7 @@
         padding-top: 16px;
       }
 
-      .mypage-video-empty {
+      .my-page-video-empty {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -138,7 +138,7 @@
           width: 1200px;
         }
 
-        .mypage-video-empty-img {
+        .my-page-video-empty-img {
           @include mobile {
             width: 66px;
             height: 66px;
@@ -157,17 +157,17 @@
     // -ms-overflow-style: none; /* 인터넷 익스플로러 */
     // scrollbar-width: none; /* 파이어폭스 */
 
-    // .mypage-video-container::-webkit-scrollbar {
+    // .my-page-video-container::-webkit-scrollbar {
     //   display: none; /* 크롬, 사파리, 오페라, 엣지 */
     // }
   }
 }
 
-.mypage-emotion-container {
+.my-page-emotion-container {
   display: inline-flex;
   flex-direction: column;
 
-  .mypage-emotion-graph-container {
+  .my-page-emotion-graph-container {
     margin-top: 28px;
     background: #fff;
     @include mobile {

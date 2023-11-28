@@ -54,16 +54,16 @@ const MyPage = () => {
 
   return (
     <>
-      <div className="mypage-container">
-        <div className="mypage-user-container">
-          <div className="mypage-user-info-container">
+      <div className="my-page-container">
+        <div className="my-page-user-container">
+          <div className="my-page-user-info-container">
             <ProfileIcon
               type={isMobile ? "icon-medium" : "icon-large"}
               color={mapNumberToEmotion(user_profile)}
             />
-            <div className="mypage-user-edit-container">
-              <div className="mypage-name-container">
-                <div className="mypage-name-wrapper">
+            <div className="my-page-user-edit-container">
+              <div className="my-page-name-container">
+                <div className="my-page-name-wrapper">
                   <h2
                     className={
                       isMobile ? "font-title-medium" : "font-title-large"
@@ -95,19 +95,19 @@ const MyPage = () => {
           <Devider />
         </div>
 
-        <div className="mypage-watched-contents-container">
-          <div className="mypage-watched-title-container">
+        <div className="my-page-watched-contents-container">
+          <div className="my-page-watched-title-container">
             <h3
               className={
                 isMobile
-                  ? "mypage-title font-title-small"
-                  : "mypage-title font-title-medium"
+                  ? "my-page-title font-title-small"
+                  : "my-page-title font-title-medium"
               }
             >
               최근 본 영상
             </h3>
-            <div className="mypage-chip-container">
-              <div className="mypage-chip-wrapper">
+            <div className="my-page-chip-container">
+              <div className="my-page-chip-wrapper">
                 <Chip
                   type={isMobile ? "category-small" : "category-big"}
                   choose={"all"}
@@ -156,8 +156,8 @@ const MyPage = () => {
               </div>
             </div>
           </div>
-          <div className="mypage-video-container">
-            <div className="mypage-video-wrapper">
+          <div className="my-page-video-container">
+            <div className="my-page-video-wrapper">
               {filteredRecentVideos.length > 0 ? (
                 filteredRecentVideos.map((v) => (
                   <VideoItem
@@ -176,8 +176,12 @@ const MyPage = () => {
                   />
                 ))
               ) : (
-                <div className="mypage-video-empty">
-                  <img className="mypage-video-empty-img" src={Etc} alt="etc" />
+                <div className="my-page-video-empty">
+                  <img
+                    className="my-page-video-empty-img"
+                    src={Etc}
+                    alt="etc"
+                  />
                   <p
                     className={
                       isMobile ? "font-lebel-medium" : "font-label-large"
@@ -190,11 +194,11 @@ const MyPage = () => {
             </div>
           </div>
         </div>
-        <div className="mypage-emotion-container">
+        <div className="my-page-emotion-container">
           <h2 className={isMobile ? "font-title-small" : "font-title-medium"}>
             최근 나의 감정 그래프
           </h2>
-          <div className="mypage-emotion-graph-container"></div>
+          <div className="my-page-emotion-graph-container"></div>
         </div>
       </div>
     </>

@@ -37,6 +37,8 @@ import {
 } from "api/watch";
 import { getTimeToString, mapNumberToEmotion } from "utils/index";
 import VideoItem from "components/VideoItem/VideoItem";
+import ModalDialog from "components/ModalDialog/ModalDialog";
+import safeImage from "assets/img/safeImage.png";
 import LikeButton from "components/LikeButton/LikeButton";
 
 const WatchPage = (): ReactElement => {
@@ -71,7 +73,13 @@ const WatchPage = (): ReactElement => {
       { emotion: "angry", emotionText: "화나는" },
       { emotion: "neutral", emotionText: "무표정" },
     ];
-  const { is_sign_in, access_token, user_profile } = useAuthStorage();
+  const {
+    is_sign_in,
+    access_token,
+    user_profile,
+    user_announced,
+    setUserAnnounced,
+  } = useAuthStorage();
   const navigation = useNavigate();
 
   const webcamRef = useRef<Webcam>(null);
@@ -374,6 +382,15 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setUserAnnounced({ user_announced: true });
+    setIsModalOpen(false);
+      
   const handleLikeClick = () => {
     if (is_sign_in) {
       addLike({ youtube_url: id || "" })
@@ -398,6 +415,12 @@ const WatchPage = (): ReactElement => {
       })
       .catch((err) => {});
   }, [id]);
+
+  useEffect(() => {
+    if (!user_announced) {
+      openModal();
+    }
+  }, []);
 
   useEffect(() => {
     socket.connect();
@@ -556,6 +579,28 @@ const WatchPage = (): ReactElement => {
 
   return (
     <div className="watch-page-container">
+      <ModalDialog
+        type={"one-button"}
+        name="watch-page-modal"
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      >
+        <div className="watch-page-modal-image-container">
+          <img
+            className="watch-page-modal-image"
+            src={safeImage}
+            alt="safe-img"
+          />
+        </div>
+        <div className="watch-page-modal-label-container">
+          <h2 className="watch-page-modal-title font-title-medium">
+            안심하세요!
+          </h2>
+          <p className="font-body-large">
+            영상 시청 중의 나의 모습은 기록되거나 저장되지 않아요.
+          </p>
+        </div>
+      </ModalDialog>
       <div className="main-container">
         <div className="watch-page-test">
           <div className="video-container">

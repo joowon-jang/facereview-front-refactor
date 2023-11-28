@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useAuthStorage } from "store/authStore";
 import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
@@ -15,7 +15,7 @@ import {
   getTravelVideo,
   getVarietyVideo,
 } from "api/youtube";
-import { VideoDataType } from "types";
+import { EmotionType, VideoDataType } from "types";
 
 import Chip from "components/Chip/Chip";
 import ModalDialog from "components/ModalDialog/ModalDialog";
@@ -49,6 +49,8 @@ const MainPage = (): ReactElement => {
       selectedEmotion === "all" || v.youtube_most_emotion === selectedEmotion
   );
   const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
+  const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
+  const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(0);
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
@@ -78,7 +80,6 @@ const MainPage = (): ReactElement => {
       setIsRegisterMatched(false);
     }
   };
-
   const handleRegisterButtonClick = () => {
     if (registeredVideoIds.length > 0) {
       registeredVideoIds.map((videoId) =>
@@ -91,29 +92,55 @@ const MainPage = (): ReactElement => {
     }
   };
 
+  let timerId: NodeJS.Timeout;
+
+  const useInterval = (
+    callback: () => void,
+    delay: number | null,
+    test: number
+  ) => {
+    const savedCallback = useRef<() => void>();
+
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    useEffect(() => {
+      const tick = () => {
+        setGenreChangeOpacity(1);
+        if (savedCallback.current) {
+          savedCallback.current();
+        }
+      };
+
+      if (delay !== null) {
+        timerId = setTimeout(() => {
+          setGenreChangeOpacity(0);
+        }, 5800);
+        const id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay, test]);
+  };
+
+  useInterval(
+    () => {
+      setGenreCurrentIndex((prevIndex) => (prevIndex + 1) % genreVideos.length);
+    },
+    genreChangeTerm,
+    genreCurrentIndex
+  );
+
   useEffect(() => {
+    setGenreChangeOpacity(1);
+    setGenreChangeTerm(6000);
     getAllVideo()
       .then((data) => {
         setAllVideo(data);
       })
       .catch((err) => console.log(err));
 
-    if (is_sign_in) {
-      getPersonalRecommendedVideo()
-        .then((res) => {
-          serPersonalRecommendedVideo(res);
-        })
-        .catch((err) => {
-          console.log(
-            "ERROR /home/user-customized-list ----------------------",
-            err
-          );
-        });
-    }
-  }, []);
-
-  useEffect(() => {
-    const userCategorization = is_sign_in ? "user" : "non_user";
+    const userCategorization = is_sign_in ? "user" : "non-user";
 
     const videoRequests = [
       getSportsVideo({ user_categorization: userCategorization }),
@@ -137,15 +164,22 @@ const MainPage = (): ReactElement => {
       .catch((err) => {
         console.error(err);
       });
+
+    if (is_sign_in) {
+      getPersonalRecommendedVideo()
+        .then((res) => {
+          serPersonalRecommendedVideo(res);
+        })
+        .catch((err) => {
+          console.log(
+            "ERROR /home/user-customized-list ----------------------",
+            err
+          );
+        });
+    }
   }, []);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setGenreCurrentIndex((prevIndex) => (prevIndex + 1) % genreVideos.length);
-    }, 2000);
-
-    return () => clearInterval(intervalId);
-  }, [genreVideos.length]);
+  useEffect(() => {}, [genreCurrentIndex]);
 
   useEffect(() => {
     extractVideoId();
@@ -219,7 +253,18 @@ const MainPage = (): ReactElement => {
           시청된 영상을 준비했어요.
         </h4>
         <div className="video-container">
-          <div className="main-page-video-container">
+          <div
+            className="main-page-video-container"
+            onMouseEnter={() => {
+              setGenreChangeTerm(null);
+              clearTimeout(timerId);
+            }}
+            onMouseLeave={() => setGenreChangeTerm(6000)}
+            style={{
+              opacity: genreChangeOpacity,
+              transition: "opacity 0.2s ease-in-out",
+            }}
+          >
             <div className="main-page-video-wrapper">
               {genreVideos[genreCurrentIndex].map((v) => (
                 <VideoItem
@@ -233,7 +278,9 @@ const MainPage = (): ReactElement => {
                   style={
                     isMobile
                       ? { paddingTop: "14px", paddingBottom: "14px" }
-                      : { marginRight: "28px" }
+                      : {
+                          marginRight: "28px",
+                        }
                   }
                 />
               ))}
@@ -321,7 +368,8 @@ const MainPage = (): ReactElement => {
             </div>
           </div>
           <ModalDialog
-            type={"video-register"}
+            type={"one-button"}
+            name="video-register-modal"
             isOpen={isModalOpen}
             onClose={closeModal}
             onCheck={handleRegisterButtonClick}
@@ -395,20 +443,20 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
-            {filteredVideos.map((v) => (
+            {allVideo.map((v) => (
               <VideoItem
                 type="small-emoji"
                 key={uuidv4()}
                 width={isMobile ? window.innerWidth - 32 : 280}
                 videoId={v.youtube_url}
-                style={
-                  isMobile
-                    ? { marginBottom: "28px" }
-                    : { marginRight: "28px", marginBottom: "56px" }
-                }
                 videoTitle={v.youtube_title}
                 videoMostEmotion={v.youtube_most_emotion}
                 videoMostEmotionPercentage={v.youtube_most_emotion_per}
+                style={
+                  isMobile
+                    ? { paddingTop: "14px", paddingBottom: "14px" }
+                    : { marginRight: "28px", marginBottom: "56px" }
+                }
               />
             ))}
           </div>
