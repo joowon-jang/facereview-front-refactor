@@ -92,7 +92,13 @@ const MainPage = (): ReactElement => {
     }
   };
 
-  const useInterval = (callback: () => void, delay: number | null) => {
+  let timerId: NodeJS.Timeout;
+
+  const useInterval = (
+    callback: () => void,
+    delay: number | null,
+    test: number
+  ) => {
     const savedCallback = useRef<() => void>();
 
     useEffect(() => {
@@ -101,29 +107,29 @@ const MainPage = (): ReactElement => {
 
     useEffect(() => {
       const tick = () => {
+        setGenreChangeOpacity(1);
         if (savedCallback.current) {
           savedCallback.current();
         }
       };
 
       if (delay !== null) {
+        timerId = setTimeout(() => {
+          setGenreChangeOpacity(0);
+        }, 5800);
         const id = setInterval(tick, delay);
         return () => clearInterval(id);
       }
-    }, [delay]);
+    }, [delay, test]);
   };
 
-  useInterval(() => {
-    setGenreCurrentIndex((prevIndex) => (prevIndex + 1) % genreVideos.length);
-  }, genreChangeTerm);
-
-  useEffect(() => {
-    setGenreChangeOpacity(1);
-
-    setTimeout(() => {
-      setGenreChangeOpacity(0);
-    }, 5800);
-  }, [genreCurrentIndex]);
+  useInterval(
+    () => {
+      setGenreCurrentIndex((prevIndex) => (prevIndex + 1) % genreVideos.length);
+    },
+    genreChangeTerm,
+    genreCurrentIndex
+  );
 
   useEffect(() => {
     setGenreChangeOpacity(1);
@@ -249,7 +255,10 @@ const MainPage = (): ReactElement => {
         <div className="video-container">
           <div
             className="main-page-video-container"
-            onMouseEnter={() => setGenreChangeTerm(null)}
+            onMouseEnter={() => {
+              setGenreChangeTerm(null);
+              clearTimeout(timerId);
+            }}
             onMouseLeave={() => setGenreChangeTerm(6000)}
             style={{
               opacity: genreChangeOpacity,
