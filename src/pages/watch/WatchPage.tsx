@@ -382,7 +382,6 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -390,7 +389,8 @@ const WatchPage = (): ReactElement => {
   const closeModal = () => {
     setUserAnnounced({ user_announced: true });
     setIsModalOpen(false);
-      
+  };
+
   const handleLikeClick = () => {
     if (is_sign_in) {
       addLike({ youtube_url: id || "" })
