@@ -1,10 +1,11 @@
-import Router from "./components/Router";
+import { useLayoutEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLayoutEffect } from "react";
+import Router from "./components/Router";
 import { useAuthStorage } from "store/authStore";
 import HeaderToken from "api/HeaderToken";
 import { getTempToken } from "api/auth";
+import { Helmet } from "react-helmet-async";
 
 function App() {
   const { access_token, setTempToken } = useAuthStorage();
@@ -26,6 +27,13 @@ function App() {
   }, [access_token, setTempToken]);
   return (
     <div className="App">
+      <Helmet>
+        <title>FaceReview</title>
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
+      </Helmet>
       <Router />
       <ToastContainer
         position="bottom-right" // 알람 위치 지정
