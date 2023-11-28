@@ -1,4 +1,4 @@
-import { CommentType, VideoDetailType } from "types";
+import { CommentType, VideoDetailType, VideoDistributionDataType } from "types";
 import api from "./index";
 
 export const getVideoComments = async (props: { youtube_url: string }) => {
@@ -47,7 +47,7 @@ export const getMainDistributionData = async (props: {
 }) => {
   try {
     const url = "/watch/main-distribution-data";
-    const { data } = await api.post(url, props);
+    const { data } = await api.post<VideoDistributionDataType>(url, props);
 
     return data;
   } catch (error) {
@@ -87,6 +87,18 @@ export const cancelLike = async (props: { youtube_url: string }) => {
   try {
     const url = "/watch/cancel-like";
     const { data } = await api.post(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const checkLike = async (props: { youtube_url: string }) => {
+  try {
+    const url = "/watch/check-like";
+    const { data } = await api.post<{ like_flag: number }>(url, props);
 
     return data;
   } catch (error) {

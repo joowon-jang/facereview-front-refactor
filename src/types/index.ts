@@ -50,6 +50,13 @@ export type VideoWatchedType = {
   most_emotion: EmotionType;
   most_emotion_per: number;
 };
+export type VideoDistributionDataType = {
+  [key in EmotionType]: { x: string; y: number }[];
+};
+export type GraphDistributionDataType = {
+  id: EmotionType;
+  data: { x: string; y: number }[];
+};
 export type CommentType = {
   comment_contents: string;
   comment_date: string;
