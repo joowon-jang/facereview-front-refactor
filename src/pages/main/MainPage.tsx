@@ -113,7 +113,7 @@ const MainPage = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    const userCategorization = is_sign_in ? "user" : "non_user";
+    const userCategorization = is_sign_in ? "user" : "non-user";
 
     const videoRequests = [
       getSportsVideo({ user_categorization: userCategorization }),
