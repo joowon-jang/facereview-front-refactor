@@ -70,3 +70,27 @@ export const addHits = async (props: {
     throw error;
   }
 };
+
+export const addLike = async (props: { youtube_url: string }) => {
+  try {
+    const url = "/watch/add-like";
+    const { data } = await api.post(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const cancelLike = async (props: { youtube_url: string }) => {
+  try {
+    const url = "/watch/cancel-like";
+    const { data } = await api.post(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
