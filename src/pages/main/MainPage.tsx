@@ -50,26 +50,6 @@ const MainPage = (): ReactElement => {
   );
   const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
   const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
-
-  const dummyVideoIds: Array<{ srcProp: string; emotionProp: EmotionType }> = [
-    { srcProp: "MQteS5ZUEwg", emotionProp: "sad" },
-    { srcProp: "4Ddy_GClC68", emotionProp: "happy" },
-    { srcProp: "dTBsPShaBro", emotionProp: "surprise" },
-    { srcProp: "SeeiDfqtcTU", emotionProp: "angry" },
-    { srcProp: "auR98D6X_eo", emotionProp: "angry" },
-    { srcProp: "VgrXUxsIVtg", emotionProp: "happy" },
-    { srcProp: "eMpzQVVY6zo", emotionProp: "surprise" },
-    { srcProp: "ojUMHhHpmDc", emotionProp: "angry" },
-    { srcProp: "pasRphQvEUE", emotionProp: "sad" },
-    { srcProp: "B549suUxjQw", emotionProp: "surprise" },
-    { srcProp: "EjCs5ej41XI", emotionProp: "angry" },
-    { srcProp: "W7cR4kcQq_E", emotionProp: "happy" },
-    { srcProp: "DINfn8QXbFo", emotionProp: "sad" },
-    { srcProp: "rDVTie6zQyY", emotionProp: "happy" },
-    { srcProp: "Y2FjO0P0H6Q", emotionProp: "surprise" },
-    { srcProp: "A9IgZu-nvzA", emotionProp: "sad" },
-  ];
-
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
   };
@@ -212,15 +192,15 @@ const MainPage = (): ReactElement => {
           <div className="video-container">
             <div className="main-page-video-container">
               <div className="main-page-video-wrapper">
-                {dummyVideoIds.map((v) => (
+                {personalRecommendedVideo.map((v) => (
                   <VideoItem
                     type="small-emoji"
                     key={uuidv4()}
                     width={isMobile ? window.innerWidth - 32 : 280}
-                    videoId={v.srcProp}
-                    videoTitle={v.srcProp}
-                    videoMostEmotion={v.emotionProp}
-                    videoMostEmotionPercentage={0}
+                    videoId={v.youtube_url}
+                    videoTitle={v.youtube_title}
+                    videoMostEmotion={v.youtube_most_emotion}
+                    videoMostEmotionPercentage={v.youtube_most_emotion_per}
                     style={
                       isMobile
                         ? { paddingTop: "14px", paddingBottom: "14px" }
@@ -260,15 +240,15 @@ const MainPage = (): ReactElement => {
             onMouseLeave={() => setGenreChangeTerm(2000)}
           >
             <div className="main-page-video-wrapper">
-              {dummyVideoIds.map((v) => (
+              {genreVideos[genreCurrentIndex].map((v) => (
                 <VideoItem
                   type="small-emoji"
                   key={uuidv4()}
                   width={isMobile ? window.innerWidth - 32 : 280}
-                  videoId={v.srcProp}
-                  videoTitle={v.srcProp}
-                  videoMostEmotion={v.emotionProp}
-                  videoMostEmotionPercentage={0}
+                  videoId={v.youtube_url}
+                  videoTitle={v.youtube_title}
+                  videoMostEmotion={v.youtube_most_emotion}
+                  videoMostEmotionPercentage={v.youtube_most_emotion_per}
                   style={
                     isMobile
                       ? { paddingTop: "14px", paddingBottom: "14px" }
@@ -435,15 +415,15 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
-            {dummyVideoIds.map((v) => (
+            {allVideo.map((v) => (
               <VideoItem
                 type="small-emoji"
                 key={uuidv4()}
                 width={isMobile ? window.innerWidth - 32 : 280}
-                videoId={v.srcProp}
-                videoTitle={v.srcProp}
-                videoMostEmotion={v.emotionProp}
-                videoMostEmotionPercentage={0}
+                videoId={v.youtube_url}
+                videoTitle={v.youtube_title}
+                videoMostEmotion={v.youtube_most_emotion}
+                videoMostEmotionPercentage={v.youtube_most_emotion_per}
                 style={
                   isMobile
                     ? { paddingTop: "14px", paddingBottom: "14px" }

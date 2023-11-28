@@ -184,7 +184,6 @@ const WatchPage = (): ReactElement => {
   };
   const closeModal = () => {
     setUserAnnounced({ user_announced: true });
-    setUserAnnounced({ user_announced: false });
     setIsModalOpen(false);
   };
 
@@ -197,7 +196,6 @@ const WatchPage = (): ReactElement => {
   }, [id]);
 
   useEffect(() => {
-    setUserAnnounced({ user_announced: false });
     if (!user_announced) {
       openModal();
     }
