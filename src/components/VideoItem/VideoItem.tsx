@@ -83,7 +83,7 @@ const VideoItem = ({
           src={`http://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
           alt=""
         />
-        <YouTube
+        {/* <YouTube
           videoId={videoId}
           // id={string} // defaults -> ''
           // className={string} // defaults -> ''
@@ -100,7 +100,7 @@ const VideoItem = ({
           // onStateChange={handleStateChange} // defaults -> noop
           // onPlaybackRateChange={func} // defaults -> noop
           // onPlaybackQualityChange={func} // defaults -> noop
-        />
+        /> */}
       </div>
       <div className="video-info-container">
         <h3 className="video-title font-label-large">{videoTitle}</h3>
