@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useAuthStorage } from "store/authStore";
 import VideoItem from "components/VideoItem/VideoItem";
 import "./mainpage.scss";
@@ -49,6 +49,7 @@ const MainPage = (): ReactElement => {
       selectedEmotion === "all" || v.youtube_most_emotion === selectedEmotion
   );
   const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
+  const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
 
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
@@ -78,7 +79,6 @@ const MainPage = (): ReactElement => {
       setIsRegisterMatched(false);
     }
   };
-
   const handleRegisterButtonClick = () => {
     if (registeredVideoIds.length > 0) {
       registeredVideoIds.map((videoId) =>
@@ -91,28 +91,39 @@ const MainPage = (): ReactElement => {
     }
   };
 
+  const useInterval = (callback: () => void, delay: number | null) => {
+    const savedCallback = useRef<() => void>();
+
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    useEffect(() => {
+      const tick = () => {
+        if (savedCallback.current) {
+          savedCallback.current();
+        }
+      };
+
+      if (delay !== null) {
+        const id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  };
+
+  useInterval(() => {
+    setGenreCurrentIndex((prevIndex) => (prevIndex + 1) % genreVideos.length);
+  }, genreChangeTerm);
+
   useEffect(() => {
+    setGenreChangeTerm(2000);
     getAllVideo()
       .then((data) => {
         setAllVideo(data);
       })
       .catch((err) => console.log(err));
 
-    if (is_sign_in) {
-      getPersonalRecommendedVideo()
-        .then((res) => {
-          serPersonalRecommendedVideo(res);
-        })
-        .catch((err) => {
-          console.log(
-            "ERROR /home/user-customized-list ----------------------",
-            err
-          );
-        });
-    }
-  }, []);
-
-  useEffect(() => {
     const userCategorization = is_sign_in ? "user" : "non-user";
 
     const videoRequests = [
@@ -137,15 +148,20 @@ const MainPage = (): ReactElement => {
       .catch((err) => {
         console.error(err);
       });
+
+    if (is_sign_in) {
+      getPersonalRecommendedVideo()
+        .then((res) => {
+          serPersonalRecommendedVideo(res);
+        })
+        .catch((err) => {
+          console.log(
+            "ERROR /home/user-customized-list ----------------------",
+            err
+          );
+        });
+    }
   }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setGenreCurrentIndex((prevIndex) => (prevIndex + 1) % genreVideos.length);
-    }, 2000);
-
-    return () => clearInterval(intervalId);
-  }, [genreVideos.length]);
 
   useEffect(() => {
     extractVideoId();
@@ -219,7 +235,11 @@ const MainPage = (): ReactElement => {
           시청된 영상을 준비했어요.
         </h4>
         <div className="video-container">
-          <div className="main-page-video-container">
+          <div
+            className="main-page-video-container"
+            onMouseEnter={() => setGenreChangeTerm(null)}
+            onMouseLeave={() => setGenreChangeTerm(2000)}
+          >
             <div className="main-page-video-wrapper">
               {genreVideos[genreCurrentIndex].map((v) => (
                 <VideoItem
