@@ -50,6 +50,8 @@ const MainPage = (): ReactElement => {
   );
   const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
   const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
+  const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(0);
+
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
   };
@@ -116,7 +118,16 @@ const MainPage = (): ReactElement => {
   }, genreChangeTerm);
 
   useEffect(() => {
-    setGenreChangeTerm(2000);
+    setGenreChangeOpacity(1);
+
+    setTimeout(() => {
+      setGenreChangeOpacity(0);
+    }, 5800);
+  }, [genreCurrentIndex]);
+
+  useEffect(() => {
+    setGenreChangeOpacity(1);
+    setGenreChangeTerm(6000);
     getAllVideo()
       .then((data) => {
         setAllVideo(data);
@@ -161,6 +172,8 @@ const MainPage = (): ReactElement => {
         });
     }
   }, []);
+
+  useEffect(() => {}, [genreCurrentIndex]);
 
   useEffect(() => {
     extractVideoId();
@@ -237,7 +250,11 @@ const MainPage = (): ReactElement => {
           <div
             className="main-page-video-container"
             onMouseEnter={() => setGenreChangeTerm(null)}
-            onMouseLeave={() => setGenreChangeTerm(2000)}
+            onMouseLeave={() => setGenreChangeTerm(6000)}
+            style={{
+              opacity: genreChangeOpacity,
+              transition: "opacity 0.2s ease-in-out",
+            }}
           >
             <div className="main-page-video-wrapper">
               {genreVideos[genreCurrentIndex].map((v) => (
@@ -252,7 +269,9 @@ const MainPage = (): ReactElement => {
                   style={
                     isMobile
                       ? { paddingTop: "14px", paddingBottom: "14px" }
-                      : { marginRight: "28px" }
+                      : {
+                          marginRight: "28px",
+                        }
                   }
                 />
               ))}
