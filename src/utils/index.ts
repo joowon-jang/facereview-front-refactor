@@ -1,4 +1,8 @@
-import { EmotionType } from "types/index";
+import {
+  EmotionType,
+  GraphDistributionDataType,
+  VideoDistributionDataType,
+} from "types/index";
 
 export const labelOfEmotion = {
   happy: "즐거운",
@@ -102,4 +106,31 @@ export const getTimeArrFromDuration = (duration: string) => {
   second = +temp.slice(0, -1);
 
   return [hour, minute, second];
+};
+
+export const getDistributionToGraphData = (dist: VideoDistributionDataType) => {
+  const res = [
+    {
+      id: "happy",
+      data: dist.happy,
+    },
+    {
+      id: "sad",
+      data: dist.sad,
+    },
+    {
+      id: "surprise",
+      data: dist.surprise,
+    },
+    {
+      id: "angry",
+      data: dist.angry,
+    },
+    {
+      id: "neutral",
+      data: dist.neutral,
+    },
+  ];
+
+  return res;
 };
