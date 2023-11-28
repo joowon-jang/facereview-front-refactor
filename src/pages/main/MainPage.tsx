@@ -205,7 +205,7 @@ const MainPage = (): ReactElement => {
             isMobile ? "title font-title-medium" : "title font-title-large"
           }
         >
-          S3 bucket facereview.net/장르별 추천{` `}
+          S3 bucket www.facereview.net/장르별 추천{` `}
           {isMobile && <br />}
           영상을 골라봤어요.
         </h2>
