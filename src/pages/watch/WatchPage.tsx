@@ -647,6 +647,7 @@ const WatchPage = (): ReactElement => {
               <div className="graph-detail-container">
                 {emotionByEmotionText.map((e) => (
                   <GraphDetailDataItem
+                    key={uuidv4()}
                     graphData={myGraphData}
                     emotion={e.emotion}
                     emotionText={e.emotionText}
@@ -705,6 +706,7 @@ const WatchPage = (): ReactElement => {
             <div className="graph-detail-container">
               {emotionByEmotionText.map((e) => (
                 <GraphDetailDataItem
+                  key={uuidv4()}
                   graphData={othersGraphData}
                   emotion={e.emotion}
                   emotionText={e.emotionText}
@@ -833,6 +835,7 @@ const WatchPage = (): ReactElement => {
               <div className="graph-detail-container">
                 {emotionByEmotionText.map((e) => (
                   <GraphDetailDataItem
+                    key={uuidv4()}
                     graphData={myGraphData}
                     emotion={e.emotion}
                     emotionText={e.emotionText}
@@ -896,6 +899,7 @@ const WatchPage = (): ReactElement => {
               <div className="graph-detail-container">
                 {emotionByEmotionText.map((e) => (
                   <GraphDetailDataItem
+                    key={uuidv4()}
                     graphData={othersGraphData}
                     emotion={e.emotion}
                     emotionText={e.emotionText}
