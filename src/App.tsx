@@ -29,10 +29,6 @@ function App() {
     <div className="App">
       <Helmet>
         <title>FaceReview</title>
-        <meta
-          http-equiv="Content-Security-Policy"
-          content="upgrade-insecure-requests"
-        />
       </Helmet>
       <Router />
       <ToastContainer
