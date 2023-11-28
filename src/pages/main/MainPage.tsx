@@ -132,7 +132,6 @@ const MainPage = (): ReactElement => {
   );
 
   useEffect(() => {
-    setGenreChangeOpacity(1);
     setGenreChangeTerm(6000);
     getAllVideo()
       .then((data) => {
@@ -178,8 +177,6 @@ const MainPage = (): ReactElement => {
         });
     }
   }, []);
-
-  useEffect(() => {}, [genreCurrentIndex]);
 
   useEffect(() => {
     extractVideoId();
@@ -256,6 +253,7 @@ const MainPage = (): ReactElement => {
           <div
             className="main-page-video-container"
             onMouseEnter={() => {
+              clearInterval(setInterval(() => {}, 6000));
               setGenreChangeTerm(null);
               clearTimeout(timerId);
             }}
