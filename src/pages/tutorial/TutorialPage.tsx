@@ -51,7 +51,6 @@ const AuthPage = (): ReactElement => {
           {!isMobile && <StepIndicator step={currentStep} maxStep={3} />}
           <h6 className="step-title">{currentStep}</h6>
           <p className="tutorial-text font-title-large">
-            asd
             {TUTORIAL_TEXT[currentStep]}
           </p>
           {isMobile && (
