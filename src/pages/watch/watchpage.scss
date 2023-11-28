@@ -50,12 +50,12 @@
       }
 
       .right-side {
-        width: 200px;
+        width: 180px;
         display: flex;
+        justify-content: flex-end;
         flex-wrap: wrap;
         height: 32px;
         align-items: center;
-        margin-left: 20px;
 
         .video-hits-text {
           color: $gray-700;

@@ -385,6 +385,7 @@ const WatchPage = (): ReactElement => {
           console.log("0000000000addLike");
           console.log(err);
         });
+      return;
     }
     navigate("/auth/1");
   };
