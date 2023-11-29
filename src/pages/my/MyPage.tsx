@@ -269,7 +269,7 @@ const MyPage = () => {
           <div className="my-page-video-container">
             <div className="my-page-video-wrapper">
               {filteredRecentVideos.length > 0 ? (
-                filteredRecentVideos.map((v) => (
+                filteredRecentVideos.map((v, idx) => (
                   <div className="recent-video-item">
                     <VideoItem
                       type="big-emoji"
@@ -284,10 +284,11 @@ const MyPage = () => {
                           ? { paddingTop: "14px", paddingBottom: "14px" }
                           : { marginRight: "60px" }
                       }
+                      hoverToPlay={true}
                     />
                     <div className="video-graph-container">
                       <ResponsiveLine
-                        data={videoGraphData}
+                        data={v.distribution_data.graph_data}
                         colors={[
                           "#393946",
                           "#FF4D8D",
