@@ -232,6 +232,7 @@ const MainPage = (): ReactElement => {
                           }
                         : { marginRight: "28px" }
                     }
+                    hoverToPlay={true}
                   />
                 ))}
               </div>
