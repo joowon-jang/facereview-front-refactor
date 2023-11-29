@@ -30,8 +30,8 @@ export const getFearVideo = (props: { user_categorization: string }) =>
   getVideoList("fear", props);
 export const getInformationVideo = (props: { user_categorization: string }) =>
   getVideoList("information", props);
-export const getVarietyVideo = (props: { user_categorization: string }) =>
-  getVideoList("varietyshow", props);
+export const getShowVideo = (props: { user_categorization: string }) =>
+  getVideoList("show", props);
 export const getCookVideo = (props: { user_categorization: string }) =>
   getVideoList("cook", props);
 export const getTravelVideo = (props: { user_categorization: string }) =>

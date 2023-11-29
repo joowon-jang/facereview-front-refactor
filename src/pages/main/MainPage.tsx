@@ -13,7 +13,7 @@ import {
   getPersonalRecommendedVideo,
   getSportsVideo,
   getTravelVideo,
-  getVarietyVideo,
+  getShowVideo,
 } from "api/youtube";
 import { EmotionType, VideoDataType } from "types";
 
@@ -152,7 +152,7 @@ const MainPage = (): ReactElement => {
       getGameVideo({ user_categorization: userCategorization }),
       getFearVideo({ user_categorization: userCategorization }),
       getInformationVideo({ user_categorization: userCategorization }),
-      getVarietyVideo({ user_categorization: userCategorization }),
+      getShowVideo({ user_categorization: userCategorization }),
       getCookVideo({ user_categorization: userCategorization }),
       getTravelVideo({ user_categorization: userCategorization }),
       getEatingVideo({ user_categorization: userCategorization }),
@@ -161,6 +161,7 @@ const MainPage = (): ReactElement => {
 
     Promise.all(videoRequests)
       .then((dataArray) => {
+        console.log(dataArray);
         const updatedGenreVideo = dataArray.map((data) => data);
         setGenreVideos(updatedGenreVideo);
       })
