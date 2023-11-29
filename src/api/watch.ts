@@ -106,3 +106,30 @@ export const checkLike = async (props: { youtube_url: string }) => {
     throw error;
   }
 };
+
+export const modifyComment = async (props: {
+  comment_index: number;
+  new_comment_contents: string;
+}) => {
+  try {
+    const url = "/watch/modify-comment";
+    const { data } = await api.post(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const deleteComment = async (props: { comment_index: number }) => {
+  try {
+    const url = "/watch/delete-comment";
+    const { data } = await api.post(url, props);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

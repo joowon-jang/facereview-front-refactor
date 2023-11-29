@@ -14,6 +14,15 @@
     width: 20px;
     height: 20px;
   }
+  &.more {
+    border-radius: 100%;
+    width: 24px;
+    height: 24px;
+
+    &:hover {
+      background: $system-dim-white;
+    }
+  }
 }
 
 .some-icon-image {
@@ -28,5 +37,9 @@
   &.close {
     width: 20px;
     height: 20px;
+  }
+  &.more {
+    width: 24px;
+    height: 24px;
   }
 }
