@@ -4,7 +4,7 @@
   background: $bg;
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 998;
 
   @include mobile {
@@ -12,6 +12,8 @@
   }
   @include desktop {
     height: 92px;
+    margin-left: calc(600px - 50vw);
+    padding-left: calc(50vw - 600px);
   }
 }
 
