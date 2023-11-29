@@ -289,6 +289,7 @@ const WatchPage = (): ReactElement => {
   };
 
   useLayoutEffect(() => {
+    window.scrollTo(0, 0);
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
         console.log(res);
