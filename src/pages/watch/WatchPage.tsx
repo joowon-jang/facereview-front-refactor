@@ -689,7 +689,8 @@ const WatchPage = (): ReactElement => {
           <div className="" style={{ width: "852px", height: "300px" }}>
             <ResponsiveLine
               data={videoGraphData}
-              margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+              margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
               xScale={{ type: "point" }}
               yScale={{
                 type: "linear",
