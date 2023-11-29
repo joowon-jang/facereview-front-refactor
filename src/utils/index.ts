@@ -1,8 +1,4 @@
-import {
-  EmotionType,
-  GraphDistributionDataType,
-  VideoDistributionDataType,
-} from "types/index";
+import { EmotionType, VideoDistributionDataType } from "types/index";
 
 export const labelOfEmotion = {
   happy: "즐거운",
