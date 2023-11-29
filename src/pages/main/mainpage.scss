@@ -18,23 +18,36 @@
   .subtitle {
     color: $gray-400;
     margin-top: 12px;
-    margin-bottom: 48px;
+
+    @include mobile {
+      margin-bottom: 40px;
+    }
+    @include desktop {
+      margin-bottom: 48px;
+    }
   }
 
   .personal-recommend-contents-container {
-    @include desktop {
-      width: calc(50vw + 600px);
-    }
     @include mobile {
       width: 100%;
+      margin-bottom: 100px;
     }
-    margin-bottom: 100px;
+    @include desktop {
+      width: calc(50vw + 600px);
+      margin-bottom: 100px;
+    }
 
     .main-page-video-container {
-      height: 280px;
       display: flex;
       margin-left: -20px;
       overflow-x: auto;
+      overflow-y: hidden;
+
+      @include mobile {
+      }
+      @include desktop {
+        height: 282px;
+      }
     }
 
     .main-page-video-wrapper {
@@ -44,7 +57,6 @@
       padding-bottom: 20px;
 
       @include mobile {
-        flex-direction: column;
       }
       @include desktop {
         padding-right: calc(50vw - 660px);
@@ -60,19 +72,26 @@
   }
 
   .genre-contents-container {
-    @include desktop {
-      width: calc(50vw + 600px);
-    }
     @include mobile {
       width: 100%;
+      margin-bottom: 100px;
     }
-    margin-bottom: 100px;
+    @include desktop {
+      width: calc(50vw + 600px);
+      margin-bottom: 100px;
+    }
 
     .main-page-video-container {
-      height: 280px;
       display: flex;
       margin-left: -20px;
       overflow-x: auto;
+      overflow-y: hidden;
+
+      @include mobile {
+      }
+      @include desktop {
+        height: 282px;
+      }
     }
 
     .main-page-video-wrapper {
@@ -82,11 +101,9 @@
       padding-bottom: 20px;
 
       @include mobile {
-        flex-direction: column;
       }
       @include desktop {
         padding-right: calc(50vw - 660px);
-        height: 287px;
         padding-top: 16px;
       }
     }

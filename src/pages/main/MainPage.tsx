@@ -214,14 +214,18 @@ const MainPage = (): ReactElement => {
                   <VideoItem
                     type="small-emoji"
                     key={uuidv4()}
-                    width={isMobile ? window.innerWidth - 32 : 280}
+                    width={isMobile ? window.innerWidth - 48 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
                     videoMostEmotion={v.youtube_most_emotion}
                     videoMostEmotionPercentage={v.youtube_most_emotion_per}
                     style={
                       isMobile
-                        ? { paddingTop: "14px", paddingBottom: "14px" }
+                        ? {
+                            paddingTop: "14px",
+                            paddingBottom: "14px",
+                            marginRight: "16px",
+                          }
                         : { marginRight: "28px" }
                     }
                   />
@@ -270,14 +274,18 @@ const MainPage = (): ReactElement => {
                 <VideoItem
                   type="small-emoji"
                   key={uuidv4()}
-                  width={isMobile ? window.innerWidth - 32 : 280}
+                  width={isMobile ? window.innerWidth - 48 : 280}
                   videoId={v.youtube_url}
                   videoTitle={v.youtube_title}
                   videoMostEmotion={v.youtube_most_emotion}
                   videoMostEmotionPercentage={v.youtube_most_emotion_per}
                   style={
                     isMobile
-                      ? { paddingTop: "14px", paddingBottom: "14px" }
+                      ? {
+                          paddingTop: "14px",
+                          paddingBottom: "14px",
+                          marginRight: "16px",
+                        }
                       : {
                           marginRight: "28px",
                         }
