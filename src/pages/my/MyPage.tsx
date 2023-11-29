@@ -98,6 +98,7 @@ const MyPage = () => {
     if (is_sign_in) {
       getRecentVideo()
         .then((data) => {
+          console.log(data);
           setRecentVideo(data);
         })
         .catch((err) => console.log(err));
@@ -111,12 +112,10 @@ const MyPage = () => {
             { ...donutGraphData[4], value: res.neutral_per_avg },
           ];
           setDonutGraphData(newData);
-          console.log(res);
         })
         .catch((err) => console.log(err));
       getAllEmotionTimeData()
         .then((res) => {
-          console.log(res);
           setEmotionTimeData(res);
         })
         .catch((err) => console.log(err));
