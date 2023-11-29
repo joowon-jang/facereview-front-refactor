@@ -20,32 +20,34 @@ const Header = (): ReactElement => {
   }, [windowWidth]);
 
   return (
-    <div className="header">
-      <AnimatedLogo
-        animationType="infinite"
-        animatedWrapperWidth={isMobile ? 15 : 30}
-        gap={3}
-        style={isMobile ? { height: "18px" } : { height: "35px" }}
-      />
-      {is_sign_in ? (
-        <button
-          className="header-profile-icon-button"
-          onClick={() => {
-            navigate("/my");
-          }}
-        >
-          <ProfileIcon
-            type={isMobile ? "icon-small" : "icon-medium"}
-            color={mapNumberToEmotion(user_profile)}
-          />
-        </button>
-      ) : (
-        <Button
-          label="로그인"
-          type={isMobile ? "extra-small" : "small"}
-          onClick={() => navigate("/auth/1")}
-        ></Button>
-      )}
+    <div className="header-background">
+      <div className="header">
+        <AnimatedLogo
+          animationType="infinite"
+          animatedWrapperWidth={isMobile ? 15 : 30}
+          gap={3}
+          style={isMobile ? { height: "18px" } : { height: "35px" }}
+        />
+        {is_sign_in ? (
+          <button
+            className="header-profile-icon-button"
+            onClick={() => {
+              navigate("/my");
+            }}
+          >
+            <ProfileIcon
+              type={isMobile ? "icon-small" : "icon-medium"}
+              color={mapNumberToEmotion(user_profile)}
+            />
+          </button>
+        ) : (
+          <Button
+            label="로그인"
+            type={isMobile ? "extra-small" : "small"}
+            onClick={() => navigate("/auth/1")}
+          ></Button>
+        )}
+      </div>
     </div>
   );
 };

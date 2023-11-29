@@ -1,5 +1,20 @@
 @import "assets/css/index.scss";
 
+.header-background {
+  background: $bg;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 998;
+
+  @include mobile {
+    height: 44px;
+  }
+  @include desktop {
+    height: 92px;
+  }
+}
+
 .header {
   display: flex;
   background: $bg;
