@@ -52,6 +52,9 @@ const MainPage = (): ReactElement => {
   const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
   const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(0);
 
+  const getThumbnailUrl = (videoId: string) =>
+    `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
   };
@@ -155,9 +158,7 @@ const MainPage = (): ReactElement => {
 
     Promise.all(videoRequests)
       .then((dataArray) => {
-        const updatedGenreVideo = dataArray.map((data, index) => {
-          return data;
-        });
+        const updatedGenreVideo = dataArray.map((data) => data);
         setGenreVideos(updatedGenreVideo);
       })
       .catch((err) => {
@@ -401,7 +402,7 @@ const MainPage = (): ReactElement => {
               {isRegisterMatched ? (
                 <img
                   className="main-page-modal-thumbnail-registering"
-                  src={`http://img.youtube.com/vi/${registeringVideoId}/mqdefault.jpg`}
+                  src={getThumbnailUrl(registeringVideoId)}
                   alt=""
                 />
               ) : (
@@ -418,7 +419,7 @@ const MainPage = (): ReactElement => {
                 <img
                   key={uuidv4()}
                   className="main-page-modal-thumbnail-registered"
-                  src={`http://img.youtube.com/vi/${v}/mqdefault.jpg`}
+                  src={getThumbnailUrl(v)}
                   alt=""
                 />
               ))}
