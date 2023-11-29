@@ -441,7 +441,7 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
-            {allVideo.map((v) => (
+            {filteredVideos.map((v) => (
               <VideoItem
                 type="small-emoji"
                 key={uuidv4()}
