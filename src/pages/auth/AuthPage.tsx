@@ -93,7 +93,7 @@ const AuthPage = () => {
       if (email !== "" && emailAlertMessage === " ") {
         checkEmail({ email_id: email }).then((res) => {
           if (res.status !== 200) {
-            toast.info("등록되지 않았어요. 회원가입을 해주세요!", {
+            toast.info("회원가입을 도와드릴게요", {
               toastId: "need signUp",
             });
           }
@@ -136,7 +136,7 @@ const AuthPage = () => {
               }
             })
             .catch((err) => {
-              toast.error("로그인 실패!", { toastId: "signIn fail" });
+              toast.error("로그인 실패", { toastId: "signIn fail" });
             });
         }
         return;
@@ -155,7 +155,7 @@ const AuthPage = () => {
         user_favorite_genre_3: categories[2],
       }).then((res: any) => {
         if (res.status === 200) {
-          toast.success("가입이 완료되었어요", { toastId: "signUp complete" });
+          toast.success("가입되었어요", { toastId: "signUp complete" });
 
           navigate("/auth");
         }

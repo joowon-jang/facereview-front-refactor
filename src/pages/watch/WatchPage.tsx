@@ -216,14 +216,14 @@ const WatchPage = (): ReactElement => {
             setComment("");
           })
           .catch((err) => {
-            toast.error("댓글이 달리지 않았어요.", {
+            toast.error("댓글이 달리지 않았어요", {
               toastId: "error new comment",
             });
           });
       }
       return;
     }
-    toast.warn("로그인이 필요합니다.", { toastId: "need sign in" });
+    toast.warn("로그인이 필요합니다", { toastId: "need sign in" });
     navigation("/auth/1");
   };
 
