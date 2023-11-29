@@ -109,6 +109,62 @@ export const getTimeArrFromDuration = (duration: string) => {
 };
 
 export const getDistributionToGraphData = (dist: VideoDistributionDataType) => {
+  console.log("getDistributionToGraphData", dist);
+  let temp: { [key in EmotionType]: { x: string; y: number }[] } = {
+    happy: [],
+    sad: [],
+    surprise: [],
+    angry: [],
+    neutral: [],
+  };
+
+  for (let i = 1; i < dist.happy.length; i += 2) {
+    temp.happy.push({
+      x: dist.happy[i].x,
+      y: (dist.happy[i].y + dist.happy[i - 1].y) / 2,
+    });
+    temp.sad.push({
+      x: dist.sad[i].x,
+      y: (dist.sad[i].y + dist.sad[i - 1].y) / 2,
+    });
+    temp.surprise.push({
+      x: dist.surprise[i].x,
+      y: (dist.surprise[i].y + dist.surprise[i - 1].y) / 2,
+    });
+    temp.angry.push({
+      x: dist.angry[i].x,
+      y: (dist.angry[i].y + dist.angry[i - 1].y) / 2,
+    });
+    temp.neutral.push({
+      x: dist.neutral[i].x,
+      y: (dist.neutral[i].y + dist.neutral[i - 1].y) / 2,
+    });
+  }
+  console.log(temp);
+
+  // const res = [
+  //   {
+  //     id: "happy",
+  //     data: temp.happy,
+  //   },
+  //   {
+  //     id: "sad",
+  //     data: temp.sad,
+  //   },
+  //   {
+  //     id: "surprise",
+  //     data: temp.surprise,
+  //   },
+  //   {
+  //     id: "angry",
+  //     data: temp.angry,
+  //   },
+  //   {
+  //     id: "neutral",
+  //     data: temp.neutral,
+  //   },
+  // ];
+  // console.log(res);
   const res = [
     {
       id: "happy",
@@ -131,6 +187,7 @@ export const getDistributionToGraphData = (dist: VideoDistributionDataType) => {
       data: dist.neutral,
     },
   ];
+  console.log(res);
 
   return res;
 };
