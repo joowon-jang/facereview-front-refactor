@@ -686,7 +686,7 @@ const WatchPage = (): ReactElement => {
               />
             </div>
           </div>
-          <div className="" style={{ width: "852px", height: "300px" }}>
+          <div className="" style={{ width: "852px", height: "32px" }}>
             <ResponsiveLine
               data={videoGraphData}
               colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
@@ -702,6 +702,8 @@ const WatchPage = (): ReactElement => {
               yFormat=" >-.2f"
               axisTop={null}
               axisRight={null}
+              enableGridX={false}
+              enableGridY={false}
               axisBottom={{
                 tickSize: 5,
                 tickPadding: 5,
@@ -718,9 +720,9 @@ const WatchPage = (): ReactElement => {
                 legendOffset: -40,
                 legendPosition: "middle",
               }}
-              pointSize={10}
+              pointSize={0}
               pointColor={{ theme: "background" }}
-              pointBorderWidth={2}
+              pointBorderWidth={0}
               pointBorderColor={{ from: "serieColor" }}
               pointLabelYOffset={-12}
               useMesh={true}
