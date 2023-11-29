@@ -5,21 +5,22 @@
   flex-wrap: wrap;
 
   .category-item {
-    background: transparent;
+    background: $gray-50;
     color: $gray-900;
-    padding: 4px;
-    margin: 0px 8px 8px 0px;
-    border: 1px solid $primary-basic;
-    border-radius: 2px;
+    padding: 8px 16px 8px 16px;
+    margin-right: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: ease all 0.2s;
 
     &:hover {
-      color: $gray-100;
-      background: $primary-basic;
+      color: $gray-900;
+      background: $primary-02;
     }
 
     &.selected {
-      color: $gray-100;
+      color: $gray-50;
       background: $primary-basic;
     }
   }
