@@ -49,6 +49,10 @@ export type VideoWatchedType = {
   youtube_url: string;
   most_emotion: EmotionType;
   most_emotion_per: number;
+  distribution_data: any;
+  // distribution_data: {
+  //   graph_data: { id: EmotionType; data: { x: number; y: number }[] }[];
+  // };
 };
 export type VideoDistributionDataType = {
   [key in EmotionType]: { x: string; y: number }[];

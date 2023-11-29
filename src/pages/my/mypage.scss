@@ -147,6 +147,17 @@
         padding-top: 16px;
       }
 
+      .recent-video-item {
+        .video-graph-container {
+          width: 360px;
+          height: 100px;
+          padding: 4px;
+          background: $gray-200;
+          border-radius: 8px;
+          margin-top: 8px;
+        }
+      }
+
       .my-page-video-empty {
         display: flex;
         flex-direction: column;
