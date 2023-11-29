@@ -130,7 +130,7 @@ const MainPage = (): ReactElement => {
                 !currentVideoData.youtube_url ||
                 !currentVideoCategoryList.length
               }
-              style={{ marginTop: "40px" }}
+              style={{ marginTop: "24px" }}
             />
           </div>
         </div>
