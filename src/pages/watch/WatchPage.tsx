@@ -117,7 +117,7 @@ const WatchPage = (): ReactElement => {
       angry: 0,
       angryColor: "#FF6B4B",
       neutral: 100,
-      neutralColor: "#393946",
+      neutralColor: "#5d5d6d",
     },
   ]);
   const [othersGraphData, setOthersGraphData] = useState([
@@ -131,7 +131,7 @@ const WatchPage = (): ReactElement => {
       angry: 0,
       angryColor: "#FF6B4B",
       neutral: 100,
-      neutralColor: "#393946",
+      neutralColor: "#5d5d6d",
     },
   ]);
   const [videoGraphData, setVideoGraphData] = useState([
@@ -570,7 +570,7 @@ const WatchPage = (): ReactElement => {
               layout="horizontal"
               valueScale={{ type: "linear" }}
               indexScale={{ type: "band", round: true }}
-              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#5d5d6d"]}
               borderColor={{
                 from: "color",
                 modifiers: [["darker", 1.6]],
@@ -626,7 +626,7 @@ const WatchPage = (): ReactElement => {
               layout="horizontal"
               valueScale={{ type: "linear" }}
               indexScale={{ type: "band", round: true }}
-              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#5d5d6d"]}
               borderColor={{
                 from: "color",
                 modifiers: [["darker", 1.6]],
@@ -704,7 +704,7 @@ const WatchPage = (): ReactElement => {
             <div className="video-graph-container">
               <ResponsiveLine
                 data={videoGraphData}
-                colors={["#393946", "#FF4D8D", "#479CFF", "#92C624", "#FF6B4B"]}
+                colors={["#5d5d6d", "#FF4D8D", "#479CFF", "#92C624", "#FF6B4B"]}
                 margin={{ top: 2, right: 0, bottom: 2, left: 0 }}
                 xScale={{ type: "point" }}
                 yScale={{
@@ -883,7 +883,7 @@ const WatchPage = (): ReactElement => {
                     "#479CFF",
                     "#92C624",
                     "#FF6B4B",
-                    "#393946",
+                    "#5d5d6d",
                   ]}
                   borderColor={{
                     from: "color",
@@ -947,7 +947,7 @@ const WatchPage = (): ReactElement => {
                     "#479CFF",
                     "#92C624",
                     "#FF6B4B",
-                    "#393946",
+                    "#5d5d6d",
                   ]}
                   borderColor={{
                     from: "color",
