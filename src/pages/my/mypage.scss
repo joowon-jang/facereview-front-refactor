@@ -147,6 +147,13 @@
         padding-top: 16px;
       }
 
+      .recent-video-item {
+        .video-graph-container {
+          width: 360px;
+          height: 50px;
+        }
+      }
+
       .my-page-video-empty {
         display: flex;
         flex-direction: column;

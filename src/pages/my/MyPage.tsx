@@ -22,6 +22,7 @@ import {
 import { EmotionType, VideoWatchedType } from "types/index";
 import { mapNumberToEmotion } from "utils/index";
 import useWindowSize from "utils/useWindowSize";
+import { ResponsiveLine } from "@nivo/line";
 
 const MyPage = () => {
   const { is_sign_in, user_name, user_profile } = useAuthStorage();
@@ -36,6 +37,43 @@ const MyPage = () => {
   const [emotionTimeData, setEmotionTimeData] = useState<{
     [key in EmotionType]: number;
   }>({ happy: 0, sad: 0, surprise: 0, angry: 0, neutral: 0 });
+  const [videoGraphData, setVideoGraphData] = useState([
+    {
+      id: "neutral",
+      data: [
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
+      ],
+    },
+    {
+      id: "happy",
+      data: [
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
+      ],
+    },
+    {
+      id: "sad",
+      data: [
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
+      ],
+    },
+    {
+      id: "surprise",
+      data: [
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
+      ],
+    },
+    {
+      id: "angry",
+      data: [
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
+      ],
+    },
+  ]);
   const [donutGraphData, setDonutGraphData] = useState<
     {
       id: string;
@@ -232,20 +270,96 @@ const MyPage = () => {
             <div className="my-page-video-wrapper">
               {filteredRecentVideos.length > 0 ? (
                 filteredRecentVideos.map((v) => (
-                  <VideoItem
-                    type="big-emoji"
-                    key={`videoItem${v.youtube_url}${v.most_emotion_per}`}
-                    width={isMobile ? window.innerWidth - 32 : 360}
-                    videoId={v.youtube_url}
-                    videoTitle={v.youtube_title}
-                    videoMostEmotion={v.most_emotion}
-                    videoMostEmotionPercentage={v.most_emotion_per}
-                    style={
-                      isMobile
-                        ? { paddingTop: "14px", paddingBottom: "14px" }
-                        : { marginRight: "60px" }
-                    }
-                  />
+                  <div className="recent-video-item">
+                    <VideoItem
+                      type="big-emoji"
+                      key={`videoItem${v.youtube_url}${v.most_emotion_per}`}
+                      width={isMobile ? window.innerWidth - 32 : 360}
+                      videoId={v.youtube_url}
+                      videoTitle={v.youtube_title}
+                      videoMostEmotion={v.most_emotion}
+                      videoMostEmotionPercentage={v.most_emotion_per}
+                      style={
+                        isMobile
+                          ? { paddingTop: "14px", paddingBottom: "14px" }
+                          : { marginRight: "60px" }
+                      }
+                    />
+                    <div className="video-graph-container">
+                      <ResponsiveLine
+                        data={videoGraphData}
+                        colors={[
+                          "#393946",
+                          "#FF4D8D",
+                          "#479CFF",
+                          "#92C624",
+                          "#FF6B4B",
+                        ]}
+                        margin={{ top: 2, right: 0, bottom: 2, left: 0 }}
+                        xScale={{ type: "point" }}
+                        yScale={{
+                          type: "linear",
+                          min: 0,
+                          max: 100,
+                          reverse: false,
+                        }}
+                        curve={"natural"}
+                        yFormat=" >-.2f"
+                        axisTop={null}
+                        axisRight={null}
+                        enableGridX={false}
+                        enableGridY={false}
+                        axisBottom={{
+                          tickSize: 5,
+                          tickPadding: 5,
+                          tickRotation: 0,
+                          legend: "transportation",
+                          legendOffset: 36,
+                          legendPosition: "middle",
+                        }}
+                        axisLeft={{
+                          tickSize: 5,
+                          tickPadding: 5,
+                          tickRotation: 0,
+                          legend: "count",
+                          legendOffset: -40,
+                          legendPosition: "middle",
+                        }}
+                        pointSize={0}
+                        pointColor={{ theme: "background" }}
+                        pointBorderWidth={0}
+                        pointBorderColor={{ from: "serieColor" }}
+                        pointLabelYOffset={-12}
+                        useMesh={true}
+                        legends={[
+                          {
+                            anchor: "bottom-right",
+                            direction: "column",
+                            justify: false,
+                            translateX: 100,
+                            translateY: 0,
+                            itemsSpacing: 0,
+                            itemDirection: "left-to-right",
+                            itemWidth: 80,
+                            itemHeight: 20,
+                            itemOpacity: 0.75,
+                            symbolSize: 12,
+                            symbolShape: "circle",
+                            symbolBorderColor: "rgba(0, 0, 0, .5)",
+                            effects: [
+                              {
+                                on: "hover",
+                                style: {
+                                  itemBackground: "rgba(0, 0, 0, .03)",
+                                  itemOpacity: 1,
+                                },
+                              },
+                            ],
+                          },
+                        ]}
+                      />
+                    </div>
+                  </div>
                 ))
               ) : (
                 <div className="my-page-video-empty">
