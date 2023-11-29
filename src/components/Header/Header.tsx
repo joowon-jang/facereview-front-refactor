@@ -1,6 +1,6 @@
 import Button from "components/Button/Button";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStorage } from "store/authStore";
 import AnimatedLogo from "../AnimatedLogo/AnimatedLogo";
@@ -9,10 +9,15 @@ import { mapNumberToEmotion } from "utils/index";
 import useWindowSize from "utils/useWindowSize";
 
 const Header = (): ReactElement => {
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const navigate = useNavigate();
   const { is_sign_in } = useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
+
+  useEffect(() => {
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
   return (
     <div className="header">

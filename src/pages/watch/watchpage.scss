@@ -59,6 +59,11 @@
         color: $gray-900;
         word-break: keep-all;
         @include mobile {
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: calc(100vw - 112px);
+          height: 24px;
+          text-overflow: ellipsis;
         }
         @include desktop {
           margin-bottom: 60px;
@@ -94,7 +99,7 @@
     }
 
     @include mobile {
-      .watch-page-test {
+      .video-fixed-container {
         position: fixed;
         background: $bg;
         width: 100vw;
@@ -104,10 +109,16 @@
       }
 
       .watch-page-cam-container {
-        margin-top: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: calc(100vw * (9 / 16) + 60px);
+        padding-top: 32px;
+        padding-bottom: 32px;
 
         .emotion-container {
           display: flex;
+          width: 100%;
           flex-direction: column;
           margin-bottom: 48px;
 

@@ -29,7 +29,8 @@ import { getTimeToString } from "utils/index";
 import useWindowSize from "utils/useWindowSize";
 
 const MainPage = (): ReactElement => {
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
   const [selectedEmotion, setSelectedEmotion] = useState("all");
@@ -183,6 +184,10 @@ const MainPage = (): ReactElement => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
   useEffect(() => {
     extractVideoId();

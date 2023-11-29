@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./tutorialpage.scss";
 import StepIndicator from "components/StepIndicator/StepIndicator";
@@ -15,7 +15,8 @@ const TUTORIAL_TEXT = [
 ];
 
 const AuthPage = (): ReactElement => {
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const { step } = useParams();
   const navigate = useNavigate();
 
@@ -39,6 +40,10 @@ const AuthPage = (): ReactElement => {
     }
     handleSkipClick();
   };
+
+  useEffect(() => {
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
   return (
     <div className="tutorial-container">

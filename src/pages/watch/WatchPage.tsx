@@ -51,7 +51,8 @@ import useWindowSize from "utils/useWindowSize";
 
 const WatchPage = (): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const { id } = useParams();
   const navigate = useNavigate();
   const opts: Options = isMobile
@@ -91,10 +92,15 @@ const WatchPage = (): ReactElement => {
   const navigation = useNavigate();
 
   const webcamRef = useRef<Webcam>(null);
-  const webcamOptions = {
-    width: 320,
-    height: 180,
-  };
+  const webcamOptions = isMobile
+    ? {
+        width: window.innerWidth - 32,
+        height: (window.innerWidth - 32) * (9 / 16),
+      }
+    : {
+        width: 320,
+        height: 180,
+      };
 
   const [myGraphData, setMyGraphData] = useState([
     {
@@ -171,6 +177,7 @@ const WatchPage = (): ReactElement => {
   const [relatedVideoList, setRelatedVideoList] = useState<VideoRelatedType[]>(
     []
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
@@ -228,7 +235,6 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     document.body.style.overflow = "hidden";
     setIsModalOpen(true);
@@ -305,113 +311,117 @@ const WatchPage = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    socket.connect();
-    addHits({
-      youtube_url: id || "",
-      user_categorization: is_sign_in ? "user" : "non-user",
-    })
-      .then((res) => {})
-      .catch((err) => console.log(err));
-    getRelatedVideo({ youtube_url: id || "" })
-      .then((res) => {
-        setRelatedVideoList(res);
-      })
-      .catch((err) => {});
-    getVideoComments({ youtube_url: id || "" })
-      .then((res) => {
-        setCommentList(res);
-      })
-      .catch((err) => {});
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
-    getMainDistributionData({ youtube_url: id || "" })
-      .then((res) => {
-        console.log(res);
-        setVideoGraphData(getDistributionToGraphData(res));
-      })
-      .catch((err) => console.log(err));
-    checkLike({ youtube_url: id || "" })
-      .then((res) => {
-        console.log("checklike", res);
-        setIsLikeVideo(!!res.like_flag);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return () => {
-      socket.disconnect();
-    };
-  }, [id, is_sign_in]);
+  // useEffect(() => {
+  //   socket.connect();
+  //   addHits({
+  //     youtube_url: id || "",
+  //     user_categorization: is_sign_in ? "user" : "non-user",
+  //   })
+  //     .then((res) => {})
+  //     .catch((err) => console.log(err));
+  //   getRelatedVideo({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       setRelatedVideoList(res);
+  //     })
+  //     .catch((err) => {});
+  //   getVideoComments({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       setCommentList(res);
+  //     })
+  //     .catch((err) => {});
 
-  useEffect(() => {
-    const captureInterval = setInterval(() => {
-      capture();
-    }, 200);
+  //   getMainDistributionData({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       console.log(res);
+  //       setVideoGraphData(getDistributionToGraphData(res));
+  //     })
+  //     .catch((err) => console.log(err));
+  //   checkLike({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       console.log("checklike", res);
+  //       setIsLikeVideo(!!res.like_flag);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [id, is_sign_in]);
 
-    const frameDataInterval = setInterval(async () => {
-      const capturedImage = await capture();
-      const currentTime = await video?.getCurrentTime();
-      const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
+  // useEffect(() => {
+  //   const captureInterval = setInterval(() => {
+  //     capture();
+  //   }, 200);
 
-      socket.emit(
-        "client_message",
-        {
-          cur_access_token: access_token,
-          youtube_running_time: formattedCurrentTime,
-          string_frame_data: capturedImage,
-          youtube_index: videoData?.youtube_index,
-        },
-        (response: {
-          happy: number;
-          sad: number;
-          surprise: number;
-          angry: number;
-          neutral: number;
-          most_emotion: EmotionType;
-          youtube_emotion_data: EmotionType;
-          youtube_emotion_neutral_per: number;
-          youtube_emotion_angry_per: number;
-          youtube_emotion_happy_per: number;
-          youtube_emotion_surprise_per: number;
-          youtube_emotion_sad_per: number;
-        }) => {
-          setCurrentMyEmotion(response.most_emotion);
-          setMyGraphData([
-            {
-              ...myGraphData[0],
-              happy: response.happy,
-              sad: response.sad,
-              surprise: response.surprise,
-              angry: response.angry,
-              neutral: response.neutral,
-            },
-          ]);
-          setCurrentOthersEmotion(response.youtube_emotion_data);
-          setOthersGraphData([
-            {
-              ...othersGraphData[0],
-              happy: response.youtube_emotion_happy_per,
-              sad: response.youtube_emotion_sad_per,
-              surprise: response.youtube_emotion_surprise_per,
-              angry: response.youtube_emotion_angry_per,
-              neutral: response.youtube_emotion_neutral_per,
-            },
-          ]);
-        }
-      );
-    }, 1000);
+  //   const frameDataInterval = setInterval(async () => {
+  //     const capturedImage = await capture();
+  //     const currentTime = await video?.getCurrentTime();
+  //     const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
 
-    return () => {
-      clearInterval(frameDataInterval);
-      clearInterval(captureInterval);
-    };
-  }, [
-    access_token,
-    capture,
-    myGraphData,
-    othersGraphData,
-    video,
-    videoData?.youtube_index,
-  ]);
+  //     socket.emit(
+  //       "client_message",
+  //       {
+  //         cur_access_token: access_token,
+  //         youtube_running_time: formattedCurrentTime,
+  //         string_frame_data: capturedImage,
+  //         youtube_index: videoData?.youtube_index,
+  //       },
+  //       (response: {
+  //         happy: number;
+  //         sad: number;
+  //         surprise: number;
+  //         angry: number;
+  //         neutral: number;
+  //         most_emotion: EmotionType;
+  //         youtube_emotion_data: EmotionType;
+  //         youtube_emotion_neutral_per: number;
+  //         youtube_emotion_angry_per: number;
+  //         youtube_emotion_happy_per: number;
+  //         youtube_emotion_surprise_per: number;
+  //         youtube_emotion_sad_per: number;
+  //       }) => {
+  //         setCurrentMyEmotion(response.most_emotion);
+  //         setMyGraphData([
+  //           {
+  //             ...myGraphData[0],
+  //             happy: response.happy,
+  //             sad: response.sad,
+  //             surprise: response.surprise,
+  //             angry: response.angry,
+  //             neutral: response.neutral,
+  //           },
+  //         ]);
+  //         setCurrentOthersEmotion(response.youtube_emotion_data);
+  //         setOthersGraphData([
+  //           {
+  //             ...othersGraphData[0],
+  //             happy: response.youtube_emotion_happy_per,
+  //             sad: response.youtube_emotion_sad_per,
+  //             surprise: response.youtube_emotion_surprise_per,
+  //             angry: response.youtube_emotion_angry_per,
+  //             neutral: response.youtube_emotion_neutral_per,
+  //           },
+  //         ]);
+  //       }
+  //     );
+  //   }, 1000);
+
+  //   return () => {
+  //     clearInterval(frameDataInterval);
+  //     clearInterval(captureInterval);
+  //   };
+  // }, [
+  //   access_token,
+  //   capture,
+  //   myGraphData,
+  //   othersGraphData,
+  //   video,
+  //   videoData?.youtube_index,
+  // ]);
 
   const GraphDetailDataItem = ({
     graphData,
@@ -617,7 +627,7 @@ const WatchPage = (): ReactElement => {
         </div>
       </ModalDialog>
       <div className="main-container">
-        <div className="watch-page-test">
+        <div className="video-fixed-container">
           <div className="video-container">
             <YouTube
               videoId={id}
@@ -686,7 +696,7 @@ const WatchPage = (): ReactElement => {
               />
             </div>
           </div>
-          <div className="" style={{ width: "852px", height: "300px" }}>
+          {/* <div className="" style={{ width: "852px", height: "300px" }}>
             <ResponsiveLine
               data={videoGraphData}
               colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
@@ -751,7 +761,7 @@ const WatchPage = (): ReactElement => {
                 },
               ]}
             />
-          </div>
+          </div> */}
           <div className="video-information-container">
             <div
               className={

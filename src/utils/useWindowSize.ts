@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 const useWindowSize = () => {
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1200);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1200);
+      setWindowWidth(window.innerWidth);
     };
     window.addEventListener("resize", handleResize);
     return () => {
@@ -13,7 +13,7 @@ const useWindowSize = () => {
     };
   }, []);
 
-  return isMobile;
+  return windowWidth;
 };
 
 export default useWindowSize;

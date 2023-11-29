@@ -14,7 +14,8 @@ import CategoryList from "components/CategoryList/CategoryList";
 import useWindowSize from "utils/useWindowSize";
 
 const EditPage = () => {
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const { user_name, setUserName, setUserProfile, user_favorite_genres } =
     useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
@@ -100,6 +101,9 @@ const EditPage = () => {
   useEffect(() => {
     setProfileColor(selectedColor);
   }, [selectedColor]);
+  useEffect(() => {
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
   return (
     <>
