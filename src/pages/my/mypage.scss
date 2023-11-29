@@ -7,11 +7,11 @@
 
   @include mobile {
     width: 100vw;
-    padding-top: 17px;
+    padding-top: 61px;
     padding-left: 16px;
   }
   @include desktop {
-    padding-top: 48px;
+    padding-top: 126px;
     width: calc(50vw + 600px);
   }
 

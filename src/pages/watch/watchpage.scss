@@ -2,13 +2,16 @@
 
 .watch-page-container {
   display: flex;
-  padding-top: 48px;
   padding-bottom: 98px;
 
   @include mobile {
     flex-direction: column;
     margin-left: 16px;
     margin-right: 16px;
+    padding-top: 92px;
+  }
+  @include desktop {
+    padding-top: 126px;
   }
 
   .main-container {
