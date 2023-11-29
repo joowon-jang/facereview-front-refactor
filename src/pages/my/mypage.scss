@@ -3,7 +3,7 @@
 .my-page-container {
   display: flex;
   flex-direction: column;
-  padding-bottom: 98px;
+  padding-bottom: 148px;
 
   @include mobile {
     width: 100vw;
@@ -152,7 +152,7 @@
           width: 360px;
           height: 100px;
           padding: 4px;
-          background: $gray-200;
+          background: $gray-100;
           border-radius: 8px;
           margin-top: 8px;
         }
@@ -203,27 +203,73 @@
 
   .my-page-emotion-graph-container {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
-    justify-content: center;
+
     margin-top: 28px;
 
     .pie-graph-container {
-      width: 100%;
+      width: 320px;
+      height: 320px;
+
+      .pie-legend-container {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        padding-left: 20px;
+
+
+        .legend-item-wrapper {
+          display: flex;
+          align-items: center;
+          margin-right: 20px;
+
+          .legend-item-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 100%;
+            margin-right: 8px;
+
+            &.happy {
+              background: $category-joyful-basic;
+            }
+
+            &.sad {
+              background: $category-sad-basic;
+            }
+
+            &.surprise {
+              background: $category-surprised-basic;
+            }
+
+            &.angry {
+              background: $category-angry-basic;
+            }
+
+            &.neutral {
+              background: $category-neutral-basic;
+            }
+          }
+        }
+      }
     }
 
     .emotion-time-container {
-      width: 100%;
       display: flex;
-      align-items: center;
+      margin-left: 80px;
+
 
       .emotion-time-title {
         color: $gray-900;
-        margin-right: 12px;
+        margin-right: 60px;
       }
 
       .emotion-time-text {
-        text-align: right;
+        font-size: 24px;
+        line-height: 32px;
+        font-weight: 700;
         color: $gray-900;
+        margin-bottom: 28px;
 
         .happy {
           color: $category-joyful-basic;
@@ -239,6 +285,11 @@
 
         .surprise {
           color: $category-surprised-basic;
+        }
+
+        .neutral {
+          color: $category-neutral-basic;
+
         }
       }
     }
