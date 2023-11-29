@@ -101,3 +101,11 @@ export type RegisterVideoDataType = {
   youtube_length_second: number;
   youtube_category: string;
 };
+
+export type DonutGraphDataType = {
+  angry_per_avg: number;
+  happy_per_avg: number;
+  sad_per_avg: number;
+  surprise_per_avg: number;
+  neutral_per_avg: number;
+};
