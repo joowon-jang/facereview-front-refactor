@@ -67,7 +67,9 @@ const MyPage = () => {
                 <div className="my-page-name-wrapper">
                   <h2
                     className={
-                      isMobile ? "font-title-medium" : "font-title-large"
+                      isMobile
+                        ? "my-page-username font-title-medium"
+                        : "my-page-username font-title-large"
                     }
                   >
                     {user_name}님
