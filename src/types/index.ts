@@ -64,6 +64,7 @@ export type CommentType = {
   modify_check: number;
   user_name: string;
   user_profile: number;
+  identify: number;
 };
 
 export type VideoRelatedType = {

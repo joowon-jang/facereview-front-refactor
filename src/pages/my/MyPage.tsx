@@ -26,7 +26,8 @@ import useWindowSize from "utils/useWindowSize";
 const MyPage = () => {
   const { is_sign_in, user_name, user_profile } = useAuthStorage();
 
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
 
   const navigate = useNavigate();
   const { setTempToken } = useAuthStorage();
@@ -121,6 +122,10 @@ const MyPage = () => {
         .catch((err) => console.log(err));
     }
   }, []);
+
+  useEffect(() => {
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
   return (
     <>

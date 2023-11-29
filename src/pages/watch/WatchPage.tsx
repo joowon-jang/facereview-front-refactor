@@ -32,8 +32,10 @@ import {
   addLike,
   cancelLike,
   checkLike,
+  deleteComment,
   getMainDistributionData,
   getVideoComments,
+  modifyComment,
   sendNewComment,
 } from "api/watch";
 import {
@@ -47,10 +49,14 @@ import safeImage from "assets/img/safeImage.png";
 import LikeButton from "components/LikeButton/LikeButton";
 import { ResponsiveLine } from "@nivo/line";
 import useWindowSize from "utils/useWindowSize";
+import SomeIcon from "components/SomeIcon/SomeIcon";
 
 const WatchPage = (): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
+  const [hoveredComment, setHoveredComment] = useState<number | null>(null);
+  const [isEditVisible, setIsEditVisible] = useState<number | null>(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const opts: Options = isMobile
@@ -90,10 +96,15 @@ const WatchPage = (): ReactElement => {
   const navigation = useNavigate();
 
   const webcamRef = useRef<Webcam>(null);
-  const webcamOptions = {
-    width: 320,
-    height: 180,
-  };
+  const webcamOptions = isMobile
+    ? {
+        width: window.innerWidth - 32,
+        height: (window.innerWidth - 32) * (9 / 16),
+      }
+    : {
+        width: 320,
+        height: 180,
+      };
 
   const [myGraphData, setMyGraphData] = useState([
     {
@@ -170,6 +181,7 @@ const WatchPage = (): ReactElement => {
   const [relatedVideoList, setRelatedVideoList] = useState<VideoRelatedType[]>(
     []
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
@@ -227,7 +239,6 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     document.body.style.overflow = "hidden";
     setIsModalOpen(true);
@@ -303,6 +314,10 @@ const WatchPage = (): ReactElement => {
       openModal();
     }
   }, []);
+
+  useEffect(() => {
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
   useEffect(() => {
     socket.connect();
@@ -445,23 +460,84 @@ const WatchPage = (): ReactElement => {
     comment_date,
     comment_contents,
     user_profile,
+    identify,
+    comment_index,
   }: CommentType): ReactElement => {
     return (
-      <div className="comment-item-container">
+      <div
+        className="comment-item-container"
+        onMouseEnter={() => {
+          if (identify === 1) {
+            setHoveredComment(comment_index);
+          }
+        }}
+        onMouseLeave={() => {
+          setHoveredComment(null);
+          setIsEditVisible(null);
+        }}
+      >
         <ProfileIcon
           type={"icon-small"}
           color={mapNumberToEmotion(user_profile)}
           style={{ marginRight: "12px" }}
         />
-        <div className="comment-text-wrapper">
-          <div className="comment-info-wrapper">
-            <div className="comment-nickname font-label-small">{user_name}</div>
-            <div className="comment-time-text font-label-small">
-              {comment_date}
+        <div className="comment-right-container">
+          <div className="comment-text-wrapper">
+            <div className="comment-info-wrapper">
+              <div className="comment-nickname font-label-small">
+                {user_name}
+              </div>
+              <div className="comment-time-text font-label-small">
+                {comment_date}
+              </div>
+            </div>
+            <div className="comment-text font-body-medium">
+              {comment_contents}
             </div>
           </div>
-          <div className="comment-text font-body-medium">
-            {comment_contents}
+
+          <div className="comment-icon-container">
+            {hoveredComment === comment_index && (
+              <SomeIcon
+                type={"more"}
+                onClick={() => setIsEditVisible(comment_index)}
+              />
+            )}
+            <div
+              className={`comment-edit-container ${
+                isEditVisible === comment_index && "visible"
+              }`}
+            >
+              <div
+                className="comment-modify-text"
+                onClick={() => {
+                  setIsEditVisible(null);
+                }}
+              >
+                <div className="comment-modify-dim"></div>
+                수정
+              </div>
+              <div
+                className="comment-delete-text"
+                onClick={() => {
+                  setIsEditVisible(null);
+                  deleteComment({ comment_index: comment_index })
+                    .then((res) => {
+                      console.log(res);
+                      const newCommentList = commentList.filter(
+                        (comment) => comment.comment_index !== comment_index
+                      );
+                      setCommentList(newCommentList);
+                    })
+                    .catch((error) => console.log(error));
+
+                  console.log(commentList);
+                }}
+              >
+                <div className="comment-delete-dim"></div>
+                삭제
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -617,7 +693,7 @@ const WatchPage = (): ReactElement => {
         </div>
       </ModalDialog>
       <div className="main-container">
-        <div className="watch-page-test">
+        <div className="video-fixed-container">
           <div className="video-container">
             <YouTube
               videoId={id}
@@ -694,6 +770,7 @@ const WatchPage = (): ReactElement => {
               />
             </div>
           </div>
+
           <div className="video-information-container">
             <div
               className={
@@ -762,6 +839,7 @@ const WatchPage = (): ReactElement => {
                   user_profile={comment.user_profile}
                   comment_index={comment.comment_index}
                   modify_check={comment.modify_check}
+                  identify={comment.identify}
                 />
               ))
             ) : (

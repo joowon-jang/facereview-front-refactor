@@ -24,7 +24,8 @@ const AlertMessages = {
 };
 const MAX_CATEGORY_LENGTH = 3;
 const AuthPage = () => {
-  const isMobile = useWindowSize();
+  const windowWidth = useWindowSize();
+  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
 
   const navigate = useNavigate();
   const { step } = useParams();
@@ -209,6 +210,10 @@ const AuthPage = () => {
     }
     setCategoryAlertMessage(AlertMessages.categoryInvalid);
   }, [categories]);
+
+  useEffect(() => {
+    setIsMobile(windowWidth < 1200);
+  }, [windowWidth]);
 
   return (
     <>
