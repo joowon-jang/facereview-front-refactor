@@ -16,8 +16,13 @@ import useWindowSize from "utils/useWindowSize";
 const EditPage = () => {
   const windowWidth = useWindowSize();
   const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
-  const { user_name, setUserName, setUserProfile, user_favorite_genres } =
-    useAuthStorage();
+  const {
+    user_name,
+    setUserName,
+    setUserProfile,
+    user_favorite_genres,
+    setUserFavoriteGenres,
+  } = useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
   const navigate = useNavigate();
   const [nickName, setNickName] = useState(user_name);
@@ -88,6 +93,7 @@ const EditPage = () => {
     })
       .then((res) => {
         if (res.status === 200) {
+          setUserFavoriteGenres({ user_favorite_genres: selectedCategories });
           toast.success("회원정보가 수정되었어요", {
             toastId: "success change info",
           });
