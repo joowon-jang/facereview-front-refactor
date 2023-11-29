@@ -9,12 +9,17 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import Devider from "components/Devider/Devider";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 
+import { ResponsivePie } from "@nivo/pie";
 import Etc from "assets/img/etc.png";
 import HeaderToken from "api/HeaderToken";
 import { useAuthStorage } from "store/authStore";
 import VideoItem from "components/VideoItem/VideoItem";
-import { getRecentVideo } from "api/youtube";
-import { VideoWatchedType } from "types/index";
+import {
+  getAllEmotionTimeData,
+  getDounutGraphData,
+  getRecentVideo,
+} from "api/youtube";
+import { DonutGraphDataType, VideoWatchedType } from "types/index";
 import { mapNumberToEmotion } from "utils/index";
 import useWindowSize from "utils/useWindowSize";
 
@@ -28,6 +33,45 @@ const MyPage = () => {
 
   const [selectedEmotion, setSelectedEmotion] = useState("all");
   const [recentVideo, setRecentVideo] = useState<VideoWatchedType[]>([]);
+  const [donutGraphData, setDonutGraphData] = useState<
+    {
+      id: string;
+      label: string;
+      value: number;
+      color: string;
+    }[]
+  >([
+    {
+      id: "😄",
+      label: "즐거운",
+      value: 366,
+      color: "#FF4D8D",
+    },
+    {
+      id: "😥",
+      label: "슬픈",
+      value: 280,
+      color: "#479CFF",
+    },
+    {
+      id: "😲",
+      label: "놀라운",
+      value: 379,
+      color: "#92C624",
+    },
+    {
+      id: "😠",
+      label: "화나는",
+      value: 474,
+      color: "#FF6B4B",
+    },
+    {
+      id: "😐",
+      label: "무표정",
+      value: 265,
+      color: "#393946",
+    },
+  ]);
 
   const filteredRecentVideos = recentVideo.filter(
     (v) => selectedEmotion === "all" || v.most_emotion === selectedEmotion
@@ -48,6 +92,24 @@ const MyPage = () => {
       getRecentVideo()
         .then((data) => {
           setRecentVideo(data);
+        })
+        .catch((err) => console.log(err));
+      getDounutGraphData()
+        .then((res) => {
+          const newData = [
+            { ...donutGraphData[0], value: res.happy_per_avg },
+            { ...donutGraphData[1], value: res.sad_per_avg },
+            { ...donutGraphData[2], value: res.surprise_per_avg },
+            { ...donutGraphData[3], value: res.angry_per_avg },
+            { ...donutGraphData[4], value: res.neutral_per_avg },
+          ];
+          setDonutGraphData(newData);
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+      getAllEmotionTimeData()
+        .then((res) => {
+          console.log(res);
         })
         .catch((err) => console.log(err));
     }
@@ -201,7 +263,47 @@ const MyPage = () => {
           <h2 className={isMobile ? "font-title-small" : "font-title-medium"}>
             최근 나의 감정 그래프
           </h2>
-          <div className="my-page-emotion-graph-container"></div>
+          <div className="my-page-emotion-graph-container">
+            <div className="pie-graph-container">
+              <ResponsivePie
+                colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+                data={donutGraphData}
+                margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                activeOuterRadiusOffset={8}
+                borderWidth={1}
+                borderColor={{
+                  from: "color",
+                  modifiers: [["darker", 0.2]],
+                }}
+                enableArcLinkLabels={false}
+                legends={[
+                  {
+                    anchor: "bottom",
+                    direction: "row",
+                    justify: false,
+                    translateX: 0,
+                    translateY: 56,
+                    itemsSpacing: 0,
+                    itemWidth: 100,
+                    itemHeight: 18,
+                    itemTextColor: "#000",
+                    itemDirection: "left-to-right",
+                    itemOpacity: 1,
+                    symbolSize: 18,
+                    symbolShape: "circle",
+                    effects: [
+                      {
+                        on: "hover",
+                        style: {
+                          itemTextColor: "#000",
+                        },
+                      },
+                    ],
+                  },
+                ]}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
