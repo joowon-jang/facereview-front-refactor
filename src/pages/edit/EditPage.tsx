@@ -56,7 +56,7 @@ const EditPage = () => {
         setLocalProfileColor(selectedColor);
         if (res.status === 200) {
           setUserProfile({ user_profile: mapEmotionToNumber(profileColor) });
-          toast.success("프로필사진이 변경되었어요.", {
+          toast.success("프로필사진이 변경되었어요", {
             toastId: "success change profile image",
           });
         }
@@ -88,7 +88,7 @@ const EditPage = () => {
     })
       .then((res) => {
         if (res.status === 200) {
-          toast.success("회원정보가 수정되었어요.", {
+          toast.success("회원정보가 수정되었어요", {
             toastId: "success change info",
           });
         }

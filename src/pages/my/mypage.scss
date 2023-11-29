@@ -10,6 +10,7 @@
     padding-top: 61px;
     padding-left: 16px;
   }
+
   @include desktop {
     padding-top: 126px;
     width: calc(50vw + 600px);
@@ -22,6 +23,7 @@
     @include mobile {
       width: calc(100vw - 32px);
     }
+
     @include desktop {
       width: 1200px;
       flex-direction: column;
@@ -33,6 +35,7 @@
       @include mobile {
         margin-bottom: 44px;
       }
+
       @include desktop {
         flex-direction: column;
         margin-bottom: 56px;
@@ -45,6 +48,7 @@
         @include mobile {
           margin-left: 12px;
         }
+
         @include desktop {
           margin-top: 20px;
         }
@@ -70,6 +74,7 @@
     @include mobile {
       margin-top: 40px;
     }
+
     @include desktop {
       margin-top: 56px;
     }
@@ -97,16 +102,21 @@
             padding-top: 24px;
             padding-bottom: 18px;
           }
+
           @include desktop {
             padding-top: 32px;
             padding-bottom: 16px;
           }
 
-          -ms-overflow-style: none; /* 인터넷 익스플로러 */
-          scrollbar-width: none; /* 파이어폭스 */
+          -ms-overflow-style: none;
+          /* 인터넷 익스플로러 */
+          scrollbar-width: none;
+          /* 파이어폭스 */
         }
+
         .chip-wrapper::-webkit-scrollbar {
-          display: none; /* 크롬, 사파리, 오페라, 엣지 */
+          display: none;
+          /* 크롬, 사파리, 오페라, 엣지 */
         }
       }
     }
@@ -117,8 +127,8 @@
       padding-bottom: 88px;
       padding-left: 20px;
 
-      @include mobile {
-      }
+      @include mobile {}
+
       @include desktop {
         height: 453px;
       }
@@ -130,6 +140,7 @@
       @include mobile {
         flex-direction: column;
       }
+
       @include desktop {
         height: 100%;
         padding-right: calc(50vw - 660px);
@@ -145,6 +156,7 @@
         @include mobile {
           width: calc(100vw - 16px);
         }
+
         @include desktop {
           width: 1200px;
         }
@@ -156,6 +168,7 @@
             margin-top: 20px;
             margin-bottom: 8px;
           }
+
           @include desktop {
             width: 100px;
             height: 100px;
@@ -165,6 +178,7 @@
         }
       }
     }
+
     // -ms-overflow-style: none; /* 인터넷 익스플로러 */
     // scrollbar-width: none; /* 파이어폭스 */
 
@@ -175,14 +189,52 @@
 }
 
 .my-page-emotion-container {
-  display: inline-flex;
-  flex-direction: column;
 
   .my-page-emotion-graph-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     margin-top: 28px;
-    background: #fff;
-    @include mobile {
+
+    .pie-graph-container {
+      width: 100%;
     }
+
+    .emotion-time-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+
+      .emotion-time-title {
+        color: $gray-900;
+        margin-right: 12px;
+      }
+
+      .emotion-time-text {
+        text-align: right;
+        color: $gray-900;
+
+        .happy {
+          color: $category-joyful-basic;
+        }
+
+        .sad {
+          color: $category-sad-basic;
+        }
+
+        .angry {
+          color: $category-angry-basic;
+        }
+
+        .surprise {
+          color: $category-surprised-basic;
+        }
+      }
+    }
+
+
+    @include mobile {}
+
     @include desktop {
       width: 1200px;
       height: 291px;
