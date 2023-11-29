@@ -127,36 +127,36 @@ const WatchPage = (): ReactElement => {
     {
       id: "neutral",
       data: [
-        { x: "0:00:01", y: 0 },
-        { x: "0:00:02", y: 0 },
+        { x: "1", y: 100 },
+        { x: "2", y: 100 },
       ],
     },
     {
       id: "happy",
       data: [
-        { x: "0:00:01", y: 0 },
-        { x: "0:00:02", y: 0 },
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
       ],
     },
     {
       id: "sad",
       data: [
-        { x: "0:00:01", y: 0 },
-        { x: "0:00:02", y: 0 },
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
       ],
     },
     {
       id: "surprise",
       data: [
-        { x: "0:00:01", y: 0 },
-        { x: "0:00:02", y: 0 },
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
       ],
     },
     {
       id: "angry",
       data: [
-        { x: "0:00:01", y: 0 },
-        { x: "0:00:02", y: 0 },
+        { x: "1", y: 0 },
+        { x: "2", y: 0 },
       ],
     },
   ]);
@@ -629,15 +629,15 @@ const WatchPage = (): ReactElement => {
               <ResponsiveLine
                 data={videoGraphData}
                 colors={["#393946", "#FF4D8D", "#479CFF", "#92C624", "#FF6B4B"]}
-                margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                margin={{ top: 2, right: 0, bottom: 2, left: 0 }}
                 xScale={{ type: "point" }}
                 yScale={{
                   type: "linear",
                   min: 0,
                   max: 100,
-                  stacked: true,
                   reverse: false,
                 }}
+                curve={"natural"}
                 yFormat=" >-.2f"
                 axisTop={null}
                 axisRight={null}
