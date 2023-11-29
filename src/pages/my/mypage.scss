@@ -7,11 +7,11 @@
 
   @include mobile {
     width: 100vw;
-    padding-top: 17px;
+    padding-top: 61px;
     padding-left: 16px;
   }
   @include desktop {
-    padding-top: 48px;
+    padding-top: 126px;
     width: calc(50vw + 600px);
   }
 
@@ -37,22 +37,26 @@
         flex-direction: column;
         margin-bottom: 56px;
       }
-    }
 
-    .my-page-user-edit-container {
-      display: flex;
-      justify-content: space-between;
-
-      @include mobile {
-        margin-left: 12px;
-      }
-      @include desktop {
-        margin-top: 20px;
-      }
-
-      .my-page-name-wrapper {
+      .my-page-user-edit-container {
         display: flex;
-        align-items: center;
+        justify-content: space-between;
+
+        @include mobile {
+          margin-left: 12px;
+        }
+        @include desktop {
+          margin-top: 20px;
+        }
+
+        .my-page-name-wrapper {
+          display: flex;
+          align-items: center;
+
+          .my-page-username {
+            margin-bottom: 6px;
+          }
+        }
       }
     }
   }
@@ -112,6 +116,12 @@
       overflow-x: auto;
       padding-bottom: 88px;
       padding-left: 20px;
+
+      @include mobile {
+      }
+      @include desktop {
+        height: 453px;
+      }
     }
 
     .my-page-video-wrapper {
@@ -121,6 +131,7 @@
         flex-direction: column;
       }
       @include desktop {
+        height: 100%;
         padding-right: calc(50vw - 660px);
         padding-top: 16px;
       }

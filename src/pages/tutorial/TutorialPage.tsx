@@ -5,6 +5,7 @@ import StepIndicator from "components/StepIndicator/StepIndicator";
 import Button from "components/Button/Button";
 import { toast } from "react-toastify";
 import { tutorialComplete } from "api/auth";
+import useWindowSize from "utils/useWindowSize";
 
 const TUTORIAL_TEXT = [
   "",
@@ -14,7 +15,7 @@ const TUTORIAL_TEXT = [
 ];
 
 const AuthPage = (): ReactElement => {
-  const isMobile = window.innerWidth < 1200;
+  const isMobile = useWindowSize();
   const { step } = useParams();
   const navigate = useNavigate();
 

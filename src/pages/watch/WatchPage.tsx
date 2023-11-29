@@ -46,10 +46,11 @@ import VideoItem from "components/VideoItem/VideoItem";
 import ModalDialog from "components/ModalDialog/ModalDialog";
 import safeImage from "assets/img/safeImage.png";
 import LikeButton from "components/LikeButton/LikeButton";
+import useWindowSize from "utils/useWindowSize";
 
 const WatchPage = (): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
-  const isMobile = window.innerWidth < 1200;
+  const isMobile = useWindowSize();
   const { id } = useParams();
   const navigate = useNavigate();
   const opts: Options = isMobile
@@ -228,9 +229,11 @@ const WatchPage = (): ReactElement => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
+    document.body.style.overflow = "hidden";
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    document.body.style.overflow = "auto";
     setUserAnnounced({ user_announced: true });
     setIsModalOpen(false);
   };
@@ -464,6 +467,130 @@ const WatchPage = (): ReactElement => {
     );
   };
 
+  const renderMobileContainer = () => {
+    return (
+      <div className="watch-page-cam-container">
+        <Webcam
+          style={{ borderRadius: "8px", marginBottom: "24px" }}
+          audio={false}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          videoConstraints={webcamOptions}
+          mirrored={true}
+          screenshotQuality={0.5}
+        />
+        <div className="emotion-container">
+          <div className="emotion-title-wrapper">
+            <h4 className="emotion-title font-title-small">실시간 나의 감정</h4>
+            <EmotionBadge type="big" emotion={currentMyEmotion} />
+          </div>
+          <div className="graph-container">
+            <ResponsiveBar
+              data={myGraphData}
+              keys={["happy", "sad", "surprise", "angry", "neutral"]}
+              indexBy="country"
+              padding={0.3}
+              layout="horizontal"
+              valueScale={{ type: "linear" }}
+              indexScale={{ type: "band", round: true }}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+              borderColor={{
+                from: "color",
+                modifiers: [["darker", 1.6]],
+              }}
+              axisTop={null}
+              axisRight={null}
+              axisBottom={null}
+              axisLeft={null}
+              enableGridY={false}
+              enableLabel={false}
+              labelSkipWidth={12}
+              labelSkipHeight={12}
+              labelTextColor={{
+                from: "color",
+                modifiers: [["darker", 2.3]],
+              }}
+              margin={{ top: -10, bottom: -10 }}
+              legends={[]}
+              role="application"
+              ariaLabel="Nivo bar chart demo"
+              barAriaLabel={(e) =>
+                e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+              }
+            />
+          </div>
+
+          <div className="graph-detail-container">
+            {emotionByEmotionText.map((e) => (
+              <GraphDetailDataItem
+                key={uuidv4()}
+                graphData={myGraphData}
+                emotion={e.emotion}
+                emotionText={e.emotionText}
+                mostEmotion={currentMyEmotion}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="emotion-container">
+          <div className="emotion-title-wrapper">
+            <h4 className="emotion-title font-title-small">
+              실시간 다른 사람들의 감정
+            </h4>
+            <EmotionBadge type="big" emotion={currentOthersEmotion} />
+          </div>
+
+          <div className="graph-container">
+            <ResponsiveBar
+              data={othersGraphData}
+              keys={["happy", "sad", "surprise", "angry", "neutral"]}
+              indexBy="country"
+              padding={0.3}
+              layout="horizontal"
+              valueScale={{ type: "linear" }}
+              indexScale={{ type: "band", round: true }}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+              borderColor={{
+                from: "color",
+                modifiers: [["darker", 1.6]],
+              }}
+              axisTop={null}
+              axisRight={null}
+              axisBottom={null}
+              axisLeft={null}
+              enableGridY={false}
+              enableLabel={false}
+              labelSkipWidth={12}
+              labelSkipHeight={12}
+              labelTextColor={{
+                from: "color",
+                modifiers: [["darker", 2.3]],
+              }}
+              margin={{ top: -10, bottom: -10 }}
+              legends={[]}
+              role="application"
+              ariaLabel="Nivo bar chart demo"
+              barAriaLabel={(e) =>
+                e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+              }
+            />
+          </div>
+          <div className="graph-detail-container">
+            {emotionByEmotionText.map((e) => (
+              <GraphDetailDataItem
+                key={uuidv4()}
+                graphData={othersGraphData}
+                emotion={e.emotion}
+                emotionText={e.emotionText}
+                mostEmotion={currentOthersEmotion}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="watch-page-container">
       <ModalDialog
@@ -580,141 +707,9 @@ const WatchPage = (): ReactElement => {
           {isMobile && <Devider />}
         </div>
 
+        {isMobile && renderMobileContainer()}
         {isMobile && (
-          <div className="watch-page-cam-container">
-            <Webcam
-              style={{ borderRadius: "8px", marginBottom: "24px" }}
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={webcamOptions}
-              mirrored={true}
-              screenshotQuality={0.5}
-            />
-            <div className="emotion-container">
-              <div className="emotion-title-wrapper">
-                <h4 className="emotion-title font-title-small">
-                  실시간 나의 감정
-                </h4>
-                <EmotionBadge type="big" emotion={currentMyEmotion} />
-              </div>
-              <div className="graph-container">
-                <ResponsiveBar
-                  data={myGraphData}
-                  keys={["happy", "sad", "surprise", "angry", "neutral"]}
-                  indexBy="country"
-                  padding={0.3}
-                  layout="horizontal"
-                  valueScale={{ type: "linear" }}
-                  indexScale={{ type: "band", round: true }}
-                  colors={[
-                    "#FF4D8D",
-                    "#479CFF",
-                    "#92C624",
-                    "#FF6B4B",
-                    "#393946",
-                  ]}
-                  borderColor={{
-                    from: "color",
-                    modifiers: [["darker", 1.6]],
-                  }}
-                  axisTop={null}
-                  axisRight={null}
-                  axisBottom={null}
-                  axisLeft={null}
-                  enableGridY={false}
-                  enableLabel={false}
-                  labelSkipWidth={12}
-                  labelSkipHeight={12}
-                  labelTextColor={{
-                    from: "color",
-                    modifiers: [["darker", 2.3]],
-                  }}
-                  margin={{ top: -10, bottom: -10 }}
-                  legends={[]}
-                  role="application"
-                  ariaLabel="Nivo bar chart demo"
-                  barAriaLabel={(e) =>
-                    e.id +
-                    ": " +
-                    e.formattedValue +
-                    " in country: " +
-                    e.indexValue
-                  }
-                />
-              </div>
-
-              <div className="graph-detail-container">
-                {emotionByEmotionText.map((e) => (
-                  <GraphDetailDataItem
-                    key={uuidv4()}
-                    graphData={myGraphData}
-                    emotion={e.emotion}
-                    emotionText={e.emotionText}
-                    mostEmotion={currentMyEmotion}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="emotion-container">
-              <div className="emotion-title-wrapper">
-                <h4 className="emotion-title font-title-small">
-                  실시간 다른 사람들의 감정
-                </h4>
-                <EmotionBadge type="big" emotion={currentOthersEmotion} />
-              </div>
-            </div>
-            <div className="graph-container">
-              <ResponsiveBar
-                data={othersGraphData}
-                keys={["happy", "sad", "surprise", "angry", "neutral"]}
-                indexBy="country"
-                padding={0.3}
-                layout="horizontal"
-                valueScale={{ type: "linear" }}
-                indexScale={{ type: "band", round: true }}
-                colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
-                borderColor={{
-                  from: "color",
-                  modifiers: [["darker", 1.6]],
-                }}
-                axisTop={null}
-                axisRight={null}
-                axisBottom={null}
-                axisLeft={null}
-                enableGridY={false}
-                enableLabel={false}
-                labelSkipWidth={12}
-                labelSkipHeight={12}
-                labelTextColor={{
-                  from: "color",
-                  modifiers: [["darker", 2.3]],
-                }}
-                margin={{ top: -10, bottom: -10 }}
-                legends={[]}
-                role="application"
-                ariaLabel="Nivo bar chart demo"
-                barAriaLabel={(e) =>
-                  e.id +
-                  ": " +
-                  e.formattedValue +
-                  " in country: " +
-                  e.indexValue
-                }
-              />
-            </div>
-            <div className="graph-detail-container">
-              {emotionByEmotionText.map((e) => (
-                <GraphDetailDataItem
-                  key={uuidv4()}
-                  graphData={othersGraphData}
-                  emotion={e.emotion}
-                  emotionText={e.emotionText}
-                  mostEmotion={currentOthersEmotion}
-                />
-              ))}
-            </div>
-          </div>
+          <Devider style={{ width: "100vw", marginLeft: "-16px" }} />
         )}
 
         <div className="comment-container">

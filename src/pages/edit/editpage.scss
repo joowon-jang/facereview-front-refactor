@@ -4,32 +4,51 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 70px;
+
+  @include mobile {
+    padding-top: 82px;
+  }
+  @include desktop {
+    padding-top: 148px;
+  }
 
   .edit-page-user-container {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    width: 380px;
-    margin-top: 80px;
-  }
 
-  .edit-page-edit-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 48px;
-  }
+    @include mobile {
+      width: calc(100vw - 32px);
+      margin-top: 60px;
+    }
+    @include desktop {
+      width: 380px;
+      margin-top: 80px;
+    }
 
-  .edit-page-input-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 380px;
-    margin-bottom: 8px;
+    .edit-page-edit-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 48px;
+    }
 
-    .edit-page-input-label {
-      color: $gray-900;
+    .edit-page-input-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 380px;
+      margin-bottom: 8px;
+
+      .edit-page-input-label {
+        color: $gray-900;
+      }
+    }
+
+    .edit-page-category-wrapper {
+      width: 100%;
     }
   }
 

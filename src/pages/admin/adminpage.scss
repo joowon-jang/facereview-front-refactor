@@ -1,7 +1,7 @@
 @import "assets/css/index.scss";
 
 .admin-page-container {
-  padding-top: 80px;
+  padding-top: 158px;
   padding-bottom: 98px;
 
   .title {
@@ -50,14 +50,10 @@
       }
 
       &.active {
-
         color: $gray-50;
         background-color: $primary-basic;
         cursor: pointer;
       }
     }
-
-
   }
-
 }
