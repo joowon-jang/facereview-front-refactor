@@ -191,7 +191,7 @@ const EditPage = () => {
           </ModalDialog>
           <div className="edit-page-edit-container">
             <div className="edit-page-input-container">
-              <label htmlFor="editNickName">닉네임</label>
+              <label htmlFor="editNickName font-title-mini">닉네임</label>
               <TextInput
                 id={"editNickName"}
                 value={nickName}
@@ -202,12 +202,12 @@ const EditPage = () => {
                     ? {
                         width: window.innerWidth - 32,
                         marginTop: "16px",
-                        marginBottom: "8px",
+                        marginBottom: "24px",
                       }
                     : {
                         width: "380px",
                         marginTop: "16px",
-                        marginBottom: "8px",
+                        marginBottom: "48px",
                       }
                 }
               />
@@ -218,10 +218,18 @@ const EditPage = () => {
               )}
             </div>
             <div className="edit-page-category-wrapper">
-              <CategoryList
-                selected={selectedCategories}
-                setSelected={setSelectedCategories}
-              />
+              <label
+                htmlFor="editNickName font-title-mini"
+                style={{ marginBottom: "20px" }}
+              >
+                관심사 (3개 선택)
+              </label>
+              <div className="category-wrapper" style={{ marginTop: "20px" }}>
+                <CategoryList
+                  selected={selectedCategories}
+                  setSelected={setSelectedCategories}
+                />
+              </div>
             </div>
           </div>
         </div>

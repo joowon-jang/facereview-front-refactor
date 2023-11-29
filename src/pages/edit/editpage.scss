@@ -4,10 +4,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 102px;
 
   @include mobile {
     padding-top: 82px;
   }
+
   @include desktop {
     padding-top: 148px;
   }
@@ -21,6 +23,7 @@
       width: calc(100vw - 32px);
       margin-top: 60px;
     }
+
     @include desktop {
       width: 380px;
       margin-top: 80px;
