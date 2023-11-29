@@ -138,6 +138,7 @@ const MainPage = (): ReactElement => {
   );
 
   useEffect(() => {
+    setGenreChangeOpacity(1);
     setGenreChangeTerm(6000);
     getAllVideo()
       .then((data) => {
