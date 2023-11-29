@@ -303,114 +303,114 @@ const WatchPage = (): ReactElement => {
     }
   }, []);
 
-  useEffect(() => {
-    socket.connect();
-    addHits({
-      youtube_url: id || "",
-      user_categorization: is_sign_in ? "user" : "non-user",
-    })
-      .then((res) => {})
-      .catch((err) => console.log(err));
-    getRelatedVideo({ youtube_url: id || "" })
-      .then((res) => {
-        setRelatedVideoList(res);
-      })
-      .catch((err) => {});
-    getVideoComments({ youtube_url: id || "" })
-      .then((res) => {
-        setCommentList(res);
-      })
-      .catch((err) => {});
+  // useEffect(() => {
+  //   socket.connect();
+  //   addHits({
+  //     youtube_url: id || "",
+  //     user_categorization: is_sign_in ? "user" : "non-user",
+  //   })
+  //     .then((res) => {})
+  //     .catch((err) => console.log(err));
+  //   getRelatedVideo({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       setRelatedVideoList(res);
+  //     })
+  //     .catch((err) => {});
+  //   getVideoComments({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       setCommentList(res);
+  //     })
+  //     .catch((err) => {});
 
-    getMainDistributionData({ youtube_url: id || "" })
-      .then((res) => {
-        console.log(res);
-        setVideoGraphData(getDistributionToGraphData(res));
-      })
-      .catch((err) => console.log(err));
-    checkLike({ youtube_url: id || "" })
-      .then((res) => {
-        console.log("checklike", res);
-        setIsLikeVideo(!!res.like_flag);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return () => {
-      socket.disconnect();
-    };
-  }, [id, is_sign_in]);
+  //   getMainDistributionData({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       console.log(res);
+  //       setVideoGraphData(getDistributionToGraphData(res));
+  //     })
+  //     .catch((err) => console.log(err));
+  //   checkLike({ youtube_url: id || "" })
+  //     .then((res) => {
+  //       console.log("checklike", res);
+  //       setIsLikeVideo(!!res.like_flag);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [id, is_sign_in]);
 
-  useEffect(() => {
-    const captureInterval = setInterval(() => {
-      capture();
-    }, 200);
+  // useEffect(() => {
+  //   const captureInterval = setInterval(() => {
+  //     capture();
+  //   }, 200);
 
-    const frameDataInterval = setInterval(async () => {
-      const capturedImage = await capture();
-      const currentTime = await video?.getCurrentTime();
-      const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
+  //   const frameDataInterval = setInterval(async () => {
+  //     const capturedImage = await capture();
+  //     const currentTime = await video?.getCurrentTime();
+  //     const formattedCurrentTime = getCurrentTimeString(currentTime || 0);
 
-      socket.emit(
-        "client_message",
-        {
-          cur_access_token: access_token,
-          youtube_running_time: formattedCurrentTime,
-          string_frame_data: capturedImage,
-          youtube_index: videoData?.youtube_index,
-        },
-        (response: {
-          happy: number;
-          sad: number;
-          surprise: number;
-          angry: number;
-          neutral: number;
-          most_emotion: EmotionType;
-          youtube_emotion_data: EmotionType;
-          youtube_emotion_neutral_per: number;
-          youtube_emotion_angry_per: number;
-          youtube_emotion_happy_per: number;
-          youtube_emotion_surprise_per: number;
-          youtube_emotion_sad_per: number;
-        }) => {
-          setCurrentMyEmotion(response.most_emotion);
-          setMyGraphData([
-            {
-              ...myGraphData[0],
-              happy: response.happy,
-              sad: response.sad,
-              surprise: response.surprise,
-              angry: response.angry,
-              neutral: response.neutral,
-            },
-          ]);
-          setCurrentOthersEmotion(response.youtube_emotion_data);
-          setOthersGraphData([
-            {
-              ...othersGraphData[0],
-              happy: response.youtube_emotion_happy_per,
-              sad: response.youtube_emotion_sad_per,
-              surprise: response.youtube_emotion_surprise_per,
-              angry: response.youtube_emotion_angry_per,
-              neutral: response.youtube_emotion_neutral_per,
-            },
-          ]);
-        }
-      );
-    }, 1000);
+  //     socket.emit(
+  //       "client_message",
+  //       {
+  //         cur_access_token: access_token,
+  //         youtube_running_time: formattedCurrentTime,
+  //         string_frame_data: capturedImage,
+  //         youtube_index: videoData?.youtube_index,
+  //       },
+  //       (response: {
+  //         happy: number;
+  //         sad: number;
+  //         surprise: number;
+  //         angry: number;
+  //         neutral: number;
+  //         most_emotion: EmotionType;
+  //         youtube_emotion_data: EmotionType;
+  //         youtube_emotion_neutral_per: number;
+  //         youtube_emotion_angry_per: number;
+  //         youtube_emotion_happy_per: number;
+  //         youtube_emotion_surprise_per: number;
+  //         youtube_emotion_sad_per: number;
+  //       }) => {
+  //         setCurrentMyEmotion(response.most_emotion);
+  //         setMyGraphData([
+  //           {
+  //             ...myGraphData[0],
+  //             happy: response.happy,
+  //             sad: response.sad,
+  //             surprise: response.surprise,
+  //             angry: response.angry,
+  //             neutral: response.neutral,
+  //           },
+  //         ]);
+  //         setCurrentOthersEmotion(response.youtube_emotion_data);
+  //         setOthersGraphData([
+  //           {
+  //             ...othersGraphData[0],
+  //             happy: response.youtube_emotion_happy_per,
+  //             sad: response.youtube_emotion_sad_per,
+  //             surprise: response.youtube_emotion_surprise_per,
+  //             angry: response.youtube_emotion_angry_per,
+  //             neutral: response.youtube_emotion_neutral_per,
+  //           },
+  //         ]);
+  //       }
+  //     );
+  //   }, 1000);
 
-    return () => {
-      clearInterval(frameDataInterval);
-      clearInterval(captureInterval);
-    };
-  }, [
-    access_token,
-    capture,
-    myGraphData,
-    othersGraphData,
-    video,
-    videoData?.youtube_index,
-  ]);
+  //   return () => {
+  //     clearInterval(frameDataInterval);
+  //     clearInterval(captureInterval);
+  //   };
+  // }, [
+  //   access_token,
+  //   capture,
+  //   myGraphData,
+  //   othersGraphData,
+  //   video,
+  //   videoData?.youtube_index,
+  // ]);
 
   const GraphDetailDataItem = ({
     graphData,
@@ -461,6 +461,130 @@ const WatchPage = (): ReactElement => {
           </div>
           <div className="comment-text font-body-medium">
             {comment_contents}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderMobileContainer = () => {
+    return (
+      <div className="watch-page-cam-container">
+        <Webcam
+          style={{ borderRadius: "8px", marginBottom: "24px" }}
+          audio={false}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          videoConstraints={webcamOptions}
+          mirrored={true}
+          screenshotQuality={0.5}
+        />
+        <div className="emotion-container">
+          <div className="emotion-title-wrapper">
+            <h4 className="emotion-title font-title-small">실시간 나의 감정</h4>
+            <EmotionBadge type="big" emotion={currentMyEmotion} />
+          </div>
+          <div className="graph-container">
+            <ResponsiveBar
+              data={myGraphData}
+              keys={["happy", "sad", "surprise", "angry", "neutral"]}
+              indexBy="country"
+              padding={0.3}
+              layout="horizontal"
+              valueScale={{ type: "linear" }}
+              indexScale={{ type: "band", round: true }}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+              borderColor={{
+                from: "color",
+                modifiers: [["darker", 1.6]],
+              }}
+              axisTop={null}
+              axisRight={null}
+              axisBottom={null}
+              axisLeft={null}
+              enableGridY={false}
+              enableLabel={false}
+              labelSkipWidth={12}
+              labelSkipHeight={12}
+              labelTextColor={{
+                from: "color",
+                modifiers: [["darker", 2.3]],
+              }}
+              margin={{ top: -10, bottom: -10 }}
+              legends={[]}
+              role="application"
+              ariaLabel="Nivo bar chart demo"
+              barAriaLabel={(e) =>
+                e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+              }
+            />
+          </div>
+
+          <div className="graph-detail-container">
+            {emotionByEmotionText.map((e) => (
+              <GraphDetailDataItem
+                key={uuidv4()}
+                graphData={myGraphData}
+                emotion={e.emotion}
+                emotionText={e.emotionText}
+                mostEmotion={currentMyEmotion}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="emotion-container">
+          <div className="emotion-title-wrapper">
+            <h4 className="emotion-title font-title-small">
+              실시간 다른 사람들의 감정
+            </h4>
+            <EmotionBadge type="big" emotion={currentOthersEmotion} />
+          </div>
+
+          <div className="graph-container">
+            <ResponsiveBar
+              data={othersGraphData}
+              keys={["happy", "sad", "surprise", "angry", "neutral"]}
+              indexBy="country"
+              padding={0.3}
+              layout="horizontal"
+              valueScale={{ type: "linear" }}
+              indexScale={{ type: "band", round: true }}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+              borderColor={{
+                from: "color",
+                modifiers: [["darker", 1.6]],
+              }}
+              axisTop={null}
+              axisRight={null}
+              axisBottom={null}
+              axisLeft={null}
+              enableGridY={false}
+              enableLabel={false}
+              labelSkipWidth={12}
+              labelSkipHeight={12}
+              labelTextColor={{
+                from: "color",
+                modifiers: [["darker", 2.3]],
+              }}
+              margin={{ top: -10, bottom: -10 }}
+              legends={[]}
+              role="application"
+              ariaLabel="Nivo bar chart demo"
+              barAriaLabel={(e) =>
+                e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+              }
+            />
+          </div>
+          <div className="graph-detail-container">
+            {emotionByEmotionText.map((e) => (
+              <GraphDetailDataItem
+                key={uuidv4()}
+                graphData={othersGraphData}
+                emotion={e.emotion}
+                emotionText={e.emotionText}
+                mostEmotion={currentOthersEmotion}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -583,141 +707,9 @@ const WatchPage = (): ReactElement => {
           {isMobile && <Devider />}
         </div>
 
+        {isMobile && renderMobileContainer()}
         {isMobile && (
-          <div className="watch-page-cam-container">
-            <Webcam
-              style={{ borderRadius: "8px", marginBottom: "24px" }}
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={webcamOptions}
-              mirrored={true}
-              screenshotQuality={0.5}
-            />
-            <div className="emotion-container">
-              <div className="emotion-title-wrapper">
-                <h4 className="emotion-title font-title-small">
-                  실시간 나의 감정
-                </h4>
-                <EmotionBadge type="big" emotion={currentMyEmotion} />
-              </div>
-              <div className="graph-container">
-                <ResponsiveBar
-                  data={myGraphData}
-                  keys={["happy", "sad", "surprise", "angry", "neutral"]}
-                  indexBy="country"
-                  padding={0.3}
-                  layout="horizontal"
-                  valueScale={{ type: "linear" }}
-                  indexScale={{ type: "band", round: true }}
-                  colors={[
-                    "#FF4D8D",
-                    "#479CFF",
-                    "#92C624",
-                    "#FF6B4B",
-                    "#393946",
-                  ]}
-                  borderColor={{
-                    from: "color",
-                    modifiers: [["darker", 1.6]],
-                  }}
-                  axisTop={null}
-                  axisRight={null}
-                  axisBottom={null}
-                  axisLeft={null}
-                  enableGridY={false}
-                  enableLabel={false}
-                  labelSkipWidth={12}
-                  labelSkipHeight={12}
-                  labelTextColor={{
-                    from: "color",
-                    modifiers: [["darker", 2.3]],
-                  }}
-                  margin={{ top: -10, bottom: -10 }}
-                  legends={[]}
-                  role="application"
-                  ariaLabel="Nivo bar chart demo"
-                  barAriaLabel={(e) =>
-                    e.id +
-                    ": " +
-                    e.formattedValue +
-                    " in country: " +
-                    e.indexValue
-                  }
-                />
-              </div>
-
-              <div className="graph-detail-container">
-                {emotionByEmotionText.map((e) => (
-                  <GraphDetailDataItem
-                    key={uuidv4()}
-                    graphData={myGraphData}
-                    emotion={e.emotion}
-                    emotionText={e.emotionText}
-                    mostEmotion={currentMyEmotion}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="emotion-container">
-              <div className="emotion-title-wrapper">
-                <h4 className="emotion-title font-title-small">
-                  실시간 다른 사람들의 감정
-                </h4>
-                <EmotionBadge type="big" emotion={currentOthersEmotion} />
-              </div>
-            </div>
-            <div className="graph-container">
-              <ResponsiveBar
-                data={othersGraphData}
-                keys={["happy", "sad", "surprise", "angry", "neutral"]}
-                indexBy="country"
-                padding={0.3}
-                layout="horizontal"
-                valueScale={{ type: "linear" }}
-                indexScale={{ type: "band", round: true }}
-                colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
-                borderColor={{
-                  from: "color",
-                  modifiers: [["darker", 1.6]],
-                }}
-                axisTop={null}
-                axisRight={null}
-                axisBottom={null}
-                axisLeft={null}
-                enableGridY={false}
-                enableLabel={false}
-                labelSkipWidth={12}
-                labelSkipHeight={12}
-                labelTextColor={{
-                  from: "color",
-                  modifiers: [["darker", 2.3]],
-                }}
-                margin={{ top: -10, bottom: -10 }}
-                legends={[]}
-                role="application"
-                ariaLabel="Nivo bar chart demo"
-                barAriaLabel={(e) =>
-                  e.id +
-                  ": " +
-                  e.formattedValue +
-                  " in country: " +
-                  e.indexValue
-                }
-              />
-            </div>
-            <div className="graph-detail-container">
-              {emotionByEmotionText.map((e) => (
-                <GraphDetailDataItem
-                  key={uuidv4()}
-                  graphData={othersGraphData}
-                  emotion={e.emotion}
-                  emotionText={e.emotionText}
-                  mostEmotion={currentOthersEmotion}
-                />
-              ))}
-            </div>
-          </div>
+          <Devider style={{ width: "100vw", marginLeft: "-16px" }} />
         )}
 
         <div className="comment-container">
