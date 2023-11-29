@@ -189,6 +189,51 @@
       }
 
       .comment-list-container {
+        .comment-modifying-container {
+          display: flex;
+          margin-bottom: 24px;
+
+          .comment-modifying-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .comment-modifying-info-wrapper {
+              display: flex;
+              margin-bottom: 4px;
+
+              .comment-modifying-nickname {
+                color: $gray-500;
+                margin-right: 4px;
+              }
+              .comment-modifying-time-text {
+                color: $gray-300;
+              }
+            }
+
+            .comment-modifying-button-wrapper {
+              display: flex;
+              justify-content: flex-end;
+
+              .comment-modifying-cancel {
+                color: $gray-500;
+                cursor: pointer;
+                &:hover {
+                  color: $gray-900;
+                }
+              }
+
+              .comment-modifying-save {
+                color: $gray-500;
+                margin-left: 16px;
+                &:hover {
+                  cursor: pointer;
+                  color: $gray-900;
+                }
+              }
+            }
+          }
+        }
         .comment-item-container {
           display: flex;
           align-items: flex-start;

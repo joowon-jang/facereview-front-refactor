@@ -52,11 +52,10 @@ import useWindowSize from "utils/useWindowSize";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 
 const WatchPage = (): ReactElement => {
+  const [modifyingComment, setModifyingComment] = useState<string>("");
   const { v4: uuidv4 } = require("uuid");
   const windowWidth = useWindowSize();
   const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
-  const [hoveredComment, setHoveredComment] = useState<number | null>(null);
-  const [isEditVisible, setIsEditVisible] = useState<number | null>(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const opts: Options = isMobile
@@ -181,7 +180,8 @@ const WatchPage = (): ReactElement => {
   const [relatedVideoList, setRelatedVideoList] = useState<VideoRelatedType[]>(
     []
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState<boolean>(false);
+  const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
@@ -239,14 +239,23 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
-  const openModal = () => {
+  const openModal1 = () => {
     document.body.style.overflow = "hidden";
-    setIsModalOpen(true);
+    setIsModalOpen1(true);
   };
-  const closeModal = () => {
+  const closeModal1 = () => {
     document.body.style.overflow = "auto";
     setUserAnnounced({ user_announced: true });
-    setIsModalOpen(false);
+    setIsModalOpen1(false);
+  };
+  const openModal2 = () => {
+    document.body.style.overflow = "hidden";
+    setIsModalOpen2(true);
+  };
+  const closeModal2 = () => {
+    document.body.style.overflow = "auto";
+    setIsModalOpen2(false);
+    setIsEditVisible(null);
   };
 
   const handleLikeClick = () => {
@@ -311,7 +320,7 @@ const WatchPage = (): ReactElement => {
 
   useEffect(() => {
     if (!user_announced) {
-      openModal();
+      openModal1();
     }
   }, []);
 
@@ -455,6 +464,12 @@ const WatchPage = (): ReactElement => {
     );
   };
 
+  const [hoveredComment, setHoveredComment] = useState<number | null>(null);
+  const [isEditVisible, setIsEditVisible] = useState<number | null>(null);
+  const [editingcommentindex, setEditingcommentindex] = useState<number | null>(
+    null
+  );
+
   const CommentItem = ({
     user_name,
     comment_date,
@@ -512,6 +527,7 @@ const WatchPage = (): ReactElement => {
                 className="comment-modify-text"
                 onClick={() => {
                   setIsEditVisible(null);
+                  setEditingcommentindex(comment_index);
                 }}
               >
                 <div className="comment-modify-dim"></div>
@@ -521,17 +537,7 @@ const WatchPage = (): ReactElement => {
                 className="comment-delete-text"
                 onClick={() => {
                   setIsEditVisible(null);
-                  deleteComment({ comment_index: comment_index })
-                    .then((res) => {
-                      console.log(res);
-                      const newCommentList = commentList.filter(
-                        (comment) => comment.comment_index !== comment_index
-                      );
-                      setCommentList(newCommentList);
-                    })
-                    .catch((error) => console.log(error));
-
-                  console.log(commentList);
+                  openModal2();
                 }}
               >
                 <div className="comment-delete-dim"></div>
@@ -543,6 +549,16 @@ const WatchPage = (): ReactElement => {
       </div>
     );
   };
+
+  useEffect(() => {
+    if (editingcommentindex !== null) {
+      commentList.map(
+        (item, i) =>
+          item.comment_index === editingcommentindex &&
+          setModifyingComment(commentList[i].comment_contents)
+      );
+    }
+  }, [editingcommentindex]);
 
   const renderMobileContainer = () => {
     return (
@@ -673,8 +689,8 @@ const WatchPage = (): ReactElement => {
       <ModalDialog
         type={"one-button"}
         name="watch-page-modal"
-        isOpen={isModalOpen}
-        onClose={closeModal}
+        isOpen={isModalOpen1}
+        onClose={closeModal1}
       >
         <div className="watch-page-modal-image-container">
           <img
@@ -830,18 +846,109 @@ const WatchPage = (): ReactElement => {
           </div>
           <div className="comment-list-container">
             {commentList.length > 0 ? (
-              commentList.map((comment, idx) => (
-                <CommentItem
-                  key={`comment-${comment.comment_contents}-${idx}`}
-                  user_name={comment.user_name}
-                  comment_date={getTimeToString(comment.comment_date)}
-                  comment_contents={comment.comment_contents}
-                  user_profile={comment.user_profile}
-                  comment_index={comment.comment_index}
-                  modify_check={comment.modify_check}
-                  identify={comment.identify}
-                />
-              ))
+              commentList.map((comment, idx) =>
+                comment.comment_index === editingcommentindex ? (
+                  <div className="comment-modifying-container">
+                    <ProfileIcon
+                      type={"icon-small"}
+                      color={mapNumberToEmotion(user_profile)}
+                      style={{ marginRight: "12px" }}
+                    />
+                    <div className="comment-modifying-wrapper">
+                      <div className="comment-modifying-info-wrapper">
+                        <div className="comment-modifying-nickname font-label-small">
+                          {comment.user_name}
+                        </div>
+                        <div className="comment-modifying-time-text font-label-small">
+                          {getTimeToString(comment.comment_date)}
+                        </div>
+                      </div>
+                      <TextInput
+                        inputType="underline"
+                        value={modifyingComment}
+                        onChange={setModifyingComment}
+                        placeholder={""}
+                        style={{ marginBottom: "16px" }}
+                      />
+                      <div className="comment-modifying-button-wrapper">
+                        <div
+                          className="comment-modifying-cancel font-label-small"
+                          onClick={() => {
+                            setEditingcommentindex(null);
+                          }}
+                        >
+                          취소
+                        </div>
+                        <div
+                          className="comment-modifying-save font-label-small"
+                          onClick={() => {
+                            modifyComment({
+                              comment_index: comment.comment_index,
+                              new_comment_contents: modifyingComment,
+                            })
+                              .then((res) => {
+                                const newCommentList = commentList.map((item) =>
+                                  item.comment_index === comment.comment_index
+                                    ? {
+                                        ...item,
+                                        comment_contents: modifyingComment,
+                                      }
+                                    : item
+                                );
+                                setCommentList(newCommentList);
+                                setEditingcommentindex(null);
+                              })
+                              .catch((error) => {
+                                console.log(error);
+                              });
+                          }}
+                          style={{
+                            pointerEvents:
+                              modifyingComment.length > 0 ? "auto" : "none",
+                          }}
+                        >
+                          저장
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <CommentItem
+                      key={`comment-${comment.comment_contents}-${idx}`}
+                      user_name={comment.user_name}
+                      comment_date={getTimeToString(comment.comment_date)}
+                      comment_contents={comment.comment_contents}
+                      user_profile={comment.user_profile}
+                      comment_index={comment.comment_index}
+                      modify_check={comment.modify_check}
+                      identify={comment.identify}
+                    />
+                    <ModalDialog
+                      type={"two-button"}
+                      name={"comment-delete-modal"}
+                      isOpen={isModalOpen2}
+                      onClose={closeModal2}
+                      onCheck={() => {
+                        deleteComment({ comment_index: comment.comment_index })
+                          .then((res) => {
+                            console.log(res);
+                            const newCommentList = commentList.filter(
+                              (c) => c.comment_index !== comment.comment_index
+                            );
+                            setCommentList(newCommentList);
+                          })
+                          .catch((error) => console.log(error));
+
+                        console.log(commentList);
+                        closeModal2();
+                      }}
+                    >
+                      <h2>댓글을 삭제하시겠어요?</h2>
+                    </ModalDialog>
+                  </>
+                )
+              )
             ) : (
               <p className="no-comments-text font-label-large">
                 아직 댓글이 없어요
