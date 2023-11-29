@@ -46,10 +46,11 @@ import VideoItem from "components/VideoItem/VideoItem";
 import ModalDialog from "components/ModalDialog/ModalDialog";
 import safeImage from "assets/img/safeImage.png";
 import LikeButton from "components/LikeButton/LikeButton";
+import useWindowSize from "utils/useWindowSize";
 
 const WatchPage = (): ReactElement => {
   const { v4: uuidv4 } = require("uuid");
-  const isMobile = window.innerWidth < 1200;
+  const isMobile = useWindowSize();
   const { id } = useParams();
   const navigate = useNavigate();
   const opts: Options = isMobile

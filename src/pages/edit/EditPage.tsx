@@ -11,8 +11,10 @@ import { useAuthStorage } from "store/authStore";
 import { changeFavoriteGenre, changeName, changeProfilePhoto } from "api/auth";
 import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 import CategoryList from "components/CategoryList/CategoryList";
+import useWindowSize from "utils/useWindowSize";
 
 const EditPage = () => {
+  const isMobile = useWindowSize();
   const { user_name, setUserName, setUserProfile, user_favorite_genres } =
     useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);

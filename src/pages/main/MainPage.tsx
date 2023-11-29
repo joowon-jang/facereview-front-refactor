@@ -26,11 +26,12 @@ import Button from "components/Button/Button";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 import { updateRequestVideoList } from "api/request";
 import { getTimeToString } from "utils/index";
+import useWindowSize from "utils/useWindowSize";
 
 const MainPage = (): ReactElement => {
+  const isMobile = useWindowSize();
   const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
-  const isMobile = window.innerWidth < 1200;
   const [selectedEmotion, setSelectedEmotion] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerInput, setRegisterInput] = useState("");
