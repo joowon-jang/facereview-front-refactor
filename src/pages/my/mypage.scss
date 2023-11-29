@@ -189,15 +189,47 @@
 }
 
 .my-page-emotion-container {
-  display: inline-flex;
-  flex-direction: column;
 
   .my-page-emotion-graph-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     margin-top: 28px;
 
     .pie-graph-container {
-      width: 300px;
-      height: 300px;
+      width: 100%;
+    }
+
+    .emotion-time-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+
+      .emotion-time-title {
+        color: $gray-900;
+        margin-right: 12px;
+      }
+
+      .emotion-time-text {
+        text-align: right;
+        color: $gray-900;
+
+        .happy {
+          color: $category-joyful-basic;
+        }
+
+        .sad {
+          color: $category-sad-basic;
+        }
+
+        .angry {
+          color: $category-angry-basic;
+        }
+
+        .surprise {
+          color: $category-surprised-basic;
+        }
+      }
     }
 
 

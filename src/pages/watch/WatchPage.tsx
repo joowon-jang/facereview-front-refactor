@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Webcam from "react-webcam";
 import YouTube, { YouTubeEvent } from "react-youtube";
 import EmotionBadge from "components/EmotionBadge/EmotionBadge";
@@ -17,7 +17,6 @@ import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import TextInput from "components/TextInput/TextInput";
 import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
-import { ResponsiveBump } from "@nivo/bump";
 import {
   CommentType,
   EmotionType,
@@ -126,6 +125,13 @@ const WatchPage = (): ReactElement => {
   ]);
   const [videoGraphData, setVideoGraphData] = useState([
     {
+      id: "neutral",
+      data: [
+        { x: "0:00:01", y: 0 },
+        { x: "0:00:02", y: 0 },
+      ],
+    },
+    {
       id: "happy",
       data: [
         { x: "0:00:01", y: 0 },
@@ -148,13 +154,6 @@ const WatchPage = (): ReactElement => {
     },
     {
       id: "angry",
-      data: [
-        { x: "0:00:01", y: 0 },
-        { x: "0:00:02", y: 0 },
-      ],
-    },
-    {
-      id: "neutral",
       data: [
         { x: "0:00:01", y: 0 },
         { x: "0:00:02", y: 0 },
@@ -290,6 +289,7 @@ const WatchPage = (): ReactElement => {
   };
 
   useLayoutEffect(() => {
+    window.scrollTo(0, 0);
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
         console.log(res);
@@ -621,138 +621,78 @@ const WatchPage = (): ReactElement => {
           <div className="video-container">
             <YouTube
               videoId={id}
-              // id={string} // defaults -> ''
-              // className={string} // defaults -> ''
-              // iframeClassName={string} // defaults -> ''
               style={{ marginBottom: "4px" }} // defaults -> {}
-              // title={string} // defaults -> ''
-              // loading={string} // defaults -> undefined
               opts={opts} // defaults -> {}
               onReady={handleVideoReady} // defaults -> noop
-              // onPlay={func} // defaults -> noop
-              // onPause={func} // defaults -> noop
-              // onEnd={func} // defaults -> noop
-              // onError={func} // defaults -> noop
-              // onStateChange={func} // defaults -> noop
-              // onPlaybackRateChange={func} // defaults -> noop
-              // onPlaybackQualityChange={func} // defaults -> noop
             />
             <div className="video-graph-container">
-              <ResponsiveBump
+              <ResponsiveLine
                 data={videoGraphData}
-                colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
-                lineWidth={1}
-                activeLineWidth={3}
-                inactiveLineWidth={3}
-                inactiveOpacity={0.15}
-                startLabelPadding={8}
-                endLabel={false}
-                endLabelPadding={5}
-                pointSize={0}
-                activePointSize={0}
-                inactivePointSize={0}
-                pointColor={{ theme: "background" }}
-                pointBorderWidth={0}
-                pointBorderColor={{ from: "serie.color" }}
+                colors={["#393946", "#FF4D8D", "#479CFF", "#92C624", "#FF6B4B"]}
+                margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                xScale={{ type: "point" }}
+                yScale={{
+                  type: "linear",
+                  min: 0,
+                  max: 100,
+                  stacked: true,
+                  reverse: false,
+                }}
+                yFormat=" >-.2f"
+                axisTop={null}
+                axisRight={null}
                 enableGridX={false}
                 enableGridY={false}
-                axisTop={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: "",
-                  legendPosition: "middle",
-                  legendOffset: -36,
-                }}
                 axisBottom={{
                   tickSize: 5,
                   tickPadding: 5,
                   tickRotation: 0,
-                  legend: "",
+                  legend: "transportation",
+                  legendOffset: 36,
                   legendPosition: "middle",
-                  legendOffset: 32,
                 }}
                 axisLeft={{
                   tickSize: 5,
                   tickPadding: 5,
                   tickRotation: 0,
-                  legend: "ranking",
-                  legendPosition: "middle",
+                  legend: "count",
                   legendOffset: -40,
+                  legendPosition: "middle",
                 }}
-                margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                axisRight={null}
-                tooltip={() => <></>}
+                pointSize={0}
+                pointColor={{ theme: "background" }}
+                pointBorderWidth={0}
+                pointBorderColor={{ from: "serieColor" }}
+                pointLabelYOffset={-12}
+                useMesh={true}
+                legends={[
+                  {
+                    anchor: "bottom-right",
+                    direction: "column",
+                    justify: false,
+                    translateX: 100,
+                    translateY: 0,
+                    itemsSpacing: 0,
+                    itemDirection: "left-to-right",
+                    itemWidth: 80,
+                    itemHeight: 20,
+                    itemOpacity: 0.75,
+                    symbolSize: 12,
+                    symbolShape: "circle",
+                    symbolBorderColor: "rgba(0, 0, 0, .5)",
+                    effects: [
+                      {
+                        on: "hover",
+                        style: {
+                          itemBackground: "rgba(0, 0, 0, .03)",
+                          itemOpacity: 1,
+                        },
+                      },
+                    ],
+                  },
+                ]}
               />
             </div>
-          </div>
-          <div className="" style={{ width: "852px", height: "32px" }}>
-            <ResponsiveLine
-              data={videoGraphData}
-              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
-              margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-              xScale={{ type: "point" }}
-              yScale={{
-                type: "linear",
-                min: "auto",
-                max: "auto",
-                stacked: true,
-                reverse: false,
-              }}
-              yFormat=" >-.2f"
-              axisTop={null}
-              axisRight={null}
-              enableGridX={false}
-              enableGridY={false}
-              axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: "transportation",
-                legendOffset: 36,
-                legendPosition: "middle",
-              }}
-              axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: "count",
-                legendOffset: -40,
-                legendPosition: "middle",
-              }}
-              pointSize={0}
-              pointColor={{ theme: "background" }}
-              pointBorderWidth={0}
-              pointBorderColor={{ from: "serieColor" }}
-              pointLabelYOffset={-12}
-              useMesh={true}
-              legends={[
-                {
-                  anchor: "bottom-right",
-                  direction: "column",
-                  justify: false,
-                  translateX: 100,
-                  translateY: 0,
-                  itemsSpacing: 0,
-                  itemDirection: "left-to-right",
-                  itemWidth: 80,
-                  itemHeight: 20,
-                  itemOpacity: 0.75,
-                  symbolSize: 12,
-                  symbolShape: "circle",
-                  symbolBorderColor: "rgba(0, 0, 0, .5)",
-                  effects: [
-                    {
-                      on: "hover",
-                      style: {
-                        itemBackground: "rgba(0, 0, 0, .03)",
-                        itemOpacity: 1,
-                      },
-                    },
-                  ],
-                },
-              ]}
-            />
           </div>
           <div className="video-information-container">
             <div

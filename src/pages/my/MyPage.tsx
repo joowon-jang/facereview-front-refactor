@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./mypage.scss";
@@ -19,7 +19,7 @@ import {
   getDounutGraphData,
   getRecentVideo,
 } from "api/youtube";
-import { DonutGraphDataType, VideoWatchedType } from "types/index";
+import { EmotionType, VideoWatchedType } from "types/index";
 import { mapNumberToEmotion } from "utils/index";
 import useWindowSize from "utils/useWindowSize";
 
@@ -33,6 +33,9 @@ const MyPage = () => {
 
   const [selectedEmotion, setSelectedEmotion] = useState("all");
   const [recentVideo, setRecentVideo] = useState<VideoWatchedType[]>([]);
+  const [emotionTimeData, setEmotionTimeData] = useState<{
+    [key in EmotionType]: number;
+  }>({ happy: 0, sad: 0, surprise: 0, angry: 0, neutral: 0 });
   const [donutGraphData, setDonutGraphData] = useState<
     {
       id: string;
@@ -87,6 +90,10 @@ const MyPage = () => {
     navigate("/main");
   };
 
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     if (is_sign_in) {
       getRecentVideo()
@@ -110,6 +117,7 @@ const MyPage = () => {
       getAllEmotionTimeData()
         .then((res) => {
           console.log(res);
+          setEmotionTimeData(res);
         })
         .catch((err) => console.log(err));
     }
@@ -302,6 +310,35 @@ const MyPage = () => {
                   },
                 ]}
               />
+            </div>
+            <div className="emotion-time-container">
+              <h3 className="font-title-large emotion-time-title">
+                페이스리뷰에서
+              </h3>
+              <div className="text-wrapper">
+                <p className="font-title-medium emotion-time-text">
+                  <span className="highlight happy">
+                    {emotionTimeData.happy}
+                  </span>
+                  초 동안 웃었어요.
+                </p>
+                <p className="font-title-medium emotion-time-text">
+                  <span className="highlight sad">{emotionTimeData.sad}</span>초
+                  동안 슬펐어요.
+                </p>
+                <p className="font-title-medium emotion-time-text">
+                  <span className="highlight surprise">
+                    {emotionTimeData.surprise}
+                  </span>
+                  초 동안 놀랐어요.
+                </p>
+                <p className="font-title-medium emotion-time-text">
+                  <span className="highlight angry">
+                    {emotionTimeData.angry}
+                  </span>
+                  초 동안 화났어요.
+                </p>
+              </div>
             </div>
           </div>
         </div>
