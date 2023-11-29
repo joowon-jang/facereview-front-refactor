@@ -11,8 +11,10 @@ import { useAuthStorage } from "store/authStore";
 import { changeFavoriteGenre, changeName, changeProfilePhoto } from "api/auth";
 import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 import CategoryList from "components/CategoryList/CategoryList";
+import useWindowSize from "utils/useWindowSize";
 
 const EditPage = () => {
+  const isMobile = useWindowSize();
   const { user_name, setUserName, setUserProfile, user_favorite_genres } =
     useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
@@ -38,9 +40,11 @@ const EditPage = () => {
   };
 
   const openModal = () => {
+    document.body.style.overflow = "hidden";
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    document.body.style.overflow = "auto";
     setIsModalOpen(false);
   };
   const handleModalCheck = () => {
@@ -183,11 +187,19 @@ const EditPage = () => {
                 value={nickName}
                 onChange={setNickName}
                 placeholder={"하하호호"}
-                style={{
-                  width: "380px",
-                  marginTop: "16px",
-                  marginBottom: "8px",
-                }}
+                style={
+                  isMobile
+                    ? {
+                        width: window.innerWidth - 32,
+                        marginTop: "16px",
+                        marginBottom: "8px",
+                      }
+                    : {
+                        width: "380px",
+                        marginTop: "16px",
+                        marginBottom: "8px",
+                      }
+                }
               />
               {nickName.length < 2 && (
                 <p className="edit-page-input-alert-message font-body-large">
@@ -207,7 +219,11 @@ const EditPage = () => {
         <Button
           label="수정"
           type="cta-full"
-          style={{ width: "380px", marginTop: "16px" }}
+          style={
+            isMobile
+              ? { width: window.innerWidth - 32, marginTop: "16px" }
+              : { width: "380px", marginTop: "16px" }
+          }
           isDisabled={nickName.length < 2 || selectedCategories.length < 3}
           onClick={handleEditButtonClick}
         />

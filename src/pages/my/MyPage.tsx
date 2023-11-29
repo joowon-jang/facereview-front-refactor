@@ -16,11 +16,12 @@ import VideoItem from "components/VideoItem/VideoItem";
 import { getRecentVideo } from "api/youtube";
 import { VideoWatchedType } from "types/index";
 import { mapNumberToEmotion } from "utils/index";
+import useWindowSize from "utils/useWindowSize";
 
 const MyPage = () => {
   const { is_sign_in, user_name, user_profile } = useAuthStorage();
 
-  const isMobile = window.innerWidth < 1200;
+  const isMobile = useWindowSize();
 
   const navigate = useNavigate();
   const { setTempToken } = useAuthStorage();
@@ -66,7 +67,9 @@ const MyPage = () => {
                 <div className="my-page-name-wrapper">
                   <h2
                     className={
-                      isMobile ? "font-title-medium" : "font-title-large"
+                      isMobile
+                        ? "my-page-username font-title-medium"
+                        : "my-page-username font-title-large"
                     }
                   >
                     {user_name}님

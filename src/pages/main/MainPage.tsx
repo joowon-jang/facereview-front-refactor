@@ -13,7 +13,7 @@ import {
   getPersonalRecommendedVideo,
   getSportsVideo,
   getTravelVideo,
-  getVarietyVideo,
+  getShowVideo,
 } from "api/youtube";
 import { EmotionType, VideoDataType } from "types";
 
@@ -26,11 +26,12 @@ import Button from "components/Button/Button";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 import { updateRequestVideoList } from "api/request";
 import { getTimeToString } from "utils/index";
+import useWindowSize from "utils/useWindowSize";
 
 const MainPage = (): ReactElement => {
+  const isMobile = useWindowSize();
   const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
-  const isMobile = window.innerWidth < 1200;
   const [selectedEmotion, setSelectedEmotion] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerInput, setRegisterInput] = useState("");
@@ -52,14 +53,19 @@ const MainPage = (): ReactElement => {
   const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
   const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(0);
 
+  const getThumbnailUrl = (videoId: string) =>
+    `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+
   const handleChipClick = (emotion: React.SetStateAction<string>) => {
     setSelectedEmotion(emotion);
   };
 
   const openModal = () => {
+    document.body.style.overflow = "hidden";
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    document.body.style.overflow = "auto";
     setIsModalOpen(false);
     setIsRegisterMatched(false);
     setRegisterInput("");
@@ -146,7 +152,7 @@ const MainPage = (): ReactElement => {
       getGameVideo({ user_categorization: userCategorization }),
       getFearVideo({ user_categorization: userCategorization }),
       getInformationVideo({ user_categorization: userCategorization }),
-      getVarietyVideo({ user_categorization: userCategorization }),
+      getShowVideo({ user_categorization: userCategorization }),
       getCookVideo({ user_categorization: userCategorization }),
       getTravelVideo({ user_categorization: userCategorization }),
       getEatingVideo({ user_categorization: userCategorization }),
@@ -155,9 +161,8 @@ const MainPage = (): ReactElement => {
 
     Promise.all(videoRequests)
       .then((dataArray) => {
-        const updatedGenreVideo = dataArray.map((data, index) => {
-          return data;
-        });
+        console.log(dataArray);
+        const updatedGenreVideo = dataArray.map((data) => data);
         setGenreVideos(updatedGenreVideo);
       })
       .catch((err) => {
@@ -212,14 +217,18 @@ const MainPage = (): ReactElement => {
                   <VideoItem
                     type="small-emoji"
                     key={uuidv4()}
-                    width={isMobile ? window.innerWidth - 32 : 280}
+                    width={isMobile ? window.innerWidth - 48 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
                     videoMostEmotion={v.youtube_most_emotion}
                     videoMostEmotionPercentage={v.youtube_most_emotion_per}
                     style={
                       isMobile
-                        ? { paddingTop: "14px", paddingBottom: "14px" }
+                        ? {
+                            paddingTop: "14px",
+                            paddingBottom: "14px",
+                            marginRight: "16px",
+                          }
                         : { marginRight: "28px" }
                     }
                   />
@@ -268,14 +277,18 @@ const MainPage = (): ReactElement => {
                 <VideoItem
                   type="small-emoji"
                   key={uuidv4()}
-                  width={isMobile ? window.innerWidth - 32 : 280}
+                  width={isMobile ? window.innerWidth - 48 : 280}
                   videoId={v.youtube_url}
                   videoTitle={v.youtube_title}
                   videoMostEmotion={v.youtube_most_emotion}
                   videoMostEmotionPercentage={v.youtube_most_emotion_per}
                   style={
                     isMobile
-                      ? { paddingTop: "14px", paddingBottom: "14px" }
+                      ? {
+                          paddingTop: "14px",
+                          paddingBottom: "14px",
+                          marginRight: "16px",
+                        }
                       : {
                           marginRight: "28px",
                         }
@@ -401,7 +414,7 @@ const MainPage = (): ReactElement => {
               {isRegisterMatched ? (
                 <img
                   className="main-page-modal-thumbnail-registering"
-                  src={`http://img.youtube.com/vi/${registeringVideoId}/mqdefault.jpg`}
+                  src={getThumbnailUrl(registeringVideoId)}
                   alt=""
                 />
               ) : (
@@ -418,7 +431,7 @@ const MainPage = (): ReactElement => {
                 <img
                   key={uuidv4()}
                   className="main-page-modal-thumbnail-registered"
-                  src={`http://img.youtube.com/vi/${v}/mqdefault.jpg`}
+                  src={getThumbnailUrl(v)}
                   alt=""
                 />
               ))}
@@ -441,7 +454,7 @@ const MainPage = (): ReactElement => {
           </ModalDialog>
 
           <div className="video-wrapper">
-            {allVideo.map((v) => (
+            {filteredVideos.map((v) => (
               <VideoItem
                 type="small-emoji"
                 key={uuidv4()}

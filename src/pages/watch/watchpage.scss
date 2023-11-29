@@ -2,13 +2,16 @@
 
 .watch-page-container {
   display: flex;
-  padding-top: 48px;
   padding-bottom: 98px;
 
   @include mobile {
     flex-direction: column;
     margin-left: 16px;
     margin-right: 16px;
+    padding-top: 92px;
+  }
+  @include desktop {
+    padding-top: 126px;
   }
 
   .main-container {
@@ -17,7 +20,11 @@
 
     .video-container {
       position: relative;
-      margin-bottom: 20px;
+      @include mobile {
+      }
+      @include desktop {
+        margin-bottom: 20px;
+      }
 
       &:hover .video-graph-container {
         opacity: 1;
@@ -36,35 +43,55 @@
         transition: all 0.2s;
         pointer-events: none;
       }
-
     }
 
     .video-information-container {
       display: flex;
       justify-content: space-between;
 
+      @include mobile {
+        padding: 20px 16px 20px 16px;
+      }
+      @include desktop {
+      }
+
       .title {
         color: $gray-900;
-        margin-bottom: 60px;
         word-break: keep-all;
+        @include mobile {
+        }
+        @include desktop {
+          margin-bottom: 60px;
+        }
       }
 
       .right-side {
-        width: 180px;
         display: flex;
         justify-content: flex-end;
-        flex-wrap: wrap;
-        height: 32px;
         align-items: center;
+
+        @include mobile {
+          width: 80px;
+          flex-direction: column;
+        }
+        @include desktop {
+          width: 180px;
+          height: 32px;
+          flex-wrap: wrap;
+        }
 
         .video-hits-text {
           color: $gray-700;
-          margin-left: 16px;
+
+          @include mobile {
+            margin-top: 8px;
+          }
+          @include desktop {
+            margin-left: 16px;
+          }
         }
       }
     }
-
-
 
     @include mobile {
       .watch-page-test {
@@ -72,47 +99,63 @@
         background: $bg;
         width: 100vw;
         left: 0;
+        top: 44px;
         z-index: 1000;
       }
 
       .watch-page-cam-container {
-        margin-top: calc(100vw * (9 / 16) + 72px);
-      }
+        margin-top: 400px;
 
-      .my-emotion-container {
-        margin-bottom: 48px;
-
-        .my-emotion-title-wrapper {
+        .emotion-container {
           display: flex;
+          flex-direction: column;
+          margin-bottom: 48px;
 
-          .my-emotion-title {
-            color: $gray-900;
-            margin-right: 8px;
+          .emotion-title-wrapper {
+            display: flex;
+
+            .emotion-title {
+              color: $gray-900;
+              margin-right: 8px;
+            }
+          }
+
+          .graph-container {
+            height: 12px;
+            border-radius: 2px;
+            margin-top: 22px;
+
+            .graph-tooltip-container {
+              width: 80px;
+              height: 50px;
+              background: $gray-700;
+            }
+          }
+
+          .graph-detail-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 22px;
+          }
+          .graph-detail-item {
+            justify-content: center;
+            align-items: center;
           }
         }
-
-        .graph-container {
-          height: 12px;
-          border-radius: 2px;
-          margin-top: 22px;
-
-          .graph-tooltip-container {
-            width: 80px;
-            height: 50px;
-            background: $gray-700;
-          }
+        .emotion-container:last-child {
+          margin-bottom: 32px;
         }
-      }
 
-      .others-emotion-container {
-        margin-bottom: 60px;
+        .others-emotion-container {
+          margin-bottom: 60px;
 
-        .others-emotion-title-wrapper {
-          display: flex;
+          .others-emotion-title-wrapper {
+            display: flex;
 
-          .others-emotion-title {
-            color: $gray-900;
-            margin-right: 8px;
+            .others-emotion-title {
+              color: $gray-900;
+              margin-right: 8px;
+            }
           }
         }
       }
@@ -231,7 +274,8 @@
         margin-bottom: 32px;
       }
 
-      .recommend-video-container {}
+      .recommend-video-container {
+      }
     }
   }
 }

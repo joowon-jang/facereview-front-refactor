@@ -6,9 +6,10 @@ import { useAuthStorage } from "store/authStore";
 import AnimatedLogo from "../AnimatedLogo/AnimatedLogo";
 import "./header.scss";
 import { mapNumberToEmotion } from "utils/index";
+import useWindowSize from "utils/useWindowSize";
 
 const Header = (): ReactElement => {
-  const isMobile = window.innerWidth < 1200;
+  const isMobile = useWindowSize();
   const navigate = useNavigate();
   const { is_sign_in } = useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
