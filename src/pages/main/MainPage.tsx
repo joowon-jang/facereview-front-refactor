@@ -61,9 +61,11 @@ const MainPage = (): ReactElement => {
   };
 
   const openModal = () => {
+    document.body.style.overflow = "hidden";
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    document.body.style.overflow = "auto";
     setIsModalOpen(false);
     setIsRegisterMatched(false);
     setRegisterInput("");

@@ -229,9 +229,11 @@ const WatchPage = (): ReactElement => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
+    document.body.style.overflow = "hidden";
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    document.body.style.overflow = "auto";
     setUserAnnounced({ user_announced: true });
     setIsModalOpen(false);
   };
