@@ -38,43 +38,6 @@ const MyPage = () => {
   const [emotionTimeData, setEmotionTimeData] = useState<{
     [key in EmotionType]: number;
   }>({ happy: 0, sad: 0, surprise: 0, angry: 0, neutral: 0 });
-  const [videoGraphData, setVideoGraphData] = useState([
-    {
-      id: "neutral",
-      data: [
-        { x: "1", y: 0 },
-        { x: "2", y: 0 },
-      ],
-    },
-    {
-      id: "happy",
-      data: [
-        { x: "1", y: 0 },
-        { x: "2", y: 0 },
-      ],
-    },
-    {
-      id: "sad",
-      data: [
-        { x: "1", y: 0 },
-        { x: "2", y: 0 },
-      ],
-    },
-    {
-      id: "surprise",
-      data: [
-        { x: "1", y: 0 },
-        { x: "2", y: 0 },
-      ],
-    },
-    {
-      id: "angry",
-      data: [
-        { x: "1", y: 0 },
-        { x: "2", y: 0 },
-      ],
-    },
-  ]);
   const [donutGraphData, setDonutGraphData] = useState<
     {
       id: string;
@@ -337,32 +300,8 @@ const MyPage = () => {
                         pointBorderColor={{ from: "serieColor" }}
                         pointLabelYOffset={-12}
                         useMesh={true}
-                        legends={[
-                          {
-                            anchor: "bottom-right",
-                            direction: "column",
-                            justify: false,
-                            translateX: 100,
-                            translateY: 0,
-                            itemsSpacing: 0,
-                            itemDirection: "left-to-right",
-                            itemWidth: 80,
-                            itemHeight: 20,
-                            itemOpacity: 0.75,
-                            symbolSize: 12,
-                            symbolShape: "circle",
-                            symbolBorderColor: "rgba(0, 0, 0, .5)",
-                            effects: [
-                              {
-                                on: "hover",
-                                style: {
-                                  itemBackground: "rgba(0, 0, 0, .03)",
-                                  itemOpacity: 1,
-                                },
-                              },
-                            ],
-                          },
-                        ]}
+                        legends={[]}
+                        tooltip={() => <></>}
                       />
                     </div>
                   </div>
