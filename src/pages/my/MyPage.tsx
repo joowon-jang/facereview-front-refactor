@@ -47,31 +47,31 @@ const MyPage = () => {
     {
       id: "😄",
       label: "즐거운",
-      value: 366,
+      value: 0,
       color: "#FF4D8D",
     },
     {
       id: "😥",
       label: "슬픈",
-      value: 280,
+      value: 0,
       color: "#479CFF",
     },
     {
       id: "😲",
       label: "놀라운",
-      value: 379,
+      value: 0,
       color: "#92C624",
     },
     {
       id: "😠",
       label: "화나는",
-      value: 474,
+      value: 0,
       color: "#FF6B4B",
     },
     {
       id: "😐",
       label: "무표정",
-      value: 265,
+      value: 0,
       color: "#393946",
     },
   ]);
