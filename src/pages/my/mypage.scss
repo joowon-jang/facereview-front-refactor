@@ -124,8 +124,8 @@
     .my-page-video-container {
       display: flex;
       overflow-x: auto;
-      padding-bottom: 88px;
       padding-left: 20px;
+      margin-bottom: 88px;
 
       @include mobile {}
 
