@@ -13,6 +13,10 @@
     .thumbnail-wrapper .video-thumbnail {
       visibility: 0;
       display: none;
+
+      &.fix {
+        display: block;
+      }
     }
 
     .thumbnail-wrapper .youtube-item {
@@ -57,11 +61,13 @@
 
     .video-emotion-container {
       display: flex;
+
       .video-emoji-container {
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 9px;
+
         &.small-emoji {
           width: 20px;
           height: 20px;
@@ -79,23 +85,29 @@
         &.happy {
           background: $category-joyful-basic;
         }
+
         &.surprise {
           background: $category-surprised-basic;
         }
+
         &.sad {
           background: $category-sad-basic;
         }
+
         &.angry {
           background: $category-angry-basic;
         }
+
         &.neutral {
           background: $category-neutral-basic;
         }
       }
+
       .video-emotion-data {
         color: $gray-900;
       }
     }
+
     .video-emotion-data-empty {
       color: $gray-400;
     }
