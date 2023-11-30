@@ -74,7 +74,10 @@
         width: 100%;
 
         @include mobile {
-          margin-top: 135px;
+          position: absolute;
+          padding: 4px 16px 8px 16px;
+          left: 0px;
+          bottom: 21px;
         }
 
         button + button {
