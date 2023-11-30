@@ -337,15 +337,7 @@ const AuthPage = () => {
             <Button
               label={getConfirmButtonLabel()}
               type="cta-full"
-              style={
-                isMobile
-                  ? {
-                      position: "fixed",
-                      left: "0",
-                      bottom: "0",
-                    }
-                  : { marginTop: "48px" }
-              }
+              style={{ marginTop: "48px" }}
               onClick={handleSubmitButtonClick}
               isDisabled={!isConfirmButtonVisible()}
             />
