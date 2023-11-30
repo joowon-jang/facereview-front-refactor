@@ -173,6 +173,10 @@
     }
 
     .comment-container {
+      @include mobile {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
       .comment-input-container {
         display: flex;
         align-items: center;
@@ -390,6 +394,9 @@
     }
 
     .recommend-container {
+      @include mobile {
+        width: 100%;
+      }
       .recommend-title {
         color: $gray-900;
         margin-bottom: 32px;
