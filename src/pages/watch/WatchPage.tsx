@@ -116,7 +116,7 @@ const WatchPage = (): ReactElement => {
       angry: 0,
       angryColor: "#FF6B4B",
       neutral: 100,
-      neutralColor: "#5d5d6d",
+      neutralColor: "#393946",
     },
   ]);
   const [othersGraphData, setOthersGraphData] = useState([
@@ -130,7 +130,7 @@ const WatchPage = (): ReactElement => {
       angry: 0,
       angryColor: "#FF6B4B",
       neutral: 100,
-      neutralColor: "#5d5d6d",
+      neutralColor: "#393946",
     },
   ]);
   const [videoGraphData, setVideoGraphData] = useState([
@@ -586,7 +586,7 @@ const WatchPage = (): ReactElement => {
               layout="horizontal"
               valueScale={{ type: "linear" }}
               indexScale={{ type: "band", round: true }}
-              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#5d5d6d"]}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
               borderColor={{
                 from: "color",
                 modifiers: [["darker", 1.6]],
@@ -642,7 +642,7 @@ const WatchPage = (): ReactElement => {
               layout="horizontal"
               valueScale={{ type: "linear" }}
               indexScale={{ type: "band", round: true }}
-              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#5d5d6d"]}
+              colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
               borderColor={{
                 from: "color",
                 modifiers: [["darker", 1.6]],
@@ -720,7 +720,7 @@ const WatchPage = (): ReactElement => {
             <div className="video-graph-container">
               <ResponsiveLine
                 data={videoGraphData}
-                colors={["#5d5d6d", "#FF4D8D", "#479CFF", "#92C624", "#FF6B4B"]}
+                colors={["#393946", "#FF4D8D", "#479CFF", "#92C624", "#FF6B4B"]}
                 margin={{ top: 2, right: 0, bottom: 2, left: 0 }}
                 xScale={{ type: "point" }}
                 yScale={{
@@ -815,26 +815,28 @@ const WatchPage = (): ReactElement => {
         )}
 
         <div className="comment-container">
-          <div className="comment-input-container">
-            <ProfileIcon
-              type={"icon-medium"}
-              color={mapNumberToEmotion(user_profile)}
-              style={{ marginRight: "12px" }}
-            />
-            <TextInput
-              inputType="underline"
-              value={comment}
-              onChange={setComment}
-              placeholder={"영상에 대한 의견을 남겨보아요"}
-            />
-            <UploadButton
-              onClick={handleCommentSubmit}
-              style={{
-                marginLeft: "12px",
-                display: comment.length > 0 ? "block" : "none",
-              }}
-            />
-          </div>
+          {!isMobile && (
+            <div className="comment-input-container">
+              <ProfileIcon
+                type={"icon-medium"}
+                color={mapNumberToEmotion(user_profile)}
+                style={{ marginRight: "12px" }}
+              />
+              <TextInput
+                inputType="underline"
+                value={comment}
+                onChange={setComment}
+                placeholder={"영상에 대한 의견을 남겨보아요"}
+              />
+              <UploadButton
+                onClick={handleCommentSubmit}
+                style={{
+                  marginLeft: "12px",
+                  display: comment.length > 0 ? "block" : "none",
+                }}
+              />
+            </div>
+          )}
           <div
             className={
               isMobile
@@ -956,6 +958,9 @@ const WatchPage = (): ReactElement => {
             )}
           </div>
         </div>
+        {isMobile && (
+          <Devider style={{ width: "100vw", marginLeft: "-16px" }} />
+        )}
       </div>
       <div className="side-container">
         {!isMobile && (
@@ -990,7 +995,7 @@ const WatchPage = (): ReactElement => {
                     "#479CFF",
                     "#92C624",
                     "#FF6B4B",
-                    "#5d5d6d",
+                    "#393946",
                   ]}
                   borderColor={{
                     from: "color",
@@ -1054,7 +1059,7 @@ const WatchPage = (): ReactElement => {
                     "#479CFF",
                     "#92C624",
                     "#FF6B4B",
-                    "#5d5d6d",
+                    "#393946",
                   ]}
                   borderColor={{
                     from: "color",
@@ -1107,7 +1112,7 @@ const WatchPage = (): ReactElement => {
             {relatedVideoList.map((v) => (
               <VideoItem
                 key={uuidv4()}
-                width={320}
+                width={isMobile ? windowWidth - 32 : 320}
                 videoId={v.youtube_url}
                 videoTitle={v.youtube_title}
                 videoMostEmotion={v.most_emotion}
