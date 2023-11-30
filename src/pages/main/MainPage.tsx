@@ -51,8 +51,8 @@ const MainPage = (): ReactElement => {
       selectedEmotion === "all" || v.youtube_most_emotion === selectedEmotion
   );
   const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
-  const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(null);
-  const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(0);
+  const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(6000);
+  const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(1);
 
   const getThumbnailUrl = (videoId: string) =>
     `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
@@ -100,11 +100,12 @@ const MainPage = (): ReactElement => {
   };
 
   let timerId: NodeJS.Timeout;
+  let intervalTimer: NodeJS.Timer;
 
   const useInterval = (
     callback: () => void,
     delay: number | null,
-    test: number
+    index: number
   ) => {
     const savedCallback = useRef<() => void>();
 
@@ -124,10 +125,10 @@ const MainPage = (): ReactElement => {
         timerId = setTimeout(() => {
           setGenreChangeOpacity(0);
         }, 5800);
-        const id = setInterval(tick, delay);
-        return () => clearInterval(id);
+        intervalTimer = setInterval(tick, delay);
+        return () => clearInterval(intervalTimer);
       }
-    }, [delay, test]);
+    }, [delay, index]);
   };
 
   useInterval(
@@ -139,8 +140,6 @@ const MainPage = (): ReactElement => {
   );
 
   useEffect(() => {
-    setGenreChangeOpacity(1);
-    setGenreChangeTerm(6000);
     getAllVideo()
       .then((data) => {
         setAllVideo(data);
@@ -216,7 +215,15 @@ const MainPage = (): ReactElement => {
             {isMobile && <br />}
             가장 좋아할 영상을 준비했어요.
           </h4>
-          <div className="video-container">
+          <div
+            className="video-container"
+            onMouseEnter={() => {
+              clearInterval(intervalTimer);
+              setGenreChangeTerm(null);
+              clearTimeout(timerId);
+            }}
+            onMouseLeave={() => setGenreChangeTerm(6000)}
+          >
             <div className="main-page-video-container">
               <div className="main-page-video-wrapper">
                 {personalRecommendedVideo.map((v) => (
@@ -265,11 +272,11 @@ const MainPage = (): ReactElement => {
           {isMobile && <br />}
           시청된 영상을 준비했어요.
         </h4>
-        <div className="video-container">
+        <div className="genre-video-container">
           <div
-            className="main-page-video-container"
+            className="main-page-genre-video-container"
             onMouseEnter={() => {
-              clearInterval(setInterval(() => {}, 6000));
+              clearInterval(intervalTimer);
               setGenreChangeTerm(null);
               clearTimeout(timerId);
             }}
@@ -279,7 +286,7 @@ const MainPage = (): ReactElement => {
               transition: "opacity 0.2s ease-in-out",
             }}
           >
-            <div className="main-page-video-wrapper">
+            <div className="main-page-genre-video-wrapper">
               {genreVideos[genreCurrentIndex].map((v) => (
                 <VideoItem
                   type="small-emoji"
