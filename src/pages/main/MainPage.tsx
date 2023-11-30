@@ -100,11 +100,12 @@ const MainPage = (): ReactElement => {
   };
 
   let timerId: NodeJS.Timeout;
+  let intervalTimer: NodeJS.Timer;
 
   const useInterval = (
     callback: () => void,
     delay: number | null,
-    test: number
+    index: number
   ) => {
     const savedCallback = useRef<() => void>();
 
@@ -124,10 +125,10 @@ const MainPage = (): ReactElement => {
         timerId = setTimeout(() => {
           setGenreChangeOpacity(0);
         }, 5800);
-        const id = setInterval(tick, delay);
-        return () => clearInterval(id);
+        intervalTimer = setInterval(tick, delay);
+        return () => clearInterval(intervalTimer);
       }
-    }, [delay, test]);
+    }, [delay, index]);
   };
 
   useInterval(
@@ -265,11 +266,11 @@ const MainPage = (): ReactElement => {
           {isMobile && <br />}
           시청된 영상을 준비했어요.
         </h4>
-        <div className="video-container">
+        <div className="genre-video-container">
           <div
-            className="main-page-video-container"
+            className="main-page-genre-video-container"
             onMouseEnter={() => {
-              clearInterval(setInterval(() => {}, 6000));
+              clearInterval(intervalTimer);
               setGenreChangeTerm(null);
               clearTimeout(timerId);
             }}
@@ -279,7 +280,7 @@ const MainPage = (): ReactElement => {
               transition: "opacity 0.2s ease-in-out",
             }}
           >
-            <div className="main-page-video-wrapper">
+            <div className="main-page-genre-video-wrapper">
               {genreVideos[genreCurrentIndex].map((v) => (
                 <VideoItem
                   type="small-emoji"
