@@ -53,10 +53,10 @@ const MyPage = () => {
       color: "#FF4D8D",
     },
     {
-      id: "😥",
-      label: "슬픈",
+      id: "😠",
+      label: "화나는",
       value: 0,
-      color: "#479CFF",
+      color: "#FF6B4B",
     },
     {
       id: "😲",
@@ -65,16 +65,16 @@ const MyPage = () => {
       color: "#92C624",
     },
     {
-      id: "😠",
-      label: "화나는",
+      id: "😥",
+      label: "슬픈",
       value: 0,
-      color: "#FF6B4B",
+      color: "#479CFF",
     },
     {
       id: "😐",
       label: "무표정",
       value: 0,
-      color: "#393946",
+      color: "#5d5d6d",
     },
   ]);
 
@@ -108,9 +108,9 @@ const MyPage = () => {
         .then((res) => {
           const newData = [
             { ...donutGraphData[0], value: res.happy_per_avg },
-            { ...donutGraphData[1], value: res.sad_per_avg },
-            { ...donutGraphData[2], value: res.surprise_per_avg },
             { ...donutGraphData[3], value: res.angry_per_avg },
+            { ...donutGraphData[2], value: res.surprise_per_avg },
+            { ...donutGraphData[1], value: res.sad_per_avg },
             { ...donutGraphData[4], value: res.neutral_per_avg },
           ];
           setDonutGraphData(newData);
@@ -258,7 +258,7 @@ const MyPage = () => {
                       <ResponsiveLine
                         data={v.distribution_data.graph_data}
                         colors={[
-                          "#393946",
+                          "#5d5d6d",
                           "#FF4D8D",
                           "#479CFF",
                           "#92C624",
@@ -327,12 +327,12 @@ const MyPage = () => {
         </div>
         <div className="my-page-emotion-container">
           <h2 className={isMobile ? "font-title-small" : "font-title-medium"}>
-            최근 나의 감정 그래프
+            나의 감정 그래프
           </h2>
           <div className="my-page-emotion-graph-container">
             <div className="pie-graph-container">
               <ResponsivePie
-                colors={["#FF4D8D", "#479CFF", "#92C624", "#FF6B4B", "#393946"]}
+                colors={["#FF4D8D", "#FF6B4B", "#92C624", "#479CFF", "#5d5d6d"]}
                 data={donutGraphData}
                 margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                 activeOuterRadiusOffset={8}
@@ -341,60 +341,78 @@ const MyPage = () => {
                   from: "color",
                   modifiers: [["darker", 0.2]],
                 }}
+                innerRadius={0.7}
+                enableArcLabels={false}
                 enableArcLinkLabels={false}
-                legends={[
-                  {
-                    anchor: "bottom",
-                    direction: "row",
-                    justify: false,
-                    translateX: 0,
-                    translateY: 56,
-                    itemsSpacing: 0,
-                    itemWidth: 100,
-                    itemHeight: 18,
-                    itemTextColor: "#000",
-                    itemDirection: "left-to-right",
-                    itemOpacity: 1,
-                    symbolSize: 18,
-                    symbolShape: "circle",
-                    effects: [
-                      {
-                        on: "hover",
-                        style: {
-                          itemTextColor: "#000",
-                        },
-                      },
-                    ],
-                  },
-                ]}
+                tooltip={() => <></>}
               />
+              <div className="pie-legend-container">
+                <div className="legend-item-wrapper">
+                  <div className="legend-item-color happy"></div>
+                  <div className="legend-item-text font-label-large">
+                    {donutGraphData[0].value}%
+                  </div>
+                </div>
+                <div className="legend-item-wrapper">
+                  <div className="legend-item-color angry"></div>
+                  <div className="legend-item-text font-label-large">
+                    {donutGraphData[3].value}%
+                  </div>
+                </div>
+                <div className="legend-item-wrapper">
+                  <div className="legend-item-color surprise"></div>
+                  <div className="legend-item-text font-label-large">
+                    {donutGraphData[2].value}%
+                  </div>
+                </div>
+                <div className="legend-item-wrapper">
+                  <div className="legend-item-color sad"></div>
+                  <div className="legend-item-text font-label-large">
+                    {donutGraphData[1].value}%
+                  </div>
+                </div>
+                <div className="legend-item-wrapper">
+                  <div className="legend-item-color neutral"></div>
+                  <div className="legend-item-text font-label-large">
+                    {donutGraphData[4].value}%
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="emotion-time-container">
               <h3 className="font-title-large emotion-time-title">
-                페이스리뷰에서
+                그동안
+                <br />
+                영상을 보며
               </h3>
               <div className="text-wrapper">
-                <p className="font-title-medium emotion-time-text">
+                <p className="emotion-time-text">
                   <span className="highlight happy">
                     {emotionTimeData.happy}
                   </span>
-                  초 동안 웃었어요.
+                  초 즐거웠어요 😄
                 </p>
-                <p className="font-title-medium emotion-time-text">
-                  <span className="highlight sad">{emotionTimeData.sad}</span>초
-                  동안 슬펐어요.
-                </p>
-                <p className="font-title-medium emotion-time-text">
-                  <span className="highlight surprise">
-                    {emotionTimeData.surprise}
-                  </span>
-                  초 동안 놀랐어요.
-                </p>
-                <p className="font-title-medium emotion-time-text">
+                <p className="emotion-time-text">
                   <span className="highlight angry">
                     {emotionTimeData.angry}
                   </span>
-                  초 동안 화났어요.
+                  초 화났어요 😠
+                </p>
+                <p className="emotion-time-text">
+                  <span className="highlight sad">{emotionTimeData.sad}</span>초
+                  슬펐어요 😥
+                </p>
+                <p className="emotion-time-text">
+                  <span className="highlight surprise">
+                    {emotionTimeData.surprise}
+                  </span>
+                  초 놀랐어요 😲
+                </p>
+                <p className="emotion-time-text">
+                  <span className="highlight neutral">
+                    {emotionTimeData.angry}
+                  </span>
+                  초 평온했어요 😐
                 </p>
               </div>
             </div>

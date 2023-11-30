@@ -42,6 +42,7 @@
       margin-bottom: 8px;
       border: 1px solid $primary-basic;
       border-radius: 4px;
+      transition: ease all 0.2s;
 
       &:hover {
         color: $gray-50;

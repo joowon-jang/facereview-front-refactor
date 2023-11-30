@@ -6,6 +6,9 @@ import Button from "components/Button/Button";
 import { toast } from "react-toastify";
 import { tutorialComplete } from "api/auth";
 import useWindowSize from "utils/useWindowSize";
+import tutorial1 from "assets/img/tutorial1.gif";
+import tutorial2 from "assets/img/tutorial2.gif";
+import tutorial3 from "assets/img/tutorial3.gif";
 
 const TUTORIAL_TEXT = [
   "",
@@ -13,6 +16,8 @@ const TUTORIAL_TEXT = [
   "영상을 시청하며 보여지는 나의 생생한 표정이 실시간으로 기록돼요.",
   "영상을 많이 볼수록 내가 좋아할만한 영상을 더 정확히 추천받을 수 있어요.",
 ];
+// eslint-disable-next-line no-sparse-arrays
+const TUTORIAL_IMG = [, tutorial1, tutorial2, tutorial3];
 
 const AuthPage = (): ReactElement => {
   const windowWidth = useWindowSize();
@@ -50,7 +55,9 @@ const AuthPage = (): ReactElement => {
       <div className="tutorial-content">
         {!isMobile && (
           <div className="tutorial-left-container">
-            <div className="visual-wrapper"></div>
+            <div className="visual-wrapper">
+              <img src={TUTORIAL_IMG[currentStep]} alt="튜토리얼 이미지" />
+            </div>
           </div>
         )}
         <div className="tutorial-right-container">
@@ -63,7 +70,9 @@ const AuthPage = (): ReactElement => {
           </p>
           {isMobile && (
             <div className="tutorial-mobile-container">
-              <div className="visual-wrapper"></div>
+              <div className="visual-wrapper">
+                <img src={TUTORIAL_IMG[currentStep]} alt="튜토리얼 이미지" />
+              </div>
               <StepIndicator step={currentStep} maxStep={3} />{" "}
             </div>
           )}
