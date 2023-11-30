@@ -53,6 +53,17 @@ const MainPage = (): ReactElement => {
   const [genreCurrentIndex, setGenreCurrentIndex] = useState<number>(0);
   const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(6000);
   const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(1);
+  const genreTitle: Array<string> = [
+    "스포츠",
+    "게임",
+    "공포",
+    "뉴스",
+    "예능",
+    "요리",
+    "여행",
+    "먹방",
+    "드라마",
+  ];
 
   const getThumbnailUrl = (videoId: string) =>
     `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
@@ -215,22 +226,14 @@ const MainPage = (): ReactElement => {
             {isMobile && <br />}
             가장 좋아할 영상을 준비했어요.
           </h4>
-          <div
-            className="video-container"
-            onMouseEnter={() => {
-              clearInterval(intervalTimer);
-              setGenreChangeTerm(null);
-              clearTimeout(timerId);
-            }}
-            onMouseLeave={() => setGenreChangeTerm(6000)}
-          >
+          <div className="video-container">
             <div className="main-page-video-container">
               <div className="main-page-video-wrapper">
                 {personalRecommendedVideo.map((v) => (
                   <VideoItem
                     type="small-emoji"
                     key={uuidv4()}
-                    width={isMobile ? window.innerWidth - 48 : 280}
+                    width={isMobile ? windowWidth - 48 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
                     videoMostEmotion={v.youtube_most_emotion}
@@ -238,8 +241,8 @@ const MainPage = (): ReactElement => {
                     style={
                       isMobile
                         ? {
-                            paddingTop: "14px",
-                            paddingBottom: "14px",
+                            marginTop: "14px",
+                            marginBottom: "14px",
                             marginRight: "16px",
                           }
                         : { marginRight: "28px" }
@@ -259,7 +262,15 @@ const MainPage = (): ReactElement => {
             isMobile ? "title font-title-medium" : "title font-title-large"
           }
         >
-          장르별 추천{` `}
+          <span
+            style={{
+              opacity: genreChangeOpacity,
+              transition: "opacity 0.2s ease-in-out",
+            }}
+          >
+            {genreTitle[genreCurrentIndex]}
+          </span>{" "}
+          추천{` `}
           {isMobile && <br />}
           영상을 골라봤어요.
         </h2>
@@ -268,24 +279,24 @@ const MainPage = (): ReactElement => {
             isMobile ? "subtitle font-title-mini" : "subtitle font-title-small"
           }
         >
-          장르별로 가장 많이{` `}
+          유저들의 감정데이터를 분석해{` `}
           {isMobile && <br />}
-          시청된 영상을 준비했어요.
+          추천 영상을 준비했어요.
         </h4>
-        <div className="genre-video-container">
-          <div
-            className="main-page-genre-video-container"
-            onMouseEnter={() => {
-              clearInterval(intervalTimer);
-              setGenreChangeTerm(null);
-              clearTimeout(timerId);
-            }}
-            onMouseLeave={() => setGenreChangeTerm(6000)}
-            style={{
-              opacity: genreChangeOpacity,
-              transition: "opacity 0.2s ease-in-out",
-            }}
-          >
+        <div
+          onMouseEnter={() => {
+            clearInterval(intervalTimer);
+            setGenreChangeTerm(null);
+            clearTimeout(timerId);
+          }}
+          onMouseLeave={() => setGenreChangeTerm(6000)}
+          style={{
+            opacity: genreChangeOpacity,
+            transition: "opacity 0.2s ease-in-out",
+          }}
+          className="genre-video-container"
+        >
+          <div className="main-page-genre-video-container">
             <div className="main-page-genre-video-wrapper">
               {genreVideos[genreCurrentIndex].map((v) => (
                 <VideoItem
@@ -299,8 +310,8 @@ const MainPage = (): ReactElement => {
                   style={
                     isMobile
                       ? {
-                          paddingTop: "14px",
-                          paddingBottom: "14px",
+                          marginTop: "14px",
+                          marginBottom: "14px",
                           marginRight: "16px",
                         }
                       : {
@@ -479,7 +490,7 @@ const MainPage = (): ReactElement => {
                 videoMostEmotionPercentage={v.youtube_most_emotion_per}
                 style={
                   isMobile
-                    ? { paddingTop: "14px", paddingBottom: "14px" }
+                    ? { marginTop: "14px", marginBottom: "14px" }
                     : { marginRight: "28px", marginBottom: "56px" }
                 }
               />
