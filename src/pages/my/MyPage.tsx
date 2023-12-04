@@ -421,7 +421,7 @@ const MyPage = () => {
                 </p>
                 <p className="emotion-time-text">
                   <span className="highlight neutral">
-                    {emotionTimeData.angry}
+                    {emotionTimeData.neutral}
                   </span>
                   초 평온했어요 😐
                 </p>
