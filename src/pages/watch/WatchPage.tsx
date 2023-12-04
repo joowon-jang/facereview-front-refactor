@@ -475,6 +475,7 @@ const WatchPage = (): ReactElement => {
     comment_date,
     comment_contents,
     user_profile,
+    modify_check,
     identify,
     comment_index,
   }: CommentType): ReactElement => {
@@ -504,6 +505,7 @@ const WatchPage = (): ReactElement => {
               </div>
               <div className="comment-time-text font-label-small">
                 {comment_date}
+                {modify_check ? <>(수정됨)</> : null}
               </div>
             </div>
             <div className="comment-text font-body-medium">
