@@ -110,7 +110,7 @@ const MainPage = (): ReactElement => {
     }
   };
 
-  let timerId: NodeJS.Timeout;
+  let timeoutTimer: NodeJS.Timeout;
   let intervalTimer: NodeJS.Timer;
 
   const useInterval = (
@@ -133,11 +133,14 @@ const MainPage = (): ReactElement => {
       };
 
       if (delay !== null) {
-        timerId = setTimeout(() => {
+        timeoutTimer = setTimeout(() => {
           setGenreChangeOpacity(0);
         }, 5800);
         intervalTimer = setInterval(tick, delay);
-        return () => clearInterval(intervalTimer);
+        return () => {
+          clearInterval(intervalTimer);
+          clearTimeout(timeoutTimer);
+        };
       }
     }, [delay, index]);
   };
@@ -286,8 +289,8 @@ const MainPage = (): ReactElement => {
         <div
           onMouseEnter={() => {
             clearInterval(intervalTimer);
+            clearTimeout(timeoutTimer);
             setGenreChangeTerm(null);
-            clearTimeout(timerId);
           }}
           onMouseLeave={() => setGenreChangeTerm(6000)}
           style={{
