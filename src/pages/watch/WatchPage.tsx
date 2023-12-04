@@ -889,15 +889,12 @@ const WatchPage = (): ReactElement => {
                               new_comment_contents: modifyingComment,
                             })
                               .then((res) => {
-                                const newCommentList = commentList.map((item) =>
-                                  item.comment_index === comment.comment_index
-                                    ? {
-                                        ...item,
-                                        comment_contents: modifyingComment,
-                                      }
-                                    : item
-                                );
-                                setCommentList(newCommentList);
+                                getVideoComments({ youtube_url: id || "" })
+                                  .then((res) => {
+                                    setCommentList(res);
+                                  })
+                                  .catch((err) => {});
+
                                 setEditingcommentindex(null);
                               })
                               .catch((error) => {
@@ -934,16 +931,16 @@ const WatchPage = (): ReactElement => {
                       onCheck={() => {
                         deleteComment({ comment_index: comment.comment_index })
                           .then((res) => {
-                            console.log(res);
-                            const newCommentList = commentList.filter(
-                              (c) => c.comment_index !== comment.comment_index
-                            );
-                            setCommentList(newCommentList);
+                            getVideoComments({ youtube_url: id || "" })
+                              .then((res) => {
+                                setCommentList(res);
+                                closeModal2();
+                              })
+                              .catch((err) => {});
                           })
-                          .catch((error) => console.log(error));
-
-                        console.log(commentList);
-                        closeModal2();
+                          .catch((error) => {
+                            console.log(error);
+                          });
                       }}
                     >
                       <h2>댓글을 삭제하시겠어요?</h2>
