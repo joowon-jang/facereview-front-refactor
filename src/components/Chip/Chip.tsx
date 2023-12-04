@@ -2,10 +2,11 @@ import React, { ReactElement } from "react";
 import "./chip.scss";
 
 import plusIcon from "assets/img/plusIcon.png";
+import { EmotionType } from "types/index";
 
 type ChipPropsType = {
   type: "category-big" | "category-small";
-  choose: "all" | "happy" | "surprise" | "angry" | "sad" | "plus";
+  choose: "all" | EmotionType | "plus";
   style?: React.CSSProperties;
   isSelected?: boolean;
   onClick: () => void;
@@ -28,6 +29,7 @@ const Chip = ({
     surprise: "😲 놀라운",
     angry: "😠 화나는",
     sad: "😥 슬픈",
+    neutral: "😐 평온한",
     plus: <img className="plus-icon" src={plusIcon} alt="plusIcon" />,
   };
 

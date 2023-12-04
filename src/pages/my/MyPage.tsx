@@ -33,7 +33,9 @@ const MyPage = () => {
   const navigate = useNavigate();
   const { setTempToken } = useAuthStorage();
 
-  const [selectedEmotion, setSelectedEmotion] = useState("all");
+  const [selectedEmotion, setSelectedEmotion] = useState<"all" | EmotionType>(
+    "all"
+  );
   const [recentVideo, setRecentVideo] = useState<VideoWatchedType[]>([]);
   const [emotionTimeData, setEmotionTimeData] = useState<{
     [key in EmotionType]: number;
@@ -82,7 +84,7 @@ const MyPage = () => {
     (v) => selectedEmotion === "all" || v.most_emotion === selectedEmotion
   );
 
-  const handleChipClick = (emotion: React.SetStateAction<string>) => {
+  const handleChipClick = (emotion: "all" | EmotionType) => {
     setSelectedEmotion(emotion);
   };
 
@@ -227,6 +229,15 @@ const MyPage = () => {
                   choose={"angry"}
                   onClick={() => handleChipClick("angry")}
                   isSelected={selectedEmotion === "angry"}
+                  style={
+                    isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
+                  }
+                />
+                <Chip
+                  type={isMobile ? "category-small" : "category-big"}
+                  choose={"neutral"}
+                  onClick={() => handleChipClick("neutral")}
+                  isSelected={selectedEmotion === "neutral"}
                   style={
                     isMobile ? { marginRight: "12px" } : { marginRight: "24px" }
                   }

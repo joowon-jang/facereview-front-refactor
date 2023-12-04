@@ -33,7 +33,9 @@ const MainPage = (): ReactElement => {
   const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
-  const [selectedEmotion, setSelectedEmotion] = useState("all");
+  const [selectedEmotion, setSelectedEmotion] = useState<"all" | EmotionType>(
+    "all"
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerInput, setRegisterInput] = useState("");
   const [registeringVideoId, setRegisteringVideoId] = useState("");
@@ -68,7 +70,7 @@ const MainPage = (): ReactElement => {
   const getThumbnailUrl = (videoId: string) =>
     `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
 
-  const handleChipClick = (emotion: React.SetStateAction<string>) => {
+  const handleChipClick = (emotion: "all" | EmotionType) => {
     setSelectedEmotion(emotion);
   };
 
