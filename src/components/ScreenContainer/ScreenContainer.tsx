@@ -32,7 +32,7 @@ const ScreenContainer = ({
 
   return (
     <div className="screen-container">
-      {headerShown ? <Header /> : null}
+      {headerShown ? <Header isMyPage={isSignIn} /> : null}
       <Outlet />
     </div>
   );

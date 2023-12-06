@@ -162,14 +162,16 @@ const MyPage = () => {
                   오늘은 어떤 기분이신가요?
                 </h3>
               </div>
-              <Button
-                label="로그아웃"
-                type="small-outline"
-                onClick={handleLogoutClick}
-                style={
-                  isMobile ? { display: "none" } : { marginBottom: "40px" }
-                }
-              />
+              {!isMobile && (
+                <Button
+                  label="로그아웃"
+                  type="small-outline"
+                  onClick={handleLogoutClick}
+                  style={{
+                    marginBottom: "40px",
+                  }}
+                />
+              )}
             </div>
           </div>
           <Devider />
