@@ -8,7 +8,11 @@ import "./header.scss";
 import { mapNumberToEmotion } from "utils/index";
 import useWindowSize from "utils/useWindowSize";
 
-const Header = (): ReactElement => {
+type HeaderPropsType = {
+  isMyPage?: boolean;
+};
+
+const Header = ({ isMyPage }: HeaderPropsType): ReactElement => {
   const windowWidth = useWindowSize();
   const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const navigate = useNavigate();
@@ -28,18 +32,25 @@ const Header = (): ReactElement => {
           gap={3}
           style={isMobile ? { height: "18px" } : { height: "35px" }}
         />
+        {isMyPage ? <></> : <></>}
         {is_sign_in ? (
-          <button
-            className="header-profile-icon-button"
-            onClick={() => {
-              navigate("/my");
-            }}
-          >
-            <ProfileIcon
-              type={isMobile ? "icon-small" : "icon-medium"}
-              color={mapNumberToEmotion(user_profile)}
-            />
-          </button>
+          isMyPage ? (
+            <div className="header-logout-button-mobile">
+              <h3 className="font-label-small">로그아웃</h3>
+            </div>
+          ) : (
+            <button
+              className="header-profile-icon-button"
+              onClick={() => {
+                navigate("/my");
+              }}
+            >
+              <ProfileIcon
+                type={isMobile ? "icon-small" : "icon-medium"}
+                color={mapNumberToEmotion(user_profile)}
+              />
+            </button>
+          )
         ) : (
           <Button
             label="로그인"
