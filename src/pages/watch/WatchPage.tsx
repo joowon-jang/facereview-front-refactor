@@ -263,10 +263,8 @@ const WatchPage = (): ReactElement => {
       if (isLikeVideo) {
         cancelLike({ youtube_url: id || "" })
           .then((res) => {
-            console.log("cancelLike", res);
             checkLike({ youtube_url: id || "" })
               .then((res) => {
-                console.log("check_like", res);
                 setIsLikeVideo(!!res.like_flag);
               })
               .catch((err) => {
@@ -274,7 +272,6 @@ const WatchPage = (): ReactElement => {
               });
             getVideoDetail({ youtube_url: id || "" })
               .then((res) => {
-                console.log(res);
                 setVideoData(res);
               })
               .catch((err) => {});
@@ -285,7 +282,6 @@ const WatchPage = (): ReactElement => {
       }
       addLike({ youtube_url: id || "" })
         .then((res) => {
-          console.log("addlike", res);
           checkLike({ youtube_url: id || "" })
             .then((res) => {
               setIsLikeVideo(!!res.like_flag);
@@ -295,7 +291,6 @@ const WatchPage = (): ReactElement => {
             });
           getVideoDetail({ youtube_url: id || "" })
             .then((res) => {
-              console.log(res);
               setVideoData(res);
             })
             .catch((err) => {});
@@ -312,7 +307,6 @@ const WatchPage = (): ReactElement => {
     window.scrollTo(0, 0);
     getVideoDetail({ youtube_url: id || "" })
       .then((res) => {
-        console.log(res);
         setVideoData(res);
       })
       .catch((err) => {});
@@ -349,13 +343,11 @@ const WatchPage = (): ReactElement => {
 
     getMainDistributionData({ youtube_url: id || "" })
       .then((res) => {
-        console.log(res);
         setVideoGraphData(getDistributionToGraphData(res));
       })
       .catch((err) => console.log(err));
     checkLike({ youtube_url: id || "" })
       .then((res) => {
-        console.log("checklike", res);
         setIsLikeVideo(!!res.like_flag);
       })
       .catch((err) => {
