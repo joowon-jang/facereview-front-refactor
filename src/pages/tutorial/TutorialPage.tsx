@@ -5,10 +5,10 @@ import StepIndicator from "components/StepIndicator/StepIndicator";
 import Button from "components/Button/Button";
 import { toast } from "react-toastify";
 import { tutorialComplete } from "api/auth";
-import useWindowSize from "utils/useWindowSize";
 import tutorial1 from "assets/img/tutorial1.gif";
 import tutorial2 from "assets/img/tutorial2.gif";
 import tutorial3 from "assets/img/tutorial3.gif";
+import useMediaQuery from "utils/useMediaQuery";
 
 const TUTORIAL_TEXT = [
   "",
@@ -20,8 +20,7 @@ const TUTORIAL_TEXT = [
 const TUTORIAL_IMG = [, tutorial1, tutorial2, tutorial3];
 
 const AuthPage = (): ReactElement => {
-  const windowWidth = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
+  const isMobile = useMediaQuery("(max-width: 1200px)");
   const { step } = useParams();
   const navigate = useNavigate();
 
@@ -45,10 +44,6 @@ const AuthPage = (): ReactElement => {
     }
     handleSkipClick();
   };
-
-  useEffect(() => {
-    setIsMobile(windowWidth < 1200);
-  }, [windowWidth]);
 
   return (
     <div className="tutorial-container">

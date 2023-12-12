@@ -11,11 +11,10 @@ import { useAuthStorage } from "store/authStore";
 import { changeFavoriteGenre, changeName, changeProfilePhoto } from "api/auth";
 import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
 import CategoryList from "components/CategoryList/CategoryList";
-import useWindowSize from "utils/useWindowSize";
+import useMediaQuery from "utils/useMediaQuery";
 
 const EditPage = () => {
-  const windowWidth = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
+  const isMobile = useMediaQuery("(max-width: 1200px)");
   const {
     user_name,
     setUserName,
@@ -107,9 +106,6 @@ const EditPage = () => {
   useEffect(() => {
     setProfileColor(selectedColor);
   }, [selectedColor]);
-  useEffect(() => {
-    setIsMobile(windowWidth < 1200);
-  }, [windowWidth]);
 
   return (
     <>

@@ -6,22 +6,17 @@ import { useAuthStorage } from "store/authStore";
 import AnimatedLogo from "../AnimatedLogo/AnimatedLogo";
 import "./header.scss";
 import { mapNumberToEmotion } from "utils/index";
-import useWindowSize from "utils/useWindowSize";
+import useMediaQuery from "utils/useMediaQuery";
 
 type HeaderPropsType = {
   isMyPage?: boolean;
 };
 
 const Header = ({ isMyPage }: HeaderPropsType): ReactElement => {
-  const windowWidth = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
+  const isMobile = useMediaQuery("(max-width : 1200px)");
   const navigate = useNavigate();
   const { is_sign_in } = useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
-
-  useEffect(() => {
-    setIsMobile(windowWidth < 1200);
-  }, [windowWidth]);
 
   return (
     <div className="header-background">
@@ -34,7 +29,7 @@ const Header = ({ isMyPage }: HeaderPropsType): ReactElement => {
         />
         {isMyPage ? <></> : <></>}
         {is_sign_in ? (
-          isMyPage ? (
+          isMyPage && isMobile ? (
             <div className="header-logout-button-mobile">
               <h3 className="font-label-small">로그아웃</h3>
             </div>
