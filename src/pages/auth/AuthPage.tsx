@@ -13,7 +13,7 @@ import { CategoryType, UserInfoType } from "types";
 import { AxiosResponse } from "axios";
 import HeaderToken from "api/HeaderToken";
 import CategoryList from "components/CategoryList/CategoryList";
-import useWindowSize from "utils/useWindowSize";
+import useMediaQuery from "utils/useMediaQuery";
 
 const AlertMessages = {
   emailInvalid: "올바르지 않은 이메일 형식이에요",
@@ -24,8 +24,7 @@ const AlertMessages = {
 };
 const MAX_CATEGORY_LENGTH = 3;
 const AuthPage = () => {
-  const windowWidth = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
+  const isMobile = useMediaQuery("(max-width: 1200px)");
 
   const navigate = useNavigate();
   const { step } = useParams();
@@ -210,10 +209,6 @@ const AuthPage = () => {
     }
     setCategoryAlertMessage(AlertMessages.categoryInvalid);
   }, [categories]);
-
-  useEffect(() => {
-    setIsMobile(windowWidth < 1200);
-  }, [windowWidth]);
 
   return (
     <>

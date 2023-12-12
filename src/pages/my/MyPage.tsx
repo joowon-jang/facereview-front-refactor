@@ -21,14 +21,13 @@ import {
 } from "api/youtube";
 import { EmotionType, VideoWatchedType } from "types/index";
 import { mapNumberToEmotion } from "utils/index";
-import useWindowSize from "utils/useWindowSize";
 import { ResponsiveLine } from "@nivo/line";
+import useMediaQuery from "utils/useMediaQuery";
 
 const MyPage = () => {
   const { is_sign_in, user_name, user_profile } = useAuthStorage();
 
-  const windowWidth = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
+  const isMobile = useMediaQuery("(max-width: 1200px)");
 
   const navigate = useNavigate();
   const { setTempToken } = useAuthStorage();
@@ -125,10 +124,6 @@ const MyPage = () => {
         .catch((err) => console.log(err));
     }
   }, []);
-
-  useEffect(() => {
-    setIsMobile(windowWidth < 1200);
-  }, [windowWidth]);
 
   return (
     <>

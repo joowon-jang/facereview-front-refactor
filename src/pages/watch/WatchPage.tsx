@@ -48,14 +48,13 @@ import ModalDialog from "components/ModalDialog/ModalDialog";
 import safeImage from "assets/img/safeImage.png";
 import LikeButton from "components/LikeButton/LikeButton";
 import { ResponsiveLine } from "@nivo/line";
-import useWindowSize from "utils/useWindowSize";
 import SomeIcon from "components/SomeIcon/SomeIcon";
+import useMediaQuery from "utils/useMediaQuery";
 
 const WatchPage = (): ReactElement => {
+  const isMobile = useMediaQuery("(max-width: 1200px)");
   const [modifyingComment, setModifyingComment] = useState<string>("");
   const { v4: uuidv4 } = require("uuid");
-  const windowWidth = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
   const { id } = useParams();
   const navigate = useNavigate();
   const opts: Options = isMobile
@@ -317,10 +316,6 @@ const WatchPage = (): ReactElement => {
       openModal1();
     }
   }, []);
-
-  useEffect(() => {
-    setIsMobile(windowWidth < 1200);
-  }, [windowWidth]);
 
   useEffect(() => {
     socket.connect();
@@ -1103,7 +1098,7 @@ const WatchPage = (): ReactElement => {
             {relatedVideoList.map((v) => (
               <VideoItem
                 key={uuidv4()}
-                width={isMobile ? windowWidth - 32 : 320}
+                width={isMobile ? window.innerWidth - 32 : 320}
                 videoId={v.youtube_url}
                 videoTitle={v.youtube_title}
                 videoMostEmotion={v.most_emotion}

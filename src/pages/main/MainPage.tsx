@@ -26,11 +26,10 @@ import Button from "components/Button/Button";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 import { updateRequestVideoList } from "api/request";
 import { getTimeToString } from "utils/index";
-import useWindowSize from "utils/useWindowSize";
+import useMediaQuery from "utils/useMediaQuery";
 
 const MainPage = (): ReactElement => {
-  const windowWidth = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(windowWidth < 1200);
+  const isMobile = useMediaQuery("(max-width: 1200px)");
   const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
   const [selectedEmotion, setSelectedEmotion] = useState<"all" | EmotionType>(
@@ -201,10 +200,6 @@ const MainPage = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    setIsMobile(windowWidth < 1200);
-  }, [windowWidth]);
-
-  useEffect(() => {
     extractVideoId();
   }, [registerInput]);
 
@@ -238,7 +233,7 @@ const MainPage = (): ReactElement => {
                   <VideoItem
                     type="small-emoji"
                     key={uuidv4()}
-                    width={isMobile ? windowWidth - 48 : 280}
+                    width={isMobile ? window.innerWidth - 48 : 280}
                     videoId={v.youtube_url}
                     videoTitle={v.youtube_title}
                     videoMostEmotion={v.youtube_most_emotion}
