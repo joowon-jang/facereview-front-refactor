@@ -34,7 +34,7 @@ const Header = ({ isMyPage }: HeaderPropsType): ReactElement => {
         />
         {isMyPage ? <></> : <></>}
         {is_sign_in ? (
-          isMyPage ? (
+          isMyPage && isMobile ? (
             <div className="header-logout-button-mobile">
               <h3 className="font-label-small">로그아웃</h3>
             </div>
