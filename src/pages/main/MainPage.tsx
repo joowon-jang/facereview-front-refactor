@@ -111,8 +111,8 @@ const MainPage = (): ReactElement => {
     }
   };
 
-  let timeoutTimer: NodeJS.Timeout;
-  let intervalTimer: NodeJS.Timer;
+  const timeoutTimer = useRef<NodeJS.Timeout>();
+  const intervalTimer = useRef<NodeJS.Timer>();
 
   const useInterval = (
     callback: () => void,
@@ -134,13 +134,13 @@ const MainPage = (): ReactElement => {
       };
 
       if (delay !== null) {
-        timeoutTimer = setTimeout(() => {
+        timeoutTimer.current = setTimeout(() => {
           setGenreChangeOpacity(0);
         }, 5800);
-        intervalTimer = setInterval(tick, delay);
+        intervalTimer.current = setInterval(tick, delay);
         return () => {
-          clearInterval(intervalTimer);
-          clearTimeout(timeoutTimer);
+          clearInterval(intervalTimer.current);
+          clearTimeout(timeoutTimer.current);
         };
       }
     }, [delay, index]);
@@ -285,8 +285,8 @@ const MainPage = (): ReactElement => {
         </h4>
         <div
           onMouseEnter={() => {
-            clearInterval(intervalTimer);
-            clearTimeout(timeoutTimer);
+            clearInterval(intervalTimer.current);
+            clearTimeout(timeoutTimer.current);
             setGenreChangeTerm(null);
           }}
           onMouseLeave={() => setGenreChangeTerm(6000)}
