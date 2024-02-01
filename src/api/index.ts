@@ -1,8 +1,7 @@
-import { ErrorResponseImpl } from "@remix-run/router/dist/utils";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://34.64.220.89",
+  baseURL: "http://15.164.167.42",
   timeout: 30000,
 });
 
