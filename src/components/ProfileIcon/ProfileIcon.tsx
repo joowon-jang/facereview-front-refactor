@@ -3,10 +3,11 @@ import ProfileImage from "assets/img/profileImage.png";
 import EditableImage from "assets/img/editableImage.png";
 
 import React, { ReactElement } from "react";
+import { EmotionType } from "types/index";
 
 type ProfileIconPropsType = {
   type: "icon-large" | "icon-medium" | "icon-small";
-  color: "neutral" | "happy" | "surprise" | "sad" | "angry";
+  color: EmotionType;
   style?: React.CSSProperties;
   isEditable?: boolean;
   onEditClick?: () => void;

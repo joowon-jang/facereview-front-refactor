@@ -1,10 +1,11 @@
 import { ReactElement } from "react";
 import { emojiOfEmotion } from "utils";
 import "./emotionbadge.scss";
+import { EmotionType } from "types/index";
 
 type EmotionBadgePropsType = {
   type: "big" | "small";
-  emotion: "happy" | "surprise" | "angry" | "sad" | "neutral";
+  emotion: EmotionType;
   style?: React.CSSProperties;
 };
 
