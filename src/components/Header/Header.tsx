@@ -1,20 +1,20 @@
+import HeaderToken from "api/HeaderToken";
 import Button from "components/Button/Button";
 import ProfileIcon from "components/ProfileIcon/ProfileIcon";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
+import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { useAuthStorage } from "store/authStore";
+import { mapNumberToEmotion } from "utils/index";
 import AnimatedLogo from "../AnimatedLogo/AnimatedLogo";
 import "./header.scss";
-import { mapNumberToEmotion } from "utils/index";
-import useMediaQuery from "utils/useMediaQuery";
-import HeaderToken from "api/HeaderToken";
 
 type HeaderPropsType = {
   isMyPage?: boolean;
 };
 
 const Header = ({ isMyPage }: HeaderPropsType): ReactElement => {
-  const isMobile = useMediaQuery("(max-width : 1200px)");
+  const isMobile = useMediaQuery({ query: "(max-width : 1200px)" });
   const navigate = useNavigate();
   const { is_sign_in, setTempToken } = useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);

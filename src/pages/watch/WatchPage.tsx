@@ -1,33 +1,5 @@
-import {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Webcam from "react-webcam";
-import YouTube, { YouTubeEvent } from "react-youtube";
-import EmotionBadge from "components/EmotionBadge/EmotionBadge";
-import { Options, YouTubePlayer } from "youtube-player/dist/types";
-import "./watchpage.scss";
-import { socket } from "socket";
-import React from "react";
-import ProfileIcon from "components/ProfileIcon/ProfileIcon";
-import TextInput from "components/TextInput/TextInput";
-import UploadButton from "components/UploadButton/UploadButton";
 import { ResponsiveBar } from "@nivo/bar";
-import {
-  CommentType,
-  EmotionType,
-  VideoDetailType,
-  VideoRelatedType,
-} from "types";
-import { getRelatedVideo, getVideoDetail } from "api/youtube";
-import Devider from "components/Devider/Devider";
-import { useAuthStorage } from "store/authStore";
-import { toast } from "react-toastify";
+import { ResponsiveLine } from "@nivo/line";
 import {
   addHits,
   addLike,
@@ -39,23 +11,50 @@ import {
   modifyComment,
   sendNewComment,
 } from "api/watch";
+import { getRelatedVideo, getVideoDetail } from "api/youtube";
+import safeImage from "assets/img/safeImage.png";
+import Devider from "components/Devider/Devider";
+import EmotionBadge from "components/EmotionBadge/EmotionBadge";
+import LikeButton from "components/LikeButton/LikeButton";
+import ModalDialog from "components/ModalDialog/ModalDialog";
+import ProfileIcon from "components/ProfileIcon/ProfileIcon";
+import SomeIcon from "components/SomeIcon/SomeIcon";
+import TextInput from "components/TextInput/TextInput";
+import UploadButton from "components/UploadButton/UploadButton";
+import VideoItem from "components/VideoItem/VideoItem";
+import useBodyScrollLock from "hooks/useBodyScrollLock";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import Webcam from "react-webcam";
+import YouTube, { YouTubeEvent } from "react-youtube";
+import { socket } from "socket";
+import { useAuthStorage } from "store/authStore";
+import {
+  CommentType,
+  EmotionType,
+  VideoDetailType,
+  VideoRelatedType,
+} from "types";
 import {
   getDistributionToGraphData,
   getTimeToString,
   mapNumberToEmotion,
 } from "utils/index";
-import VideoItem from "components/VideoItem/VideoItem";
-import ModalDialog from "components/ModalDialog/ModalDialog";
-import safeImage from "assets/img/safeImage.png";
-import LikeButton from "components/LikeButton/LikeButton";
-import { ResponsiveLine } from "@nivo/line";
-import SomeIcon from "components/SomeIcon/SomeIcon";
-import useMediaQuery from "utils/useMediaQuery";
-import useBodyScrollLock from "hooks/useBodyScrollLock";
+import { Options, YouTubePlayer } from "youtube-player/dist/types";
+import "./watchpage.scss";
 
 const WatchPage = (): ReactElement => {
   const { lockScroll, openScroll } = useBodyScrollLock();
-  const isMobile = useMediaQuery("(max-width: 1200px)");
+  const isMobile = useMediaQuery({ query: "(max-width: 1200px)" });
   const [modifyingComment, setModifyingComment] = useState<string>("");
   const { v4: uuidv4 } = require("uuid");
   const { id } = useParams();

@@ -24,11 +24,11 @@ import Chip from "components/Chip/Chip";
 import ModalDialog from "components/ModalDialog/ModalDialog";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 import TextInput from "components/TextInput/TextInput";
-import useMediaQuery from "utils/useMediaQuery";
 import useBodyScrollLock from "hooks/useBodyScrollLock";
+import { useMediaQuery } from "react-responsive";
 
 const MainPage = (): ReactElement => {
-  const isMobile = useMediaQuery("(max-width: 1200px)");
+  const isMobile = useMediaQuery({ query: "(max-width: 1200px)" });
   const { v4: uuidv4 } = require("uuid");
   const { is_sign_in, user_name } = useAuthStorage();
   const [selectedEmotion, setSelectedEmotion] = useState<"all" | EmotionType>(

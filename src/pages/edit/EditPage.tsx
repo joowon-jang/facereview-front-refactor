@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import Button from 'components/Button/Button';
-import TextInput from 'components/TextInput/TextInput';
-import { useNavigate } from 'react-router-dom';
-import './editpage.scss';
-import ProfileIcon from 'components/ProfileIcon/ProfileIcon';
-import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { CategoryType, EmotionType } from 'types';
-import { useAuthStorage } from 'store/authStore';
 import { changeFavoriteGenre, changeName, changeProfilePhoto } from 'api/auth';
-import { mapEmotionToNumber, mapNumberToEmotion } from 'utils/index';
+import Button from 'components/Button/Button';
 import CategoryList from 'components/CategoryList/CategoryList';
-import useMediaQuery from 'utils/useMediaQuery';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
+import ProfileIcon from 'components/ProfileIcon/ProfileIcon';
+import TextInput from 'components/TextInput/TextInput';
 import useBodyScrollLock from 'hooks/useBodyScrollLock';
+import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuthStorage } from 'store/authStore';
+import { CategoryType, EmotionType } from 'types';
+import { mapEmotionToNumber, mapNumberToEmotion } from 'utils/index';
+import './editpage.scss';
 
 const EditPage = () => {
-  const isMobile = useMediaQuery('(max-width: 1200px)');
+  const isMobile = useMediaQuery({ query: '(max-width: 1200px)' });
   const { user_name, setUserName, setUserProfile, user_favorite_genres, setUserFavoriteGenres } = useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
   const navigate = useNavigate();

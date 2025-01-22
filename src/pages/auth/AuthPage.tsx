@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import AnimatedLogo from "components/AnimatedLogo/AnimatedLogo";
 import Button from "components/Button/Button";
 import StepIndicator from "components/StepIndicator/StepIndicator";
 import TextInput from "components/TextInput/TextInput";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-import "./authpage.scss";
 import { checkEmail, signIn, signUp } from "api/auth";
+import HeaderToken from "api/HeaderToken";
+import { AxiosResponse } from "axios";
+import CategoryList from "components/CategoryList/CategoryList";
+import { useMediaQuery } from "react-responsive";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStorage } from "store/authStore";
 import { CategoryType, UserInfoType } from "types";
-import { AxiosResponse } from "axios";
-import HeaderToken from "api/HeaderToken";
-import CategoryList from "components/CategoryList/CategoryList";
-import useMediaQuery from "utils/useMediaQuery";
+import "./authpage.scss";
 
 const AlertMessages = {
   emailInvalid: "올바르지 않은 이메일 형식이에요",
@@ -24,7 +24,7 @@ const AlertMessages = {
 };
 const MAX_CATEGORY_LENGTH = 3;
 const AuthPage = () => {
-  const isMobile = useMediaQuery("(max-width: 1200px)");
+  const isMobile = useMediaQuery({ query: "(max-width: 1200px)" });
 
   const navigate = useNavigate();
   const { step } = useParams();

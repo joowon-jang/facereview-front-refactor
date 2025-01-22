@@ -1,33 +1,33 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./mypage.scss";
 
 import Button from "components/Button/Button";
 import Chip from "components/Chip/Chip";
-import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import Devider from "components/Devider/Devider";
+import ProfileIcon from "components/ProfileIcon/ProfileIcon";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 
+import { ResponsiveLine } from "@nivo/line";
 import { ResponsivePie } from "@nivo/pie";
-import Etc from "assets/img/etc.png";
 import HeaderToken from "api/HeaderToken";
-import { useAuthStorage } from "store/authStore";
-import VideoItem from "components/VideoItem/VideoItem";
 import {
   getAllEmotionTimeData,
   getDounutGraphData,
   getRecentVideo,
 } from "api/youtube";
+import Etc from "assets/img/etc.png";
+import VideoItem from "components/VideoItem/VideoItem";
+import { useMediaQuery } from "react-responsive";
+import { useAuthStorage } from "store/authStore";
 import { EmotionType, VideoWatchedType } from "types/index";
 import { mapNumberToEmotion } from "utils/index";
-import { ResponsiveLine } from "@nivo/line";
-import useMediaQuery from "utils/useMediaQuery";
 
 const MyPage = () => {
   const { is_sign_in, user_name, user_profile } = useAuthStorage();
 
-  const isMobile = useMediaQuery("(max-width: 1200px)");
+  const isMobile = useMediaQuery({ query: "(max-width: 1200px)" });
 
   const navigate = useNavigate();
   const { setTempToken } = useAuthStorage();
