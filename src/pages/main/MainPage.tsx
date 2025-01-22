@@ -12,7 +12,7 @@ import {
   getTravelVideo,
 } from "api/youtube";
 import VideoItem from "components/VideoItem/VideoItem";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useAuthStorage } from "store/authStore";
 import { EmotionType, VideoDataType } from "types";
 import "./mainpage.scss";
@@ -86,7 +86,7 @@ const MainPage = (): ReactElement => {
     openScroll();
   };
 
-  const extractVideoId = () => {
+  const extractVideoId = useCallback(() => {
     const match = registerInput.match(
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/
     );
@@ -98,7 +98,7 @@ const MainPage = (): ReactElement => {
     } else {
       setIsRegisterMatched(false);
     }
-  };
+  },[registerInput]);
   const handleRegisterButtonClick = () => {
     if (registeredVideoIds.length > 0) {
       registeredVideoIds.map((videoId) =>
@@ -197,11 +197,11 @@ const MainPage = (): ReactElement => {
           );
         });
     }
-  }, []);
+  }, [is_sign_in]);
 
   useEffect(() => {
     extractVideoId();
-  }, [registerInput]);
+  }, [extractVideoId, registerInput]);
 
   return (
     <div className="main-page-container">

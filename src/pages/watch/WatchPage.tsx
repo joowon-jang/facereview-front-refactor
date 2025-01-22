@@ -549,7 +549,7 @@ const WatchPage = (): ReactElement => {
           setModifyingComment(commentList[i].comment_contents)
       );
     }
-  }, [editingcommentindex]);
+  }, [commentList, editingcommentindex]);
 
   const renderMobileContainer = () => {
     return (

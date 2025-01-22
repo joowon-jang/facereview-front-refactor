@@ -123,7 +123,7 @@ const MyPage = () => {
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [donutGraphData, is_sign_in]);
 
   return (
     <>
