@@ -1,7 +1,3 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
-import { useAuthStorage } from "store/authStore";
-import VideoItem from "components/VideoItem/VideoItem";
-import "./mainpage.scss";
 import {
   getAllVideo,
   getCookVideo,
@@ -11,22 +7,25 @@ import {
   getGameVideo,
   getInformationVideo,
   getPersonalRecommendedVideo,
+  getShowVideo,
   getSportsVideo,
   getTravelVideo,
-  getShowVideo,
 } from "api/youtube";
+import VideoItem from "components/VideoItem/VideoItem";
+import { ReactElement, useEffect, useRef, useState } from "react";
+import { useAuthStorage } from "store/authStore";
 import { EmotionType, VideoDataType } from "types";
+import "./mainpage.scss";
 
-import Chip from "components/Chip/Chip";
-import ModalDialog from "components/ModalDialog/ModalDialog";
-import TextInput from "components/TextInput/TextInput";
-import { toast } from "react-toastify";
+import { updateRequestVideoList } from "api/request";
 import youtubeIcon from "assets/img/youtubeIcon.png";
 import Button from "components/Button/Button";
+import Chip from "components/Chip/Chip";
+import ModalDialog from "components/ModalDialog/ModalDialog";
 import SomeIcon from "components/SomeIcon/SomeIcon";
-import { updateRequestVideoList } from "api/request";
-import { getTimeToString } from "utils/index";
+import TextInput from "components/TextInput/TextInput";
 import useMediaQuery from "utils/useMediaQuery";
+import useBodyScrollLock from "hooks/useBodyScrollLock";
 
 const MainPage = (): ReactElement => {
   const isMobile = useMediaQuery("(max-width: 1200px)");
@@ -65,6 +64,7 @@ const MainPage = (): ReactElement => {
     "먹방",
     "드라마",
   ];
+  const { lockScroll, openScroll } = useBodyScrollLock();
 
   const getThumbnailUrl = (videoId: string) =>
     `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
@@ -74,16 +74,16 @@ const MainPage = (): ReactElement => {
   };
 
   const openModal = () => {
-    document.body.style.overflow = "hidden";
     setIsModalOpen(true);
+    lockScroll();
   };
   const closeModal = () => {
-    document.body.style.overflow = "auto";
     setIsModalOpen(false);
     setIsRegisterMatched(false);
     setRegisterInput("");
     setRegisteringVideoId("");
     setRegisteredVideoIds([]);
+    openScroll();
   };
 
   const extractVideoId = () => {

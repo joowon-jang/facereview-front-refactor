@@ -1,5 +1,6 @@
 import {
   ReactElement,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -50,8 +51,10 @@ import LikeButton from "components/LikeButton/LikeButton";
 import { ResponsiveLine } from "@nivo/line";
 import SomeIcon from "components/SomeIcon/SomeIcon";
 import useMediaQuery from "utils/useMediaQuery";
+import useBodyScrollLock from "hooks/useBodyScrollLock";
 
 const WatchPage = (): ReactElement => {
+  const { lockScroll, openScroll } = useBodyScrollLock();
   const isMobile = useMediaQuery("(max-width: 1200px)");
   const [modifyingComment, setModifyingComment] = useState<string>("");
   const { v4: uuidv4 } = require("uuid");
@@ -238,23 +241,23 @@ const WatchPage = (): ReactElement => {
     navigation("/auth/1");
   };
 
-  const openModal1 = () => {
-    document.body.style.overflow = "hidden";
+  const openModal1 = useCallback(() => {
     setIsModalOpen1(true);
-  };
+    lockScroll();
+  },[lockScroll]);
   const closeModal1 = () => {
-    document.body.style.overflow = "auto";
     setUserAnnounced({ user_announced: true });
     setIsModalOpen1(false);
+    openScroll();
   };
   const openModal2 = () => {
-    document.body.style.overflow = "hidden";
     setIsModalOpen2(true);
+    lockScroll();
   };
   const closeModal2 = () => {
-    document.body.style.overflow = "auto";
     setIsModalOpen2(false);
     setIsEditVisible(null);
+    openScroll();
   };
 
   const handleLikeClick = () => {
@@ -315,7 +318,7 @@ const WatchPage = (): ReactElement => {
     if (!user_announced) {
       openModal1();
     }
-  }, []);
+  }, [openModal1, user_announced]);
 
   useEffect(() => {
     socket.connect();

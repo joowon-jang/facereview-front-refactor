@@ -1,56 +1,44 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import Button from "components/Button/Button";
-import TextInput from "components/TextInput/TextInput";
-import { useNavigate } from "react-router-dom";
-import "./editpage.scss";
-import ProfileIcon from "components/ProfileIcon/ProfileIcon";
-import ModalDialog from "components/ModalDialog/ModalDialog";
-import { CategoryType, EmotionType } from "types";
-import { useAuthStorage } from "store/authStore";
-import { changeFavoriteGenre, changeName, changeProfilePhoto } from "api/auth";
-import { mapEmotionToNumber, mapNumberToEmotion } from "utils/index";
-import CategoryList from "components/CategoryList/CategoryList";
-import useMediaQuery from "utils/useMediaQuery";
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import Button from 'components/Button/Button';
+import TextInput from 'components/TextInput/TextInput';
+import { useNavigate } from 'react-router-dom';
+import './editpage.scss';
+import ProfileIcon from 'components/ProfileIcon/ProfileIcon';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
+import { CategoryType, EmotionType } from 'types';
+import { useAuthStorage } from 'store/authStore';
+import { changeFavoriteGenre, changeName, changeProfilePhoto } from 'api/auth';
+import { mapEmotionToNumber, mapNumberToEmotion } from 'utils/index';
+import CategoryList from 'components/CategoryList/CategoryList';
+import useMediaQuery from 'utils/useMediaQuery';
+import useBodyScrollLock from 'hooks/useBodyScrollLock';
 
 const EditPage = () => {
-  const isMobile = useMediaQuery("(max-width: 1200px)");
-  const {
-    user_name,
-    setUserName,
-    setUserProfile,
-    user_favorite_genres,
-    setUserFavoriteGenres,
-  } = useAuthStorage();
+  const isMobile = useMediaQuery('(max-width: 1200px)');
+  const { user_name, setUserName, setUserProfile, user_favorite_genres, setUserFavoriteGenres } = useAuthStorage();
   const user_profile = useAuthStorage((state) => state.user_profile);
   const navigate = useNavigate();
   const [nickName, setNickName] = useState(user_name);
-  const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(
-    user_favorite_genres as CategoryType[]
-  );
-  const [profileColor, setProfileColor] = useState<EmotionType>(
-    mapNumberToEmotion(user_profile)
-  );
-  const [selectedColor, setSelectedColor] = useState<EmotionType>(
-    mapNumberToEmotion(user_profile)
-  );
-  const [localProfileColor, setLocalProfileColor] = useState<EmotionType>(
-    mapNumberToEmotion(user_profile)
-  );
+  const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(user_favorite_genres as CategoryType[]);
+  const [profileColor, setProfileColor] = useState<EmotionType>(mapNumberToEmotion(user_profile));
+  const [selectedColor, setSelectedColor] = useState<EmotionType>(mapNumberToEmotion(user_profile));
+  const [localProfileColor, setLocalProfileColor] = useState<EmotionType>(mapNumberToEmotion(user_profile));
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { lockScroll, openScroll } = useBodyScrollLock();
 
   const handleColorSelect = (color: EmotionType) => {
     setSelectedColor(color);
   };
 
   const openModal = () => {
-    document.body.style.overflow = "hidden";
     setIsModalOpen(true);
+    lockScroll();
   };
   const closeModal = () => {
-    document.body.style.overflow = "auto";
     setIsModalOpen(false);
+    openScroll();
   };
   const handleModalCheck = () => {
     setProfileColor(selectedColor);
@@ -60,8 +48,8 @@ const EditPage = () => {
         setLocalProfileColor(selectedColor);
         if (res.status === 200) {
           setUserProfile({ user_profile: mapEmotionToNumber(profileColor) });
-          toast.success("프로필사진이 변경되었어요", {
-            toastId: "success change profile image",
+          toast.success('프로필사진이 변경되었어요', {
+            toastId: 'success change profile image',
           });
         }
       })
@@ -78,7 +66,7 @@ const EditPage = () => {
         if (res.status === 200) {
           setUserName({ user_name: nickName });
 
-          navigate("/my");
+          navigate('/my');
         }
       })
       .catch((error) => {
@@ -93,8 +81,8 @@ const EditPage = () => {
       .then((res) => {
         if (res.status === 200) {
           setUserFavoriteGenres({ user_favorite_genres: selectedCategories });
-          toast.success("회원정보가 수정되었어요", {
-            toastId: "success change info",
+          toast.success('회원정보가 수정되었어요', {
+            toastId: 'success change info',
           });
         }
       })
@@ -112,75 +100,62 @@ const EditPage = () => {
       <div className="edit-page-container">
         <h2 className="font-title-large">프로필 편집</h2>
         <div className="edit-page-user-container">
-          <ProfileIcon
-            type={"icon-large"}
-            color={localProfileColor}
-            isEditable={true}
-            onEditClick={openModal}
-          />
+          <ProfileIcon type={'icon-large'} color={localProfileColor} isEditable={true} onEditClick={openModal} />
           <ModalDialog
-            type={"one-button"}
+            type={'one-button'}
             name="edit-page-modal"
             isOpen={isModalOpen}
             onClose={closeModal}
-            onCheck={handleModalCheck}
-          >
-            <h3 className="font-title-mini edit-page-modal-title">
-              아이콘을 선택해주세요
-            </h3>
+            onCheck={handleModalCheck}>
+            <h3 className="font-title-mini edit-page-modal-title">아이콘을 선택해주세요</h3>
             <div className="edit-page-modal-icon-wrapper">
               <ProfileIcon
                 type="icon-medium"
                 color="neutral"
-                onSelectClick={() => handleColorSelect("neutral")}
+                onSelectClick={() => handleColorSelect('neutral')}
                 style={{
-                  cursor: "pointer",
-                  marginRight: "10px",
-                  border:
-                    selectedColor === "neutral" ? "3px solid #76FFCE" : "none",
+                  cursor: 'pointer',
+                  marginRight: '10px',
+                  border: selectedColor === 'neutral' ? '3px solid #76FFCE' : 'none',
                 }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="happy"
-                onSelectClick={() => handleColorSelect("happy")}
+                onSelectClick={() => handleColorSelect('happy')}
                 style={{
-                  cursor: "pointer",
-                  marginRight: "10px",
-                  border:
-                    selectedColor === "happy" ? "3px solid #76FFCE" : "none",
+                  cursor: 'pointer',
+                  marginRight: '10px',
+                  border: selectedColor === 'happy' ? '3px solid #76FFCE' : 'none',
                 }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="surprise"
-                onSelectClick={() => handleColorSelect("surprise")}
+                onSelectClick={() => handleColorSelect('surprise')}
                 style={{
-                  cursor: "pointer",
-                  marginRight: "10px",
-                  border:
-                    selectedColor === "surprise" ? "3px solid #76FFCE" : "none",
+                  cursor: 'pointer',
+                  marginRight: '10px',
+                  border: selectedColor === 'surprise' ? '3px solid #76FFCE' : 'none',
                 }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="sad"
-                onSelectClick={() => handleColorSelect("sad")}
+                onSelectClick={() => handleColorSelect('sad')}
                 style={{
-                  cursor: "pointer",
-                  marginRight: "10px",
-                  border:
-                    selectedColor === "sad" ? "3px solid #76FFCE" : "none",
+                  cursor: 'pointer',
+                  marginRight: '10px',
+                  border: selectedColor === 'sad' ? '3px solid #76FFCE' : 'none',
                 }}
               />
               <ProfileIcon
                 type="icon-medium"
                 color="angry"
-                onSelectClick={() => handleColorSelect("angry")}
+                onSelectClick={() => handleColorSelect('angry')}
                 style={{
-                  cursor: "pointer",
-                  border:
-                    selectedColor === "angry" ? "3px solid #76FFCE" : "none",
+                  cursor: 'pointer',
+                  border: selectedColor === 'angry' ? '3px solid #76FFCE' : 'none',
                 }}
               />
             </div>
@@ -189,42 +164,34 @@ const EditPage = () => {
             <div className="edit-page-input-container">
               <label htmlFor="editNickName font-title-mini">닉네임</label>
               <TextInput
-                id={"editNickName"}
+                id={'editNickName'}
                 value={nickName}
                 onChange={setNickName}
-                placeholder={"하하호호"}
+                placeholder={'하하호호'}
                 style={
                   isMobile
                     ? {
                         width: window.innerWidth - 32,
-                        marginTop: "16px",
-                        marginBottom: "24px",
+                        marginTop: '16px',
+                        marginBottom: '24px',
                       }
                     : {
-                        width: "380px",
-                        marginTop: "16px",
-                        marginBottom: "48px",
+                        width: '380px',
+                        marginTop: '16px',
+                        marginBottom: '48px',
                       }
                 }
               />
               {nickName.length < 2 && (
-                <p className="edit-page-input-alert-message font-body-large">
-                  최소 2자이상 입력해주세요.
-                </p>
+                <p className="edit-page-input-alert-message font-body-large">최소 2자이상 입력해주세요.</p>
               )}
             </div>
             <div className="edit-page-category-wrapper">
-              <label
-                htmlFor="editNickName font-title-mini"
-                style={{ marginBottom: "20px" }}
-              >
+              <label htmlFor="editNickName font-title-mini" style={{ marginBottom: '20px' }}>
                 관심사 (3개 선택)
               </label>
-              <div className="category-wrapper" style={{ marginTop: "20px" }}>
-                <CategoryList
-                  selected={selectedCategories}
-                  setSelected={setSelectedCategories}
-                />
+              <div className="category-wrapper" style={{ marginTop: '20px' }}>
+                <CategoryList selected={selectedCategories} setSelected={setSelectedCategories} />
               </div>
             </div>
           </div>
@@ -234,9 +201,7 @@ const EditPage = () => {
           label="수정"
           type="cta-full"
           style={
-            isMobile
-              ? { width: window.innerWidth - 32, marginTop: "16px" }
-              : { width: "380px", marginTop: "16px" }
+            isMobile ? { width: window.innerWidth - 32, marginTop: '16px' } : { width: '380px', marginTop: '16px' }
           }
           isDisabled={nickName.length < 2 || selectedCategories.length < 3}
           onClick={handleEditButtonClick}
