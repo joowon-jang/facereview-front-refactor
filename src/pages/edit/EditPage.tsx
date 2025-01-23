@@ -16,8 +16,17 @@ import './editpage.scss';
 
 const EditPage = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 1200px)' });
-  const { user_name, setUserName, setUserProfile, user_favorite_genres, setUserFavoriteGenres } = useAuthStorage();
-  const user_profile = useAuthStorage((state) => state.user_profile);
+  const { user_name, setUserName, setUserProfile, user_favorite_genres, setUserFavoriteGenres, user_profile } =
+    useAuthStorage(
+      ({ user_name, setUserName, setUserProfile, user_favorite_genres, setUserFavoriteGenres, user_profile }) => ({
+        user_name,
+        setUserName,
+        setUserProfile,
+        user_favorite_genres,
+        setUserFavoriteGenres,
+        user_profile,
+      })
+    );
   const navigate = useNavigate();
   const [nickName, setNickName] = useState(user_name);
   const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(user_favorite_genres as CategoryType[]);

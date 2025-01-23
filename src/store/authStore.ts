@@ -1,5 +1,5 @@
-import create from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
 interface AuthState {
   is_sign_in: boolean;
@@ -11,13 +11,7 @@ interface AuthState {
   user_favorite_genres: string[];
   access_token: string;
   refresh_token: string;
-  setToken: ({
-    access_token,
-    refresh_token,
-  }: {
-    access_token: string;
-    refresh_token: string;
-  }) => void;
+  setToken: ({ access_token, refresh_token }: { access_token: string; refresh_token: string }) => void;
   setUserInfo: ({
     is_admin,
     is_sign_in,
@@ -40,11 +34,7 @@ interface AuthState {
   setUserAnnounced: ({ user_announced }: { user_announced: boolean }) => void;
   setUserName: ({ user_name }: { user_name: string }) => void;
   setUserProfile: ({ user_profile }: { user_profile: number }) => void;
-  setUserFavoriteGenres: ({
-    user_favorite_genres,
-  }: {
-    user_favorite_genres: string[];
-  }) => void;
+  setUserFavoriteGenres: ({ user_favorite_genres }: { user_favorite_genres: string[] }) => void;
   setTempToken: ({ access_token }: { access_token: string }) => void;
 }
 
@@ -54,13 +44,13 @@ export const useAuthStorage = create<AuthState>()(
       (set) => ({
         is_admin: false,
         is_sign_in: false,
-        user_name: "",
+        user_name: '',
         user_profile: 0,
         user_tutorial: 0,
         user_announced: false,
         user_favorite_genres: [],
-        access_token: "",
-        refresh_token: "",
+        access_token: '',
+        refresh_token: '',
         setToken: ({ access_token, refresh_token }) =>
           set((state) => ({
             access_token: access_token,
@@ -106,7 +96,7 @@ export const useAuthStorage = create<AuthState>()(
           set((state) => ({
             is_admin: false,
             is_sign_in: false,
-            user_name: "",
+            user_name: '',
             user_profile: 0,
             user_tutorial: 0,
             access_token: access_token,
@@ -114,7 +104,7 @@ export const useAuthStorage = create<AuthState>()(
       }),
 
       {
-        name: "auth-storage",
+        name: 'auth-storage',
       }
     )
   )
