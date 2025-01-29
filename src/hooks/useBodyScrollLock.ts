@@ -5,12 +5,12 @@ export default function useBodyScrollLock(isOpen: boolean) {
 
   const lockScroll = useCallback(() => {
     scrollYRef.current = window.scrollY; // 현재 스크롤 위치 저장
+
     document.body.style.cssText = `
       position: fixed;
       top: -${scrollYRef.current}px;
-      left: 0;
       width: 100%;
-      overflow-y: scroll;
+      overflow: hidden;
     `;
   }, []);
 
@@ -20,11 +20,8 @@ export default function useBodyScrollLock(isOpen: boolean) {
   }, []);
 
   useLayoutEffect(() => {
-    if (isOpen) {
-      lockScroll();
-    } else {
-      openScroll();
-    }
+    if (isOpen) lockScroll();
+    else openScroll();
   }, [isOpen, lockScroll, openScroll]);
 
   return null;
