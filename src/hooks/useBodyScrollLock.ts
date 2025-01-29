@@ -1,22 +1,31 @@
-import { useCallback } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 
-export default function useBodyScrollLock() {
-  // 스크롤 비활성화
+export default function useBodyScrollLock(isOpen: boolean) {
+  const scrollYRef = useRef(0); // 스크롤 위치 저장
+
   const lockScroll = useCallback(() => {
+    scrollYRef.current = window.scrollY; // 현재 스크롤 위치 저장
     document.body.style.cssText = `
-    position:fixed;
-    top: -${window.scrollY}px;
-    overflow-y: scroll;
-    width: 100%;
+      position: fixed;
+      top: -${scrollYRef.current}px;
+      left: 0;
+      width: 100%;
+      overflow-y: scroll;
     `;
   }, []);
 
-  // 스크롤 활성화
   const openScroll = useCallback(() => {
-    const scrollY = document.body.style.top;
     document.body.style.cssText = '';
-    window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    window.scrollTo(0, scrollYRef.current); // 저장된 위치로 복귀
   }, []);
 
-  return { lockScroll, openScroll };
+  useLayoutEffect(() => {
+    if (isOpen) {
+      lockScroll();
+    } else {
+      openScroll();
+    }
+  }, [isOpen, lockScroll, openScroll]);
+
+  return null;
 }

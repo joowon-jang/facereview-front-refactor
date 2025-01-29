@@ -1,4 +1,5 @@
 import Button from 'components/Button/Button';
+import useBodyScrollLock from 'hooks/useBodyScrollLock';
 import { MouseEvent, ReactElement, useEffect, useRef } from 'react';
 import './modaldialog.scss';
 import './modaldialogchildren.scss';
@@ -21,6 +22,8 @@ const ModalDialog = ({
   onCheck,
   ...restProps
 }: ModalDialogPropTypes): ReactElement => {
+  useBodyScrollLock(isOpen);
+
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElement = useRef<Element | null>(null);
 

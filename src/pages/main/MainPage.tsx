@@ -24,7 +24,6 @@ import Chip from 'components/Chip/Chip';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import SomeIcon from 'components/SomeIcon/SomeIcon';
 import TextInput from 'components/TextInput/TextInput';
-import useBodyScrollLock from 'hooks/useBodyScrollLock';
 import { useMediaQuery } from 'react-responsive';
 
 const MainPage = (): ReactElement => {
@@ -47,7 +46,6 @@ const MainPage = (): ReactElement => {
   const [genreChangeTerm, setGenreChangeTerm] = useState<number | null>(6000);
   const [genreChangeOpacity, setGenreChangeOpacity] = useState<number>(1);
   const genreTitle: Array<string> = ['스포츠', '게임', '공포', '정보전달', '예능', '요리', '여행', '먹방', '드라마'];
-  const { lockScroll, openScroll } = useBodyScrollLock();
 
   const getThumbnailUrl = (videoId: string) => `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
 
@@ -57,7 +55,6 @@ const MainPage = (): ReactElement => {
 
   const openModal = () => {
     setIsModalOpen(true);
-    lockScroll();
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -65,7 +62,6 @@ const MainPage = (): ReactElement => {
     setRegisterInput('');
     setRegisteringVideoId('');
     setRegisteredVideoIds([]);
-    openScroll();
   };
 
   const extractVideoId = useCallback(() => {

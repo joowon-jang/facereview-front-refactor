@@ -4,7 +4,6 @@ import CategoryList from 'components/CategoryList/CategoryList';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import ProfileIcon from 'components/ProfileIcon/ProfileIcon';
 import TextInput from 'components/TextInput/TextInput';
-import useBodyScrollLock from 'hooks/useBodyScrollLock';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +34,6 @@ const EditPage = () => {
   const [localProfileColor, setLocalProfileColor] = useState<EmotionType>(mapNumberToEmotion(user_profile));
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { lockScroll, openScroll } = useBodyScrollLock();
 
   const handleColorSelect = (color: EmotionType) => {
     setSelectedColor(color);
@@ -43,11 +41,9 @@ const EditPage = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
-    lockScroll();
   };
   const closeModal = () => {
     setIsModalOpen(false);
-    openScroll();
   };
   const handleModalCheck = () => {
     setProfileColor(selectedColor);

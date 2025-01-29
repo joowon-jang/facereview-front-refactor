@@ -22,7 +22,6 @@ import SomeIcon from 'components/SomeIcon/SomeIcon';
 import TextInput from 'components/TextInput/TextInput';
 import UploadButton from 'components/UploadButton/UploadButton';
 import VideoItem from 'components/VideoItem/VideoItem';
-import useBodyScrollLock from 'hooks/useBodyScrollLock';
 import React, { ReactElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -37,7 +36,6 @@ import { Options, YouTubePlayer } from 'youtube-player/dist/types';
 import './watchpage.scss';
 
 const WatchPage = (): ReactElement => {
-  const { lockScroll, openScroll } = useBodyScrollLock();
   const isMobile = useMediaQuery({ query: '(max-width: 1200px)' });
   const [modifyingComment, setModifyingComment] = useState<string>('');
   const { v4: uuidv4 } = require('uuid');
@@ -223,21 +221,17 @@ const WatchPage = (): ReactElement => {
 
   const openModal1 = useCallback(() => {
     setIsModalOpen1(true);
-    lockScroll();
-  }, [lockScroll]);
+  }, []);
   const closeModal1 = () => {
     setUserAnnounced({ user_announced: true });
     setIsModalOpen1(false);
-    openScroll();
   };
   const openModal2 = () => {
     setIsModalOpen2(true);
-    lockScroll();
   };
   const closeModal2 = () => {
     setIsModalOpen2(false);
     setIsEditVisible(null);
-    openScroll();
   };
 
   const handleLikeClick = () => {
